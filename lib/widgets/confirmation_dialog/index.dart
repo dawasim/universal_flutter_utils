@@ -4,7 +4,7 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 ShowUFUConfirmationDialog({required String? title, String? subTitle,
   String? prefixBtnText = 'Cancel', String? suffixBtnText = 'Confirm', VoidCallback? onTapPrefix,
-  VoidCallback? onTapSuffix, IconData? icon, double? iconSize, UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
+  VoidCallback? onTapSuffix, IconData? icon, UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
   bool disableButtons = false, Widget? suffixBtnIcon, Widget? content,
   UFUButtonColorType? prefixBtnColorType, VoidCallback? onTapIcon,}) async {
   await Get.bottomSheet(
@@ -16,7 +16,6 @@ ShowUFUConfirmationDialog({required String? title, String? subTitle,
       onTapPrefix: onTapPrefix,
       onTapSuffix: onTapSuffix,
       icon: icon,
-      iconSize: iconSize,
       type: type ?? UFUConfirmationDialogType.message,
       disableButtons: disableButtons,
       suffixBtnIcon: suffixBtnIcon,
@@ -44,7 +43,6 @@ class UFUConfirmationDialog extends StatefulWidget {
     this.onTapPrefix,
     this.onTapSuffix,
     this.icon,
-    this.iconSize,
     this.type = UFUConfirmationDialogType.message,
     this.disableButtons = false,
     this.suffixBtnIcon,
@@ -75,9 +73,6 @@ class UFUConfirmationDialog extends StatefulWidget {
 
   /// It can be used to set any icon above title of confirmation dialog
   final IconData? icon;
-
-  /// It can be used to set any icon above title of confirmation dialog
-  final double? iconSize;
 
   /// It can be used to display widget inside suffix button
   /// when it is in use suffixText text will hide by default
@@ -136,12 +131,12 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color: AppTheme.themeColors.transparent),
+                                  color: AppTheme.themeColors.lightBlue),
                               margin: const EdgeInsets.only(bottom: 15, top: 5),
                               padding: const EdgeInsets.all(4),
                               child: UFUIcon(
                                 widget.icon!,
-                                size: widget.iconSize ?? 28,
+                                size: 28,
                                 color: AppTheme.themeColors.primary,
                               ),
                             ),
@@ -150,7 +145,6 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: UFUText(
                             text: widget.title!,
-                            textColor: AppTheme.themeColors.primary,
                             textSize: UFUTextSize.heading3,
                             fontWeight: UFUFontWeight.medium,
                             fontFamily: UFUFontFamily.productSans,

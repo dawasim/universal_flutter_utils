@@ -6,12 +6,14 @@ class UFUSvgImage extends StatelessWidget {
     super.key,
     required this.assetPath,
     this.height,
-    this.width
+    this.width,
+    this.fit = BoxFit.none
   });
 
   final String assetPath;
   final double? height;
   final double? width;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class UFUSvgImage extends StatelessWidget {
       assetPath,
       height: height,
       width: width,
+      fit: fit,
     );
   }
 }

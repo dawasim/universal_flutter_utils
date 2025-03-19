@@ -36,21 +36,20 @@ class UFUSingleSelectModel {
 
   factory UFUSingleSelectModel.clone(UFUSingleSelectModel source) {
     return UFUSingleSelectModel(
-      id: source.id,
-      label: source.label,
-      color: source.color,
-      child: source.child,
-      borderColor: source.borderColor,
-      borderWidth: source.borderWidth,
-      onTapItem: source.onTapItem,
-      prefixLabel: source.prefixLabel,
-      subLabel: source.subLabel,
-      suffix: source.suffix,
-      additionalData: source.additionalData,
-      isEditable: source.isEditable,
-      labelController: UFUInputBoxController(text: source.label),
-      active: source.active
+        id: source.id,
+        label: source.label,
+        color: source.color,
+        child: source.child,
+        borderColor: source.borderColor,
+        borderWidth: source.borderWidth,
+        onTapItem: source.onTapItem,
+        prefixLabel: source.prefixLabel,
+        subLabel: source.subLabel,
+        suffix: source.suffix,
+        additionalData: source.additionalData,
+        isEditable: source.isEditable,
+        labelController: UFUInputBoxController(text: source.label),
+        active: source.active
     );
   }
-
 }

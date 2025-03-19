@@ -4,57 +4,57 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUInputBox extends StatefulWidget {
   const UFUInputBox({
-      this.label,
-      this.controller,
-      this.keyboardType,
-      this.readOnly = false,
-      this.obscureText = false,
-      this.maxLines = 1,
-      this.maxLength,
-      this.disabled = false,
-      this.focusNode,
-      this.autofocus = false,
-      this.hintText,
-      this.prefixChild,
-      this.suffixChild,
-      this.validator,
-      this.onChanged,
-      this.onSaved,
-      this.onPressed,
-      this.debounceTime,
-      this.autoGrow = false,
-      this.type = UFUInputBoxType.withoutLabel,
-      this.fillColor,
-      this.labelBgColor,
-      this.cursorWidth = 1.5,
-      this.cursorHeight,
-      this.scrollController,
-      this.scrollPadding = const EdgeInsets.all(8.0),
-      this.scrollPhysics,
-      this.enableSuggestions = false,
-      this.inputFormatters,
-      this.cancelButtonColor,
-      this.cancelButtonSize,
-      this.padding,
-      this.textSize = UFUTextSize.heading4,
-      this.onTapSuffix,
-      this.borderColor,
-      this.isCounterText = false,
-      this.inputBoxController,
-      this.chip,
-      this.chipsList,
-      this.moreChipsWidget,
-      this.isRequired = false,
-      this.avoidPrefixConstraints = false,
-      this.isExtWidget = false,
-      this.extInputBoxController,
-      this.prefixIconConstraints,
-      this.showCursor,
-      this.textColor,
-      this.textAlign = TextAlign.start,
-      this.textAlignVertical = TextAlignVertical.top,
-      this.textCapitalization = TextCapitalization.sentences,
-      super.key});
+    this.label,
+    this.controller,
+    this.keyboardType,
+    this.readOnly = false,
+    this.obscureText = false,
+    this.maxLines = 1,
+    this.maxLength,
+    this.disabled = false,
+    this.focusNode,
+    this.autofocus = false,
+    this.hintText,
+    this.prefixChild,
+    this.suffixChild,
+    this.validator,
+    this.onChanged,
+    this.onSaved,
+    this.onPressed,
+    this.debounceTime,
+    this.autoGrow = false,
+    this.type = UFUInputBoxType.withoutLabel,
+    this.fillColor,
+    this.labelBgColor,
+    this.cursorWidth = 1.5,
+    this.cursorHeight,
+    this.scrollController,
+    this.scrollPadding = const EdgeInsets.all(8.0),
+    this.scrollPhysics,
+    this.enableSuggestions = false,
+    this.inputFormatters,
+    this.cancelButtonColor,
+    this.cancelButtonSize,
+    this.padding,
+    this.textSize = UFUTextSize.heading4,
+    this.onTapSuffix,
+    this.borderColor,
+    this.isCounterText = false,
+    this.inputBoxController,
+    this.chip,
+    this.chipsList,
+    this.moreChipsWidget,
+    this.isRequired = false,
+    this.avoidPrefixConstraints = false,
+    this.isExtWidget = false,
+    this.extInputBoxController,
+    this.prefixIconConstraints,
+    this.showCursor,
+    this.textColor,
+    this.textAlign = TextAlign.start,
+    this.textAlignVertical = TextAlignVertical.top,
+    this.textCapitalization = TextCapitalization.sentences,
+    super.key});
 
   /// It is required to add label of a inputBox.
   final String? label;
@@ -181,7 +181,7 @@ class UFUInputBox extends StatefulWidget {
 
   /// [prefixIconConstraints] can be used to give customised constraints to prefix icon
   final BoxConstraints? prefixIconConstraints;
-  
+
   final Color? textColor;
 
   final TextAlign? textAlign;
@@ -199,11 +199,12 @@ class _UFUInputBoxState extends State<UFUInputBox> {
   int chracterCount = 0;
   double scale = 1;
   late Debounce debounce =
-      Debounce(Duration(milliseconds: widget.debounceTime!));
+  Debounce(Duration(milliseconds: widget.debounceTime!));
   late UFUInputBoxController inputBoxController;
   late UFUInputBoxController extInputBoxController;
 
   bool get showChips => widget.chip != null && widget.chipsList != null;
+
   bool get isLabelOutside => widget.type == UFUInputBoxType.withLabelOutside;
 
   /// Default text style for label and hint text.
@@ -221,7 +222,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
   void setClearButtonState(String value) {
     setState(() {
-      showClearButton = value.trim().isEmpty ? false : true;
+      showClearButton = value
+          .trim()
+          .isEmpty ? false : true;
     });
   }
 
@@ -252,7 +255,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
               cancelButtonSize: widget.cancelButtonSize,
             ),
         onTap: () {
-          if(widget.onTapSuffix != null) {
+          if (widget.onTapSuffix != null) {
             widget.onTapSuffix!();
           } else {
             inputBoxController.controller.clear();
@@ -271,9 +274,10 @@ class _UFUInputBoxState extends State<UFUInputBox> {
     return widget.label ?? '';
   }
 
-  Widget getLabel() => Padding(
+  Widget getLabel() =>
+      Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: isLabelOutside ? 0 : 12,
+          horizontal: isLabelOutside ? 0 : 12,
         ),
         child: Stack(
           children: [
@@ -288,21 +292,26 @@ class _UFUInputBoxState extends State<UFUInputBox> {
             ),
             Padding(
               padding: EdgeInsets.only(
-                right: 3,
-                left: 4,
-                bottom: 1.5 * scale
+                  right: 3,
+                  left: 4,
+                  bottom: 1.5 * scale
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Flexible(
                     child: UFUText(
-                        text: getLabelText(),
-                        maxLine: 1,
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.ellipsis,
-                        height: 0,
-                        textSize: isLabelOutside ? UFUTextSize.heading4 : UFUTextSize.heading5,
+                      text: getLabelText(),
+                      maxLine: 1,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis,
+                      height: 0,
+                      textSize: isLabelOutside
+                          ? UFUTextSize.heading3
+                          : UFUTextSize.heading5,
+                      fontWeight: isLabelOutside
+                          ? UFUFontWeight.bold
+                          : UFUFontWeight.regular,
                     ),
                   ),
                   if(widget.isRequired! && !isLabelOutside)
@@ -330,7 +339,8 @@ class _UFUInputBoxState extends State<UFUInputBox> {
     inputBoxController.setParentFocusNode(widget.focusNode);
     inputBoxController.setValidator(validateField);
 
-    extInputBoxController = widget.extInputBoxController ?? UFUInputBoxController();
+    extInputBoxController =
+        widget.extInputBoxController ?? UFUInputBoxController();
     extInputBoxController.setParentController(widget.controller);
 
     if (inputBoxController.validateOnChange) {
@@ -354,12 +364,12 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
   @override
   void didUpdateWidget(covariant UFUInputBox oldWidget) {
-    if(widget.controller?.text != null
+    if (widget.controller?.text != null
         && widget.controller?.text != inputBoxController.text
         && widget.inputBoxController == null) {
       inputBoxController.text = widget.controller?.text ?? "";
     }
-    if(widget.controller?.text != null
+    if (widget.controller?.text != null
         && widget.controller?.text != extInputBoxController.text
         && widget.extInputBoxController == null) {
       extInputBoxController.text = widget.controller?.text ?? "";
@@ -369,8 +379,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
   @override
   Widget build(BuildContext context) {
-
-    scale = MediaQuery.of(context).textScaleFactor;
+    scale = MediaQuery
+        .of(context)
+        .textScaleFactor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,35 +389,34 @@ class _UFUInputBoxState extends State<UFUInputBox> {
       children: [
         if (widget.type == UFUInputBoxType.withLabelOutside) ...{
           getLabel(),
-          const SizedBox(height: 4),
+          const SizedBox(height: 10),
           textFormField(),
-        } else ...{
-          Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: doShowLabel() ? scale * 8 : 0),
-                child: textFormField(),
-              ),
-              if (doShowLabel()) getLabel(),
-            ],
-          ),
-        },
+        } else
+          ...{
+            Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: doShowLabel() ? scale * 8 : 0),
+                  child: textFormField(),
+                ),
+                if (doShowLabel()) getLabel(),
+              ],
+            ),
+          },
         errorText.isNotEmpty
-            ? const SizedBox(
-                height: 5,
-              )
+            ? const SizedBox(height: 5)
             : const SizedBox.shrink(),
         errorText.isEmpty || widget.type == UFUInputBoxType.searchbar
             ? const SizedBox.shrink()
             : Align(
-                alignment: Alignment.topLeft,
-                child: UFUText(
-                  textAlign: TextAlign.start,
-                  text: errorText,
-                  textSize: UFUTextSize.heading5,
-                  textColor: AppTheme.themeColors.red,
-                ),
-              )
+          alignment: Alignment.topLeft,
+          child: UFUText(
+            textAlign: TextAlign.start,
+            text: errorText,
+            textSize: UFUTextSize.heading5,
+            textColor: AppTheme.themeColors.red,
+          ),
+        )
       ],
     );
   }
@@ -417,11 +427,14 @@ class _UFUInputBoxState extends State<UFUInputBox> {
         getBorderRadius(),
       ),
       color: widget.disabled
-          ? AppTheme.themeColors.inverse.withValues(alpha:0.6)
+          ? AppTheme.themeColors.inverse.withValues(alpha: 0.6)
           : widget.fillColor ?? AppTheme.themeColors.base,
       child: TextFormField(
+
         textCapitalization: widget.textCapitalization,
-        keyboardAppearance: MediaQuery.of(context).platformBrightness,
+        keyboardAppearance: MediaQuery
+            .of(context)
+            .platformBrightness,
         showCursor: widget.readOnly ? false : widget.showCursor ?? true,
         onChanged: (value) {
           if (widget.debounceTime != null &&
@@ -448,7 +461,8 @@ class _UFUInputBoxState extends State<UFUInputBox> {
         obscureText: widget.obscureText,
         minLines: widget.autoGrow ? 1 : null,
         maxLines: widget.maxLines,
-        cursorColor: (widget.type == UFUInputBoxType.searchbar || widget.type == UFUInputBoxType.composeEmail)
+        cursorColor: (widget.type == UFUInputBoxType.searchbar ||
+            widget.type == UFUInputBoxType.composeEmail)
             ? AppTheme.themeColors.text
             : AppTheme.themeColors.primary,
         maxLength: widget.maxLength,
@@ -463,19 +477,23 @@ class _UFUInputBoxState extends State<UFUInputBox> {
         autofocus: widget.autofocus,
         style: getStyle().copyWith(
           color: widget.textColor ?? AppTheme.themeColors.text
-              .withValues(alpha:widget.disabled ? 0.4 : 1),
+              .withValues(alpha: widget.disabled ? 0.4 : 1),
           fontSize: TextHelper.getTextSize(widget.textSize),
         ),
         decoration: InputDecoration(
           counterStyle: const TextStyle(
             height: 0,
           ),
-          counterText: (!widget.isCounterText && widget.maxLength != null) ? '' : null,
-          border:  UnderlineInputBorder(
-            borderSide: BorderSide(color: AppTheme.themeColors.inverse, width: 1.5),
+          counterText: (!widget.isCounterText && widget.maxLength != null)
+              ? ''
+              : null,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+                color: AppTheme.themeColors.inverse, width: 1.5),
           ),
           filled: widget.disabled || widget.fillColor != null,
-          fillColor: widget.disabled ? UFUColor.lightGray : widget.fillColor ?? AppTheme.themeColors.base,
+          fillColor: widget.disabled ? UFUColor.lightGray : widget.fillColor ??
+              AppTheme.themeColors.base,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           enabledBorder: getInActiveBorder(),
           disabledBorder: getInActiveBorder(),
@@ -490,7 +508,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintStyle: getStyle().copyWith(
               color: widget.type == UFUInputBoxType.composeEmail ?
               AppTheme.themeColors.tertiary :
-              AppTheme.themeColors.text.withValues(alpha:0.3) ,
+              AppTheme.themeColors.text.withValues(alpha: 0.3),
               fontSize: typeToHintFontSize(),
               letterSpacing: 0
           ),
@@ -498,7 +516,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
             fontSize: 0.01,
           ),
           prefixIconConstraints: widget.prefixIconConstraints
-              ?? (showChips || widget.avoidPrefixConstraints ? null : const BoxConstraints(maxWidth: 40, maxHeight: 20)),
+              ?? (showChips || widget.avoidPrefixConstraints
+                  ? null
+                  : const BoxConstraints(maxWidth: 40, maxHeight: 20)),
           prefixIcon: getPrefixChild(),
           suffixIcon: getSuffixChild(),
           suffixIconConstraints: const BoxConstraints(maxHeight: 40),
@@ -509,7 +529,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
   }
 
   InputBorder getInActiveBorder() {
-    if(widget.type == UFUInputBoxType.searchbarWithoutBorder
+    if (widget.type == UFUInputBoxType.searchbarWithoutBorder
         || widget.type == UFUInputBoxType.composeEmail
         || widget.type == UFUInputBoxType.inline
     ) {
@@ -518,20 +538,21 @@ class _UFUInputBoxState extends State<UFUInputBox> {
       return OutlineInputBorder(
         gapPadding: 0,
         borderRadius: (widget.type == UFUInputBoxType.searchbar)
-            ? BorderRadius.circular(25.0)
+            ? BorderRadius.circular(12.0)
             : BorderRadius.circular(14.0),
         borderSide: BorderSide(
             width: 0.8,
             color:
-                widget.borderColor ?? (errorText.isNotEmpty && widget.type != UFUInputBoxType.searchbar
-                    ? AppTheme.themeColors.red.withValues(alpha:0.4)
-                    : AppTheme.themeColors.dimGray)),
+            widget.borderColor ?? (errorText.isNotEmpty &&
+                widget.type != UFUInputBoxType.searchbar
+                ? AppTheme.themeColors.red.withValues(alpha: 0.4)
+                : AppTheme.themeColors.dimGray)),
       );
     }
   }
 
   InputBorder getActiveBorder() {
-    if(widget.type == UFUInputBoxType.searchbarWithoutBorder
+    if (widget.type == UFUInputBoxType.searchbarWithoutBorder
         || widget.type == UFUInputBoxType.composeEmail
         || widget.type == UFUInputBoxType.inline
     ) {
@@ -540,24 +561,24 @@ class _UFUInputBoxState extends State<UFUInputBox> {
       return OutlineInputBorder(
         gapPadding: 0,
         borderRadius: (widget.type == UFUInputBoxType.searchbar)
-            ? BorderRadius.circular(25.0)
+            ? BorderRadius.circular(12.0)
             : BorderRadius.circular(14.0),
         borderSide: BorderSide(
           width: 0.8,
-          color: widget.borderColor ?? ((widget.type == UFUInputBoxType.searchbar)
-              ? AppTheme.themeColors.dimGray
-              : AppTheme.themeColors.primary),
+          color: widget.borderColor ??
+              ((widget.type == UFUInputBoxType.searchbar)
+                  ? AppTheme.themeColors.dimGray
+                  : AppTheme.themeColors.primary),
         ),
       );
     }
   }
 
   EdgeInsets getContentPadding() {
-
     if (widget.type == UFUInputBoxType.inline) {
       return const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 6
+          horizontal: 8,
+          vertical: 6
       );
     }
 
@@ -589,7 +610,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
       if (showClearButton) return 0;
       return 6;
     }
-    if(widget.type == UFUInputBoxType.composeEmail){
+    if (widget.type == UFUInputBoxType.composeEmail) {
       return 16;
     }
     return widget.padding?.horizontal ?? 15;
@@ -597,15 +618,15 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
   bool doShowLabel() {
     return (widget.type == UFUInputBoxType.withLabel ||
-            widget.type == UFUInputBoxType.withLabelOutside ||
-            widget.type == UFUInputBoxType.withLabelAndClearIcon) &&
+        widget.type == UFUInputBoxType.withLabelOutside ||
+        widget.type == UFUInputBoxType.withLabelAndClearIcon) &&
         widget.label != null;
   }
 
   Widget? getSuffixChild() {
     if (doShowClearIcon()) {
       return getClearButton();
-    } else if(widget.isExtWidget) {
+    } else if (widget.isExtWidget) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Container(
@@ -616,7 +637,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           ),
           constraints: const BoxConstraints(maxWidth: 80),
           child: TextFormField(
-            keyboardAppearance: MediaQuery.of(context).platformBrightness,
+            keyboardAppearance: MediaQuery
+                .of(context)
+                .platformBrightness,
             onChanged: (value) {
               widget.onChanged!(value);
             },
@@ -624,38 +647,39 @@ class _UFUInputBoxState extends State<UFUInputBox> {
             controller: extInputBoxController.controller,
             maxLength: 12,
             style: getStyle().copyWith(
-              color: widget.textColor ?? AppTheme.themeColors.text.withValues(alpha:widget.disabled ? 0.4 : 1),
+              color: widget.textColor ?? AppTheme.themeColors.text.withValues(
+                  alpha: widget.disabled ? 0.4 : 1),
               fontSize: TextHelper.getTextSize(UFUTextSize.heading5),
             ),
             decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 5,vertical: 2),
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 5, vertical: 2),
                 counterText: '',
                 focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent, width: 0),
+                  borderSide: BorderSide(color: Colors.transparent, width: 0),
                 ),
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent, width: 0),
+                  borderSide: BorderSide(color: Colors.transparent, width: 0),
                 ),
                 hintText: 'Ext',
                 hintStyle: getStyle().copyWith(
-                      color: AppTheme.themeColors.text.withValues(alpha:0.3) ,
-                      fontSize: 14.0,
-                      letterSpacing: 0,
-                      height: 0
-                    ),
+                    color: AppTheme.themeColors.text.withValues(alpha: 0.3),
+                    fontSize: 14.0,
+                    letterSpacing: 0,
+                    height: 0
+                ),
                 fillColor: UFUColor.lightGray
-              ),
+            ),
           ),
         ),
       );
-      } else  {
+    } else {
       return widget.suffixChild;
     }
   }
 
   Widget? getPrefixChild() {
-
-    if(widget.type == UFUInputBoxType.searchbar) {
+    if (widget.type == UFUInputBoxType.searchbar) {
       return Padding(
         padding: const EdgeInsets.only(
           left: 12,
@@ -671,16 +695,18 @@ class _UFUInputBoxState extends State<UFUInputBox> {
     } else if (showChips) {
       return Padding(
         padding: const EdgeInsets.only(
-          top: 12,
-          left: 12,
-          right: 42,
-          bottom: 12
+            top: 12,
+            left: 12,
+            right: 42,
+            bottom: 12
         ),
         child: Wrap(
           runSpacing: 8,
           spacing: 8,
-          children: List.generate(widget.chipsList!.length > 5 ? 6 : widget.chipsList!.length, (index) {
-            if(index < 5) {
+          children: List.generate(
+              widget.chipsList!.length > 5 ? 6 : widget.chipsList!.length, (
+              index) {
+            if (index < 5) {
               return widget.chip!(widget.chipsList![index]);
             } else {
               return widget.moreChipsWidget ?? const SizedBox();
@@ -695,9 +721,8 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
   double getBorderRadius() {
     switch (widget.type) {
-
       case UFUInputBoxType.searchbar:
-        return 50;
+        return 12;
 
       case UFUInputBoxType.inline:
         return 4;
@@ -709,12 +734,12 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
   bool doShowClearIcon() =>
       widget.type == UFUInputBoxType.searchbar ||
-      widget.type == UFUInputBoxType.searchbarWithoutBorder ||
-      widget.type == UFUInputBoxType.withLabelAndClearIcon;
+          widget.type == UFUInputBoxType.searchbarWithoutBorder ||
+          widget.type == UFUInputBoxType.withLabelAndClearIcon;
 
   String? validateField(String? value) {
     setState(() {
-      if(widget.validator != null) {
+      if (widget.validator != null) {
         errorText = widget.validator!(value) ?? '';
       }
     });
@@ -722,7 +747,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
   }
 
   double typeToHintFontSize() {
-    switch(widget.type) {
+    switch (widget.type) {
       case UFUInputBoxType.composeEmail:
         return 12.0;
 

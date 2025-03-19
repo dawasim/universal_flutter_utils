@@ -102,7 +102,7 @@ class UFUSingleSelectList extends StatelessWidget {
           height: 36,
           padding: const EdgeInsets.only(left: 20, right: 20),
           color: list[index].id == selectedItemId
-              ? AppTheme.themeColors.lightBlue
+              ? AppTheme.themeColors.draft
               : UFUColor.transparent,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

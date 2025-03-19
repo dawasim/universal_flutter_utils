@@ -67,7 +67,6 @@ class UFUSingleSelectHeader extends StatelessWidget {
               height: 4,
               width: 30,
               margin: const EdgeInsets.only(top: 8, bottom: 8),
-              color: AppTheme.themeColors.inverse,
           ),
           tablet: const SizedBox(height: 20,),
         ),
@@ -79,8 +78,8 @@ class UFUSingleSelectHeader extends StatelessWidget {
               Container(
                 alignment: Alignment.topLeft,
                 child: UFUText(
-                  text: title.toUpperCase(),
-                  fontWeight: UFUFontWeight.medium,
+                  text: title,
+                  fontWeight: UFUFontWeight.bold,
                   textSize: UFUTextSize.heading3
                 )
               ),

@@ -134,7 +134,7 @@ class UFUSingleSelectView extends StatelessWidget {
               borderRadius: getBorderRadius(),
               child: Material(
                 borderRadius: getBorderRadius(),
-                color: AppTheme.themeColors.base,
+                color: AppTheme.themeColors.themeBlue,
                 child: SafeArea(
                   top: false,
                   bottom: !isFilterSheet,
@@ -219,7 +219,7 @@ class UFUSingleSelectView extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(vertical: 15),
                                   child: UFUButton(
                                     text: suffixButtonText?.toUpperCase(),
-                                    colorType: UFUButtonColorType.tertiary,
+                                    colorType: UFUButtonColorType.primary,
                                     size: UFUButtonSize.small,
                                     onPressed: onTapSuffixBtn,
                                   ),
