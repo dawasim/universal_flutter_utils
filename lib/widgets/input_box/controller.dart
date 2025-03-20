@@ -13,7 +13,7 @@ class UFUInputBoxController {
     controller.text = data;
   }
 
-  String get text => controller.text;
+  String get text => controller.text.trim().toString();
 
   UFUInputBoxController({String? text, bool validateInRealTime = false}) {
     if(text != null)  this.text = text;
@@ -56,8 +56,15 @@ class UFUInputBoxController {
     focusNode.requestFocus();
   }
 
-  void validate() {
-    validator?.call(controller.text);
-  }
+  // void validate() {
+  //   validator?.call(controller.text);
+  // }
 
+  bool validate() {
+    if (validator != null) {
+      final result = validator!(controller.text);
+      return result == null || result.isEmpty; // Assuming the validator returns null or an empty string for valid cases
+    }
+    return true; // If no validator is set, consider it valid
+  }
 }

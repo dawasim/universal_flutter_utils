@@ -32,7 +32,7 @@ class ErrorInterceptor extends Interceptor {
       case DioExceptionType.receiveTimeout:
         title = 'Request Timed Out';
         message = 'It seems the server is taking too long to respond.';
-        showRetry = true;
+        showRetry = false;
         break;
       case DioExceptionType.badResponse:
       // Handle server errors (like 4xx and 5xx)
@@ -45,7 +45,8 @@ class ErrorInterceptor extends Interceptor {
             break;
           default:
             print(error.response?.data);
-            message = 'Server error: HTTP $statusCode';
+            message = error.response?.data?["message"] ?? 'Server error: HTTP $statusCode' ;
+            showRetry = false;
             break;
         }
         break;
@@ -54,18 +55,20 @@ class ErrorInterceptor extends Interceptor {
         break;
       default:
         message = error.message ?? message;
+        showRetry = false;
         break;
     }
 
+    print("EXCEPTION ------------------- $message");
     // Display error using Get.bottomSheet
     await ShowUFUConfirmationDialog(
       title: title,
       subTitle: message,
-      suffixBtnText: "Retry",
-      onTapSuffix: () {
+      suffixBtnText: showRetry ? "Retry" : null,
+      onTapSuffix: showRetry ? () {
         Get.back();
         retryCallback();
-      },
+      } : null,
       onTapPrefix: error.response?.statusCode == 401 ? () async {
         await UFUtils.preferences.clearPref();
         Get.back();

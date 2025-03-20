@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 ShowUFUConfirmationDialog({required String? title, String? subTitle,
-  String? prefixBtnText = 'Cancel', String? suffixBtnText = 'Confirm', VoidCallback? onTapPrefix,
+  String? prefixBtnText = 'Cancel', String? suffixBtnText = '', VoidCallback? onTapPrefix,
   VoidCallback? onTapSuffix, IconData? icon, double? iconSize,  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
   bool disableButtons = false, Widget? suffixBtnIcon, Widget? content,
   UFUButtonColorType? prefixBtnColorType, VoidCallback? onTapIcon,}) async {
@@ -40,7 +40,7 @@ class UFUConfirmationDialog extends StatefulWidget {
     required this.title,
     this.subTitle,
     this.prefixBtnText = 'Cancel',
-    this.suffixBtnText = 'Confirm',
+    this.suffixBtnText = '',
     this.onTapPrefix,
     this.onTapSuffix,
     this.icon,
@@ -221,10 +221,10 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                 },
           ),
         ),
-        const SizedBox(
+        if(widget.suffixBtnText != null && widget.suffixBtnText!.isNotEmpty) const SizedBox(
           width: 14,
         ),
-        Expanded(
+        if(widget.suffixBtnText != null && widget.suffixBtnText!.isNotEmpty) Expanded(
           flex: UFUResponsiveDesign.popOverButtonFlex,
           child: UFUButton(
             text: widget.suffixBtnIcon == null
