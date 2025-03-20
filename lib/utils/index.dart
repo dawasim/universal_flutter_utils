@@ -26,13 +26,14 @@ class UFUtils {
   static String appName = UFUAppConfig.appName;
   static String baseUrl = UFUAppConfig.baseUrl;
   static String socketBaseUrl = UFUAppConfig.socketBaseUrl;
+  static String encryptionIV = UFUAppConfig.encryptionIV;
 
   static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
 
   ///   Form Validations
-  static String? emailValidator(String? value, {bool isRequired = true}) => FormValidator.emailValidator(value, isRequired: isRequired);
-  static String? passwordValidator(String? value, {bool isRequired = true}) => FormValidator.passwordValidator(value, isRequired: isRequired);
-  static String? phoneValidator(String? value, {bool isRequired = true}) => FormValidator.phoneValidator(value, isRequired: isRequired);
+  static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) => FormValidator.emailValidator(value, isRequired: isRequired, field: field);
+  static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) => FormValidator.passwordValidator(value, isRequired: isRequired, field: field);
+  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number"}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field);
   static String? textValidator(String? value, {bool isRequired = true}) => FormValidator.textValidator(value, isRequired: isRequired);
 
   ///   Date-Time Formatting

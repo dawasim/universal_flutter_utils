@@ -1,8 +1,8 @@
 class FormValidator {
 
-  static String? emailValidator(String? value, {bool isRequired = true}) {
+  static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) {
     if (isRequired && (value == null || value.isEmpty)) {
-      return 'Email is required';
+      return '$field is required';
     }
     if (value != null && value.isNotEmpty) {
       final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
@@ -13,10 +13,10 @@ class FormValidator {
     return null;
   }
 
-  static String? passwordValidator(String? value, {bool isRequired = true}) {
+  static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) {
     // Check if the password is required and empty
     if (isRequired && (value == null || value.isEmpty)) {
-      return 'Password is required';
+      return '$field is required';
     }
 
     // If the password is not null or empty, apply the validation rules
@@ -52,10 +52,10 @@ class FormValidator {
     return null; // Return null if the password is valid
   }
 
-  static String? phoneValidator(String? value, {bool isRequired = true}) {
+  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone number"}) {
     value = value?.replaceAll(" ", "");
     if (isRequired && (value == null || value.isEmpty)) {
-      return 'Phone number is required';
+      return '$field is required';
     }
     if (value != null && value.isNotEmpty) {
       final phoneRegex = RegExp(r'^\d{10}$');

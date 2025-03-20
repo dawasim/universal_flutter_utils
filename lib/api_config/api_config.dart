@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
+
+import 'AESUtil.dart';
+import 'interceptors/error_interceptor.dart';
 import 'interceptors/request_interceptor.dart';
 import 'interceptors/response_interceptor.dart';
-import 'interceptors/error_interceptor.dart';
 
 class UFApiConfig {
   final Dio _dio = Dio();
@@ -23,9 +25,11 @@ class UFApiConfig {
   }
 
   // Unified GET request
-  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> get(String path,
+      {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response = await _dio.get(UFUtils.baseUrl + path, queryParameters: queryParameters);
+      final response = await _dio.get(UFUtils.baseUrl + path,
+          queryParameters: queryParameters);
       return response.data;
     } catch (e) {
       rethrow;
@@ -35,7 +39,30 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> post(String path, {Map<String, dynamic>? data}) async {
     try {
-      final response = await _dio.post(UFUtils.baseUrl + path, data: FormData.fromMap(data ?? {}));
+      final body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+      final response = await _dio.post(UFUtils.baseUrl + path, data: body);
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Unified POST request
+  Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {
+    try {
+      final response = await _dio.delete(UFUtils.baseUrl + path, queryParameters: data);
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  // Unified Put request
+  Future<dynamic> put(String path, {Map<String, dynamic>? data}) async {
+    try {
+      final body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+      final response = await _dio.put(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
       rethrow;
@@ -43,7 +70,12 @@ class UFApiConfig {
   }
 
   // Upload file method
-  Future<Map<String, dynamic>?> uploadFile({required String path, required File file, required String fileParam, Map<String, dynamic>? data,}) async {
+  Future<Map<String, dynamic>?> uploadFile({
+    required String path,
+    required File file,
+    required String fileParam,
+    Map<String, dynamic>? data,
+  }) async {
     try {
       String fileName = file.path.split('/').last;
 
@@ -56,7 +88,8 @@ class UFApiConfig {
       // String? token = await UFUtils.preferences.readAuthToken();
 
       // Send POST request with FormData
-      Response response = await _dio.post(path, data: formData,
+      Response response = await _dio.post(
+        path, data: formData,
         // options: Options(headers: {
         //   'Authorization': 'Bearer ${token ?? ""}',
         //   "Content-Type": "multipart/form-data",
@@ -69,7 +102,10 @@ class UFApiConfig {
     }
   }
 
-  Future<dynamic> downloadFile({required String url, Function(double progress)? onProgress,}) async {
+  Future<dynamic> downloadFile({
+    required String url,
+    Function(double progress)? onProgress,
+  }) async {
     try {
       // Determine the download directory based on the platform
       final Directory? downloadsDir;
@@ -90,7 +126,9 @@ class UFApiConfig {
       final String filePath = "${appDir.path}/$fileName";
 
       // Download file using Dio
-      await _dio.download(url, filePath,
+      await _dio.download(
+        url,
+        filePath,
         options: Options(
           headers: {
             "Content-Type": "*/*",
@@ -111,5 +149,4 @@ class UFApiConfig {
       rethrow;
     }
   }
-
 }

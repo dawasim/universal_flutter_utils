@@ -1,10 +1,14 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
+import '../AESUtil.dart';
+
 class RequestInterceptor extends Interceptor {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     // Check internet connection
     String? token = await UFUtils.preferences.readAuthToken();
     bool isConnected = await _checkInternetConnection();
@@ -18,9 +22,7 @@ class RequestInterceptor extends Interceptor {
       );
     }
 
-    // Add headers
-    options.headers['Authorization'] = 'Bearer ${token ?? ""}';
-    options.headers['Content-Type'] = 'multipart/form-data';
+    options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token);
     print('Request: ${options.method} ${options.path}');
     return handler.next(options);
   }
