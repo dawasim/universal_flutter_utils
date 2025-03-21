@@ -506,7 +506,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintText: widget.hintText,
           floatingLabelAlignment: FloatingLabelAlignment.start,
           hintStyle: getStyle().copyWith(
-              color: AppTheme.themeColors.secondary,
+              color: AppTheme.themeColors.secondaryText,
               fontSize: typeToHintFontSize(),
               letterSpacing: 0
           ),
