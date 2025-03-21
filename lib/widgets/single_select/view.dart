@@ -218,7 +218,7 @@ class UFUSingleSelectView extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 15),
                                   child: UFUButton(
-                                    text: suffixButtonText?.toUpperCase(),
+                                    text: suffixButtonText,
                                     colorType: UFUButtonColorType.primary,
                                     size: UFUButtonSize.small,
                                     onPressed: onTapSuffixBtn,
