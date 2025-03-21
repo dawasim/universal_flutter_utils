@@ -508,6 +508,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintStyle: getStyle().copyWith(
               color: AppTheme.themeColors.secondaryText,
               fontSize: typeToHintFontSize(),
+              fontWeight: FontWeight.normal,
               letterSpacing: 0
           ),
           errorStyle: const TextStyle(
