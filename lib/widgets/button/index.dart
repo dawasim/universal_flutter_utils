@@ -150,7 +150,7 @@ class UFUButton extends StatelessWidget {
         break;
 
       case UFUButtonColorType.lightBlue:
-        color = AppTheme.themeColors.lightBlue;
+        color = Color(0XFF0BA544);
         break;
 
       case UFUButtonColorType.secondary:

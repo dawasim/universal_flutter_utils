@@ -506,10 +506,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintText: widget.hintText,
           floatingLabelAlignment: FloatingLabelAlignment.start,
           hintStyle: getStyle().copyWith(
-              color: widget.type == UFUInputBoxType.composeEmail ?
-              AppTheme.themeColors.tertiary :
-              AppTheme.themeColors.text.withValues(alpha: 0.3),
+              color: AppTheme.themeColors.secondaryText,
               fontSize: typeToHintFontSize(),
+              fontWeight: FontWeight.normal,
               letterSpacing: 0
           ),
           errorStyle: const TextStyle(
