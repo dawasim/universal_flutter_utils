@@ -13,11 +13,6 @@ class RequestInterceptor extends Interceptor {
     String? token = await UFUtils.preferences.readAuthToken();
     bool isConnected = await _checkInternetConnection();
     if (!isConnected) {
-      // Check if this request should skip the interceptor
-      if (options.extra["skipInterceptor"] == true) {
-        return handler.next(options); // Skip interceptor
-      }
-
       return handler.reject(
         DioException(
           requestOptions: options,
@@ -27,10 +22,15 @@ class RequestInterceptor extends Interceptor {
       );
     }
 
-    print(">>>>>>>>>>>>>> $token");
-    options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token);
-    print('Request: ${options.method} ${options.path}');
-    return handler.next(options);
+    // Check if this request should skip the interceptor
+    if (options.extra["skipInterceptor"] == true) {
+      return handler.next(options); // Skip interceptor
+    } else {
+      print(">>>>>>>>>>>>>> $token");
+      options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token);
+      print('Request: ${options.method} ${options.path}');
+      return handler.next(options);
+    }
   }
 
   Future<bool> _checkInternetConnection() async {

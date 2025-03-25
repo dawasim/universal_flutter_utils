@@ -92,11 +92,11 @@ class UFApiConfig {
         data: formData,
         options: Options(
           headers: {
-            'Authorization': 'bearer ${token ?? ""}',
+            'authorization': 'bearer ${token ?? ""}',
             "Content-Type": "multipart/form-data",
             "x-portal": "user",
           },
-          extra: {"skipInterceptor": true}, // Mark request to skip interceptor
+          extra: {"skipInterceptor": true},
         ),
       );
 
