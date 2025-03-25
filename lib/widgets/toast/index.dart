@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
@@ -23,12 +22,6 @@ class UFUToast{
         margin: EdgeInsets.fromLTRB(15, 0, 15, MediaQuery.of(Get.context!).padding.bottom + 16),
         borderRadius: 8,
         snackStyle: SnackStyle.GROUNDED,
-        boxShadows: [
-          BoxShadow(
-            color: AppTheme.themeColors.dimGray,
-            spreadRadius: 2,
-          ),
-        ],
         borderColor: AppTheme.themeColors.primary,
         borderWidth: 3
     );

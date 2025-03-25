@@ -50,13 +50,13 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {
     try {
-      final response = await _dio.delete(UFUtils.baseUrl + path, queryParameters: data);
+      final response =
+          await _dio.delete(UFUtils.baseUrl + path, queryParameters: data);
       return response.data;
     } catch (e) {
       rethrow;
     }
   }
-
 
   // Unified Put request
   Future<dynamic> put(String path, {Map<String, dynamic>? data}) async {
@@ -85,15 +85,19 @@ class UFApiConfig {
         if (data != null) ...data, // Add any additional data if needed
       });
 
-      // String? token = await UFUtils.preferences.readAuthToken();
-
+      String? token = await UFUtils.preferences.readAuthToken();
       // Send POST request with FormData
       Response response = await _dio.post(
-        path, data: formData,
-        // options: Options(headers: {
-        //   'Authorization': 'Bearer ${token ?? ""}',
-        //   "Content-Type": "multipart/form-data",
-        // }),
+        path,
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'bearer ${token ?? ""}',
+            "Content-Type": "multipart/form-data",
+            "x-portal": "user",
+          },
+          extra: {"skipInterceptor": true}, // Mark request to skip interceptor
+        ),
       );
 
       return response.data;
