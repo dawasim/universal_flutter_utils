@@ -27,7 +27,8 @@ class UFUtils {
   static String baseUrl = UFUAppConfig.baseUrl;
   static String socketBaseUrl = UFUAppConfig.socketBaseUrl;
   static String encryptionIV = UFUAppConfig.encryptionIV;
-
+  static String xPortal = "";
+  
   static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
 
   ///   Form Validations

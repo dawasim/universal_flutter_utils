@@ -3,5 +3,4 @@ class UFUAppConfig {
   static String baseUrl = "https://google.com";
   static String socketBaseUrl = "https://google.com";
   static String encryptionIV = "p2sQ1xJlwVSLXfxS";
-
 }

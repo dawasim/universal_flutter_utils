@@ -11,16 +11,16 @@ class RequestInterceptor extends Interceptor {
       RequestInterceptorHandler handler) async {
     // Check internet connection
     String? token = await UFUtils.preferences.readAuthToken();
-    bool isConnected = await _checkInternetConnection();
-    if (!isConnected) {
-      return handler.reject(
-        DioException(
-          requestOptions: options,
-          error: 'No Internet connection',
-          type: DioExceptionType.connectionError,
-        ),
-      );
-    }
+    // bool isConnected = await _checkInternetConnection();
+    // if (!isConnected) {
+    //   return handler.reject(
+    //     DioException(
+    //       requestOptions: options,
+    //       error: 'No Internet connection',
+    //       type: DioExceptionType.connectionError,
+    //     ),
+    //   );
+    // }
 
     // Check if this request should skip the interceptor
     if (options.extra["skipInterceptor"] == true) {
