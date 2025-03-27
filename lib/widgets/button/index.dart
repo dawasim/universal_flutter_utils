@@ -385,6 +385,7 @@ class UFUButton extends StatelessWidget {
       type: MaterialType.button,
       color: getButtonColor(colorType),
       child: InkWell(
+        splashColor: Colors.transparent,
         onLongPress: onLongPress,
         highlightColor: getHighlightColor(colorType),
         customBorder: borderShape ?? shapeBorderType,

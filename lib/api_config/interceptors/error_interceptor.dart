@@ -61,6 +61,7 @@ class ErrorInterceptor extends Interceptor {
 
     print("EXCEPTION ------------------- $message");
     // Display error using Get.bottomSheet
+/*
     await ShowUFUConfirmationDialog(
       title: title,
       subTitle: message,
@@ -74,10 +75,10 @@ class ErrorInterceptor extends Interceptor {
         Get.back();
       } : null,
     );
+*/
 
-    if(UFUtils.isLoaderVisible()) {
-      Get.back();
-    }
+    if(UFUtils.isLoaderVisible()) {Get.back();}
+    UFUToast.showToast(message);
 
 
     // Get.bottomSheet(
