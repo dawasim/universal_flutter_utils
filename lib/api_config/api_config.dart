@@ -50,8 +50,9 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {
     try {
+      final body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
       final response =
-          await _dio.delete(UFUtils.baseUrl + path, queryParameters: data);
+          await _dio.delete(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
       rethrow;

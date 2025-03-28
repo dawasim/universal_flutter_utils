@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,9 +17,9 @@ class ErrorInterceptor extends Interceptor {
         final retryResponse = await _retryRequest(err.requestOptions);
         handler.resolve(retryResponse); // Return the successful retry response
       } catch (retryError) {
-        handler.next(retryError as DioException); // Pass the error if retry fails
+        handler.next(
+            retryError as DioException); // Pass the error if retry fails
       }
-
     });
   }
 
@@ -37,15 +39,28 @@ class ErrorInterceptor extends Interceptor {
       case DioExceptionType.badResponse:
       // Handle server errors (like 4xx and 5xx)
         final statusCode = error.response?.statusCode ?? 0;
+        debugPrint("${error.response?.data}");
         switch (statusCode) {
           case 401:
             title = 'Unauthrizer Access';
             message = 'You are not authorized to access';
             showRetry = false;
             break;
+/*          case 400:
+            final responseData = error.response?.data;
+            title = responseData.toString() ?? "Oops!!!";
+            try {
+              final decodedData = responseData != null ? jsonDecode(responseData) as Map<String, dynamic> : null;
+              message = decodedData != null ? getFirstErrorMessage(decodedData) ?? "Something Went Wrong!" : "Something Went Wrong!";
+            } catch (e) {
+              message = "Invalid error response format!";
+            }
+            showRetry = false;
+            break;*/
           default:
             print(error.response?.data);
-            message = error.response?.data?["message"] ?? 'Server error: HTTP $statusCode' ;
+            message = error.response?.data?["message"] ??
+                'Server error: HTTP $statusCode';
             showRetry = false;
             break;
         }
@@ -59,7 +74,7 @@ class ErrorInterceptor extends Interceptor {
         break;
     }
 
-    print("EXCEPTION ------------------- $message");
+
     // Display error using Get.bottomSheet
 /*
     await ShowUFUConfirmationDialog(
@@ -77,9 +92,11 @@ class ErrorInterceptor extends Interceptor {
     );
 */
 
-    if(UFUtils.isLoaderVisible()) {Get.back();}
+    if (UFUtils.isLoaderVisible()) {Get.back();}
     UFUToast.showToast(message);
-    throw Exception(message);
+    // retryCallback.call();
+    // throw Exception(message);
+    // retryCallback.call();
 
 
     // Get.bottomSheet(
@@ -105,6 +122,17 @@ class ErrorInterceptor extends Interceptor {
     //     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     //   ),
     // );
+  }
+
+  String? getFirstErrorMessage(Map<String, dynamic> response) {
+    if (response['status'] == 'error' &&
+        response['errors'] is List &&
+        (response['errors'] as List).isNotEmpty &&
+        (response['errors'][0] is Map<String, dynamic>) &&
+        response['errors'][0].containsKey('message')) {
+      return response['errors'][0]['message'] as String?;
+    }
+    return response['message'];
   }
 
   Future<dynamic> _retryRequest(RequestOptions requestOptions) async {
