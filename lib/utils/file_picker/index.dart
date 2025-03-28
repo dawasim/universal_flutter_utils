@@ -22,10 +22,10 @@ class UFFilePickerUtil {
 
   Future<String?> selectDocument() async {
 
-    if (!(await UFUtils.permissionUtils.getStoragePermission())) {
-      await permissionDeniedDialogue();
-      return null;
-    }
+    // if (!(await UFUtils.permissionUtils.getStoragePermission())) {
+    //   await permissionDeniedDialogue();
+    //   return null;
+    // }
 
     // Pick a file with allowed extensions
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -34,8 +34,8 @@ class UFFilePickerUtil {
         'pdf',
         'doc',
         'docx',
-        'xls',
-        'xlsx',
+        // 'xls',
+        // 'xlsx',
         'png',
         'jpg',
         'jpeg'

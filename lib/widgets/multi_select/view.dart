@@ -211,7 +211,7 @@ class UFUMultiSelectView extends StatelessWidget {
         ),
         decoration: BoxDecoration(
             borderRadius: getBorderRadius(),
-            color: AppTheme.themeColors.base),
+            color: AppTheme.themeColors.themeBlue),
         child: SafeArea(
           top: true,
           bottom: !isFilterSheet,

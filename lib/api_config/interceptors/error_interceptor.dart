@@ -79,6 +79,7 @@ class ErrorInterceptor extends Interceptor {
 
     if(UFUtils.isLoaderVisible()) {Get.back();}
     UFUToast.showToast(message);
+    throw Exception(message);
 
 
     // Get.bottomSheet(
