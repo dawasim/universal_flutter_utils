@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-class UFUToast{
+class UFUToast {
   static showToast(String message, {String? title}) {
+    if (Get.isSnackbarOpen) return;
     Get.snackbar(
         title ?? UFUtils.appName, message,
         backgroundColor: Colors.transparent,
@@ -19,7 +20,10 @@ class UFUToast{
           textSize: UFUTextSize.heading4,
           maxLine: 5,
         ),
-        margin: EdgeInsets.fromLTRB(15, 0, 15, MediaQuery.of(Get.context!).padding.bottom + 16),
+        margin: EdgeInsets.fromLTRB(15, 0, 15, MediaQuery
+            .of(Get.context!)
+            .padding
+            .bottom + 16),
         borderRadius: 8,
         snackStyle: SnackStyle.GROUNDED,
         borderColor: AppTheme.themeColors.primary,
