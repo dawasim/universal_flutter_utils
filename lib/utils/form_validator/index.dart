@@ -98,25 +98,28 @@ class FormValidator {
 
   static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone number"}) {
     value = value?.replaceAll(" ", "");
+
     if (isRequired && (value == null || value.isEmpty)) {
       return '$field is required';
     }
+
     if (value != null && value.isNotEmpty) {
-      final phoneRegex = RegExp(r'^\d{10}$');
+      final phoneRegex = RegExp(r'^\d{6,12}$'); // Allows numbers with a length between 6 and 12
       if (!phoneRegex.hasMatch(value)) {
-        return 'Enter a valid 10-digit phone number';
+        return 'Enter a valid phone number';
       }
     }
+
     return null;
   }
 
-  static String? textValidator(String? value, {bool isRequired = true}) {
+  static String? textValidator(String? value, {bool isRequired = true, int minCount = 3}) {
     if (isRequired && (value == null || value.isEmpty)) {
       return 'This field is required';
     }
     if (value != null && value.isNotEmpty) {
-      if (value.length < 3) {
-        return 'Must be at least 3 characters';
+      if (value.length < minCount) {
+        return 'Must be at least $minCount characters';
       }
     }
     return null;

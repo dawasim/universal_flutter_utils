@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,13 +15,14 @@ class ErrorInterceptor extends Interceptor {
         final retryResponse = await _retryRequest(err.requestOptions);
         handler.resolve(retryResponse); // Return the successful retry response
       } catch (retryError) {
-        handler.next(
-            retryError as DioException); // Pass the error if retry fails
+        handler
+            .next(retryError as DioException); // Pass the error if retry fails
       }
     });
   }
 
-  Future<void> _handleError(DioException error, VoidCallback retryCallback) async {
+  Future<void> _handleError(
+      DioException error, VoidCallback retryCallback) async {
     String title = 'An Error Occurred';
     String message = 'Something went wrong. Please try again.';
     bool showRetry = false;
@@ -37,7 +36,7 @@ class ErrorInterceptor extends Interceptor {
         showRetry = false;
         break;
       case DioExceptionType.badResponse:
-      // Handle server errors (like 4xx and 5xx)
+        // Handle server errors (like 4xx and 5xx)
         final statusCode = error.response?.statusCode ?? 0;
         debugPrint("${error.response?.data}");
         switch (statusCode) {
@@ -58,10 +57,15 @@ class ErrorInterceptor extends Interceptor {
             showRetry = false;
             break;*/
           default:
-            print(error.response?.data);
-            message = error.response?.data?["message"] ??
-                'Server error: HTTP $statusCode';
-            showRetry = false;
+            try {
+              print(error.response?.data);
+              message = error.response?.data?["message"] ??
+                  'Server error: HTTP $statusCode';
+              showRetry = false;
+            } catch (e) {
+              message = "Something went wrong!";
+            }
+
             break;
         }
         break;
@@ -73,7 +77,6 @@ class ErrorInterceptor extends Interceptor {
         showRetry = false;
         break;
     }
-
 
     // Display error using Get.bottomSheet
 /*
@@ -92,12 +95,36 @@ class ErrorInterceptor extends Interceptor {
     );
 */
 
-    if (UFUtils.isLoaderVisible()) {Get.back();}
-    UFUToast.showToast(message);
+    if (UFUtils.isLoaderVisible()) Get.back();
+    if (error.response?.statusCode == 401) {
+      Get.bottomSheet(
+        UFUConfirmationDialog(
+          title: title,
+          subTitle: "Your session has expired! Please login again",
+          type: UFUConfirmationDialogType.alert,
+          prefixBtnText: "Login",
+          prefixBtnColorType: UFUButtonColorType.primary,
+          onTapSuffix: () {
+            Get.back();
+            retryCallback();
+          },
+          onTapPrefix: () async {
+            await UFUtils.preferences.clearPref();
+            if (UFUtils.startDestination.isNotEmpty) {
+              Get.offAndToNamed(UFUtils.startDestination);
+            } else {
+              Get.back();
+            }
+          },
+        ),
+      );
+    } else {
+      UFUToast.showToast(message);
+    }
+
     // retryCallback.call();
     // throw Exception(message);
     // retryCallback.call();
-
 
     // Get.bottomSheet(
     //   UFUConfirmationDialog(

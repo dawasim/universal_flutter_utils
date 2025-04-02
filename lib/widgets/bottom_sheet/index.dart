@@ -86,6 +86,7 @@ Future<dynamic> ShowUFUBottomSheet({
       UFUPopUpBuilder(
         child: child,
       ),
+      
       isScrollControlled: isScrollControlled,
       ignoreSafeArea: ignoreSafeArea,
       isDismissible: isDismissible,

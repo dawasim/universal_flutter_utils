@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class UFUInputBoxController {
@@ -15,8 +14,12 @@ class UFUInputBoxController {
 
   String get text => controller.text.trim().toString();
 
+  clear() {
+    controller.clear();
+  }
+
   UFUInputBoxController({String? text, bool validateInRealTime = false}) {
-    if(text != null)  this.text = text;
+    if (text != null) this.text = text;
 
     if (validateInRealTime) {
       controller.addListener(() {
@@ -28,13 +31,13 @@ class UFUInputBoxController {
   }
 
   void setParentController(TextEditingController? controller) {
-    if(controller != null) {
+    if (controller != null) {
       this.controller = controller;
     }
   }
 
   void setParentFocusNode(FocusNode? focusNode) {
-    if(focusNode != null) {
+    if (focusNode != null) {
       this.focusNode = focusNode;
     }
   }
@@ -44,8 +47,7 @@ class UFUInputBoxController {
   }
 
   Future<void> scrollAndFocus() async {
-
-    if(key.currentContext == null) return;
+    if (key.currentContext == null) return;
 
     await Scrollable.ensureVisible(
       key.currentContext!,
@@ -63,7 +65,8 @@ class UFUInputBoxController {
   bool validate() {
     if (validator != null) {
       final result = validator!(controller.text);
-      return result == null || result.isEmpty; // Assuming the validator returns null or an empty string for valid cases
+      return result == null || result
+          .isEmpty; // Assuming the validator returns null or an empty string for valid cases
     }
     return true; // If no validator is set, consider it valid
   }

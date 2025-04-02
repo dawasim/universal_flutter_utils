@@ -39,8 +39,8 @@ class AESUtil {
       final key = Key.fromSecureRandom(32).bytes;
       final appKeyData = DateTime.now().toUtc().toString();
       final jsonMap = {DATE_KEY: appKeyData, ACCOUNT_TYPE: UFUtils.xPortal};
-      print("Headers ----------- ${jsonMap}");
       if (auth.isNotEmpty) jsonMap['authorization'] = "bearer $auth";
+      print("Headers ----------- ${jsonMap}");
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(jsonMap);
       final encrypted = encrypter.encrypt(randomString, iv: iv);

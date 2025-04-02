@@ -2,17 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:html/parser.dart';
-import 'package:url_launcher/url_launcher.dart' as ul;
+import 'package:path_provider/path_provider.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:universal_flutter_utils/utils/app_config/index.dart';
 import 'package:universal_flutter_utils/utils/file_picker/file_helper.dart';
+import 'package:url_launcher/url_launcher.dart' as ul;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../common/methods/index.dart';
@@ -28,30 +27,66 @@ class UFUtils {
   static String socketBaseUrl = UFUAppConfig.socketBaseUrl;
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
-  
-  static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
+  static String startDestination = "";
+
+  static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey =
+      GlobalKey<UFUConfirmationDialogState>();
 
   ///   Form Validations
-  static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) => FormValidator.emailValidator(value, isRequired: isRequired, field: field);
-  static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) => FormValidator.passwordValidator(value, isRequired: isRequired, field: field);
-  static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) => FormValidator.confirmPasswordValidator(value, isRequired: isRequired, password: password);
-  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number"}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field);
-  static String? textValidator(String? value, {bool isRequired = true}) => FormValidator.textValidator(value, isRequired: isRequired);
+  static String? emailValidator(String? value,
+          {bool isRequired = true, String field = "Email"}) =>
+      FormValidator.emailValidator(value, isRequired: isRequired, field: field);
+
+  static String? passwordValidator(String? value,
+          {bool isRequired = true, String field = "Password"}) =>
+      FormValidator.passwordValidator(value,
+          isRequired: isRequired, field: field);
+
+  static String? confirmPasswordValidator(String? value,
+          {bool isRequired = true, required String password}) =>
+      FormValidator.confirmPasswordValidator(value,
+          isRequired: isRequired, password: password);
+
+  static String? phoneValidator(String? value,
+          {bool isRequired = true, String field = "Phone Number"}) =>
+      FormValidator.phoneValidator(value, isRequired: isRequired, field: field);
+
+  static String? textValidator(String? value,
+          {bool isRequired = true, int minCount = 3}) =>
+      FormValidator.textValidator(value,
+          isRequired: isRequired, minCount: minCount);
 
   ///   Date-Time Formatting
-  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyy'}) => DateTimeUtils.formatDate(dateTime, format: format);
-  static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) => DateTimeUtils.formatTime(dateTime, format: format);
-  static String? formatCompleteDateTime(DateTime dateTime, {String format = 'dd/MM/yyy hh:mm a'}) => DateTimeUtils.formatCompleteDateTime(dateTime, format: format);
+  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyy'}) =>
+      DateTimeUtils.formatDate(dateTime, format: format);
+
+  static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) =>
+      DateTimeUtils.formatTime(dateTime, format: format);
+
+  static String? formatCompleteDateTime(DateTime dateTime,
+          {String format = 'dd/MM/yyy hh:mm a'}) =>
+      DateTimeUtils.formatCompleteDateTime(dateTime, format: format);
+
   static String? timeAgo(DateTime dateTime) => DateTimeUtils.timeAgo(dateTime);
+
   static String? dayWishes() => DateTimeUtils.dayWishes();
-  static DateTime? parseDate(String dateString, {String format = 'dd/MM/yyy'}) => DateTimeUtils.parseDate(dateString, format: format);
-  static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) => DateTimeUtils.parseTime(timeString, format: format);
-  static DateTime? parseCompleteDateTime(String completeDateTimeString, {String format = 'dd/MM/yyy hh:mm a'}) => DateTimeUtils.parseCompleteDateTime(completeDateTimeString, format: format);
-  static DateTime? timeOfDayToDateTime(TimeOfDay time){
+
+  static DateTime? parseDate(String dateString,
+          {String format = 'dd/MM/yyy'}) =>
+      DateTimeUtils.parseDate(dateString, format: format);
+
+  static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) =>
+      DateTimeUtils.parseTime(timeString, format: format);
+
+  static DateTime? parseCompleteDateTime(String completeDateTimeString,
+          {String format = 'dd/MM/yyy hh:mm a'}) =>
+      DateTimeUtils.parseCompleteDateTime(completeDateTimeString,
+          format: format);
+
+  static DateTime? timeOfDayToDateTime(TimeOfDay time) {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day, time.hour, time.minute);
   }
-
 
   ///   Permission Handling
   static UFPermissionUtils permissionUtils = UFPermissionUtils();
@@ -77,9 +112,9 @@ class UFUtils {
   static bool isLoaderVisible() => ufuLoaderKey.currentContext != null;
 
   //Add additional arguments to existing arguments
-  static void addArguments(Map<String,int> args){
-    if(Get.arguments != null){
-      (Get.arguments as Map<String,int>).addAll(args);
+  static void addArguments(Map<String, int> args) {
+    if (Get.arguments != null) {
+      (Get.arguments as Map<String, int>).addAll(args);
     }
   }
 
@@ -106,27 +141,27 @@ class UFUtils {
 
   // parseHtmlToText with HTML string as input and will return text from it
   static String parseHtmlToText(String html) {
-
     RegExp exp = RegExp(r"<.*?>", caseSensitive: false);
     final exp2 = RegExp(r"\n\s+");
     return html
         .replaceAll(exp, '')
         .replaceAll(exp2, '\n')
-        .replaceAll('/<p[^>]*><\\/p[^>]*>/','')
+        .replaceAll('/<p[^>]*><\\/p[^>]*>/', '')
         .replaceAll("<a.*?</a>", "")
-        .replaceAll('&lt;','')
+        .replaceAll('&lt;', '')
         .replaceAll('&nbsp;', ' ')
         .trim();
   }
 
-  static bool isTrue(dynamic value){
+  static bool isTrue(dynamic value) {
     if (value == "1" || value == 1 || value == "true" || value == true) {
       return true;
     }
     return false;
   }
 
-  static List<String> convertEmailListToStringList(List<dynamic>? models, {bool? isAlreadyString}) {
+  static List<String> convertEmailListToStringList(List<dynamic>? models,
+      {bool? isAlreadyString}) {
     List<String> emailList = [];
 
     if (isAlreadyString != null && isAlreadyString) {
@@ -149,7 +184,7 @@ class UFUtils {
     return emailList;
   }
 
-  static int isTrueReverse(bool? value){
+  static int isTrueReverse(bool? value) {
     if (value ?? false) return 1;
     return 0;
   }
@@ -158,7 +193,7 @@ class UFUtils {
     htmlString = '<div>$htmlString</div>';
     var document = parse(htmlString);
     String parsedString = parse(document.body!.text).documentElement!.text;
-    parsedString.replaceAll('/<p[^>]*><\\/p[^>]*>/','');
+    parsedString.replaceAll('/<p[^>]*><\\/p[^>]*>/', '');
     return parseHtmlToText(parsedString);
   }
 
@@ -184,7 +219,7 @@ class UFUtils {
         icon: Icons.warning_amber_outlined,
         suffixBtnText: 'dont_save'.tr.toUpperCase(),
         prefixBtnText: 'cancel'.tr.toUpperCase(),
-        onTapSuffix: () async{
+        onTapSuffix: () async {
           // if(unsavedResourceId != null) await UnsavedResourcesHelper.deleteUnsavedResource(id: unsavedResourceId);
           Get.back();
           await Future<void>.delayed(const Duration(milliseconds: 200));
@@ -194,7 +229,8 @@ class UFUtils {
     );
   }
 
-  static UFUThumbIconType getIconTypeAccordingToExtension(String filePath, { String? extensionName }) {
+  static UFUThumbIconType getIconTypeAccordingToExtension(String filePath,
+      {String? extensionName}) {
     String ext = extensionName ?? FileHelper.getFileExtension(filePath) ?? '';
 
     switch (ext) {
@@ -276,16 +312,23 @@ class UFUtils {
 
   static showKeyboard() => FocusManager.instance.primaryFocus?.requestFocus();
 
-  static launchUrl(String url, {bool isInExternalMode = true}) async => await ul.launchUrl(Uri.parse(url), mode: isInExternalMode ? LaunchMode.externalApplication : LaunchMode.platformDefault);
+  static launchUrl(String url, {bool isInExternalMode = true}) async =>
+      await ul.launchUrl(Uri.parse(url),
+          mode: isInExternalMode
+              ? LaunchMode.externalApplication
+              : LaunchMode.platformDefault);
 
-  static launchCall(String phoneNumber) async => await ul.launchUrl(Uri.parse("tel://$phoneNumber"));
+  static launchCall(String phoneNumber) async =>
+      await ul.launchUrl(Uri.parse("tel://$phoneNumber"));
 
-  static launchSms(String phoneNumber) async => await ul.launchUrl(Uri.parse("sms:$phoneNumber"));
+  static launchSms(String phoneNumber) async =>
+      await ul.launchUrl(Uri.parse("sms:$phoneNumber"));
 
-  static launchEmail(String email, {String subject = ''}) async => await launchUrl("mailto:$email?subject=$subject");
+  static launchEmail(String email, {String subject = ''}) async =>
+      await launchUrl("mailto:$email?subject=$subject");
 
   static void handleError(Object e) {
-    if(e is DioException && e.type == DioExceptionType.cancel) {
+    if (e is DioException && e.type == DioExceptionType.cancel) {
       debugPrint('API REQUEST CANCELLED');
       return;
     } else {
@@ -293,13 +336,16 @@ class UFUtils {
     }
   }
 
-  static Future<bool> openAppSetting() async => await Geolocator.openAppSettings();
+  static Future<bool> openAppSetting() async =>
+      await Geolocator.openAppSettings();
 
   static openLocationSetting() => Geolocator.openLocationSettings();
 
   static bool isValueNullOrEmpty(dynamic value) {
     bool canCheckEmptiness = (value is String || value is List);
-    return (value == null || (canCheckEmptiness && value.isEmpty) || value == 'null');
+    return (value == null ||
+        (canCheckEmptiness && value.isEmpty) ||
+        value == 'null');
   }
 
   static bool isInvalidValue(dynamic val, {bool shouldNotZero = false}) {
