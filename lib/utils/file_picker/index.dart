@@ -123,8 +123,8 @@ class UFFilePickerUtil {
             dialogBackgroundColor: Colors.grey, // Set the dialog background color to grey
             colorScheme: ColorScheme.light(
               primary: AppTheme.themeColors.primary, // Header background color
-              onPrimary: AppTheme.themeColors.tertiary, // Header text color
-              onSurface: AppTheme.themeColors.text, // Body text color
+              onPrimary: AppTheme.themeColors.themeBlue, // Header text color
+              onSurface: AppTheme.themeColors.themeBlue, // Body text color
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(

@@ -98,7 +98,7 @@ class UFUMultiSelectList extends StatelessWidget {
     return Visibility(
       visible: searchKeyWord.isEmpty || list[index].label.toLowerCase().contains(searchKeyWord.toLowerCase()),
       child: Material(
-        color: AppTheme.themeColors.base,
+        color: AppTheme.themeColors.themeBlue,
         child: InkWell(
           onTap: list[index].isDisabled ? null : () {
             onItemTap!(list[index].id);

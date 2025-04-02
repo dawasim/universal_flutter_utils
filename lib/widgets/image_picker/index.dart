@@ -4,15 +4,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUImagePicker {
-  static Future<String?> show() async {
+  static Future<String?> show({primary }) async {
     return await ShowUFUBottomSheet(
     child: (controller) => Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20)
           ),
-          color: AppTheme.themeColors.base),
+          color: AppTheme.themeColors.themeBlue),
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,

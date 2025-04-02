@@ -6,7 +6,7 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    _handleError(err, () async {
+    _handleError(err, handler, () async {
       // Retry logic: Pass the retry functionality as needed
       // handler.next(err); // Continue with the intercepted error
 
@@ -15,14 +15,12 @@ class ErrorInterceptor extends Interceptor {
         final retryResponse = await _retryRequest(err.requestOptions);
         handler.resolve(retryResponse); // Return the successful retry response
       } catch (retryError) {
-        handler
-            .next(retryError as DioException); // Pass the error if retry fails
+        handler.next(retryError as DioException); // Pass the error if retry fails
       }
     });
   }
 
-  Future<void> _handleError(
-      DioException error, VoidCallback retryCallback) async {
+  Future<void> _handleError(DioException error, ErrorInterceptorHandler handler, VoidCallback retryCallback) async {
     String title = 'An Error Occurred';
     String message = 'Something went wrong. Please try again.';
     bool showRetry = false;
@@ -59,8 +57,7 @@ class ErrorInterceptor extends Interceptor {
           default:
             try {
               print(error.response?.data);
-              message = error.response?.data?["message"] ??
-                  'Server error: HTTP $statusCode';
+              message = error.response?.data?["message"] ?? 'Server error: HTTP $statusCode';
               showRetry = false;
             } catch (e) {
               message = "Something went wrong!";
@@ -97,7 +94,7 @@ class ErrorInterceptor extends Interceptor {
 
     if (UFUtils.isLoaderVisible()) Get.back();
     if (error.response?.statusCode == 401) {
-      Get.bottomSheet(
+       await Get.bottomSheet(
         UFUConfirmationDialog(
           title: title,
           subTitle: "Your session has expired! Please login again",
@@ -118,13 +115,17 @@ class ErrorInterceptor extends Interceptor {
           },
         ),
       );
+       handler.reject(error);
     } else {
       UFUToast.showToast(message);
+      // Ensure the error is thrown so the calling function can catch it
+      handler.reject(error);
+      // Future.delayed(const Duration(milliseconds: 1000), () => handler.reject(error));
     }
 
-    // retryCallback.call();
-    // throw Exception(message);
-    // retryCallback.call();
+
+    // Ensure the error is thrown so the calling function can catch it
+    // handler.reject(error);
 
     // Get.bottomSheet(
     //   UFUConfirmationDialog(
