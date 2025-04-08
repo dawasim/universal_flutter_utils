@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,12 +17,14 @@ class ErrorInterceptor extends Interceptor {
         final retryResponse = await _retryRequest(err.requestOptions);
         handler.resolve(retryResponse); // Return the successful retry response
       } catch (retryError) {
-        handler.next(retryError as DioException); // Pass the error if retry fails
+        handler
+            .next(retryError as DioException); // Pass the error if retry fails
       }
     });
   }
 
-  Future<void> _handleError(DioException error, ErrorInterceptorHandler handler, VoidCallback retryCallback) async {
+  Future<void> _handleError(DioException error, ErrorInterceptorHandler handler,
+      VoidCallback retryCallback) async {
     String title = 'An Error Occurred';
     String message = 'Something went wrong. Please try again.';
     bool showRetry = false;
@@ -40,29 +44,31 @@ class ErrorInterceptor extends Interceptor {
         switch (statusCode) {
           case 401:
             title = 'Unauthrizer Access';
-            message = 'You are not authorized to access';
+            message = fetchError(error.response?.data, statusCode);
             showRetry = false;
             break;
-/*          case 400:
+          case 400:
             final responseData = error.response?.data;
             title = responseData.toString() ?? "Oops!!!";
             try {
-              final decodedData = responseData != null ? jsonDecode(responseData) as Map<String, dynamic> : null;
-              message = decodedData != null ? getFirstErrorMessage(decodedData) ?? "Something Went Wrong!" : "Something Went Wrong!";
+              final decodedData = responseData != null
+                  ? jsonDecode(responseData) as Map<String, dynamic>
+                  : null;
+              message = decodedData != null
+                  ? getFirstErrorMessage(
+                        decodedData,
+                        () => fetchError(error.response?.data, statusCode),
+                      ) ??
+                      "Something Went Wrong!"
+                  : "Something Went Wrong!";
             } catch (e) {
-              message = "Invalid error response format!";
+              message = fetchError(error.response?.data, statusCode);
             }
             showRetry = false;
-            break;*/
+            break;
           default:
-            try {
-              print(error.response?.data);
-              message = error.response?.data?["message"] ?? 'Server error: HTTP $statusCode';
-              showRetry = false;
-            } catch (e) {
-              message = "Something went wrong!";
-            }
-
+            print(error.response?.data);
+            message = fetchError(error.response?.data, statusCode);
             break;
         }
         break;
@@ -94,19 +100,30 @@ class ErrorInterceptor extends Interceptor {
 
     if (UFUtils.isLoaderVisible()) Get.back();
     if (error.response?.statusCode == 401) {
-       await Get.bottomSheet(
+      final String mTitle;
+      final String errorMessage;
+      final String btnText;
+      if (message.contains("blocked")) {
+        errorMessage = message;
+        btnText = "Ok";
+        mTitle = "Account Blocked";
+      } else {
+        errorMessage = "Your session has expired! Please login again";
+        btnText = "Login";
+        mTitle = title;
+      }
+      await Get.bottomSheet(
         UFUConfirmationDialog(
-          title: title,
-          subTitle: "Your session has expired! Please login again",
+          title: mTitle,
+          subTitle: errorMessage,
           type: UFUConfirmationDialogType.alert,
-          prefixBtnText: "Login",
+          prefixBtnText: btnText,
           prefixBtnColorType: UFUButtonColorType.primary,
           onTapSuffix: () {
             Get.back();
             retryCallback();
           },
           onTapPrefix: () async {
-            await UFUtils.preferences.clearPref();
             if (UFUtils.startDestination.isNotEmpty) {
               Get.offAndToNamed(UFUtils.startDestination);
             } else {
@@ -115,17 +132,16 @@ class ErrorInterceptor extends Interceptor {
           },
         ),
       );
-       handler.reject(error);
+      handler.reject(error);
     } else {
       UFUToast.showToast(message);
       // Ensure the error is thrown so the calling function can catch it
       // handler.reject(error);
-      Future.delayed(const Duration(milliseconds: 1000), ()  {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         Get.back();
         handler.reject(error);
       });
     }
-
 
     // Ensure the error is thrown so the calling function can catch it
     // handler.reject(error);
@@ -155,15 +171,30 @@ class ErrorInterceptor extends Interceptor {
     // );
   }
 
-  String? getFirstErrorMessage(Map<String, dynamic> response) {
-    if (response['status'] == 'error' &&
-        response['errors'] is List &&
-        (response['errors'] as List).isNotEmpty &&
-        (response['errors'][0] is Map<String, dynamic>) &&
-        response['errors'][0].containsKey('message')) {
-      return response['errors'][0]['message'] as String?;
+  String fetchError(data, statusCode) {
+    try {
+      return data?["message"] ?? 'Server error: HTTP $statusCode';
+    } catch (e) {
+      return "Something went wrong!";
     }
-    return response['message'];
+  }
+
+  String? getFirstErrorMessage(
+    Map<String, dynamic> response,
+    Function() callback,
+  ) {
+    try {
+      if (response['status'] == 'error' &&
+          response['errors'] is List &&
+          (response['errors'] as List).isNotEmpty &&
+          (response['errors'][0] is Map<String, dynamic>) &&
+          response['errors'][0].containsKey('message')) {
+        return response['errors'][0]['message'] as String?;
+      }
+      return response['message'];
+    } catch (e) {
+      callback.call();
+    }
   }
 
   Future<dynamic> _retryRequest(RequestOptions requestOptions) async {
