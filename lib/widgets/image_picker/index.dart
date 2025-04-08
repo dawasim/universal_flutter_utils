@@ -24,7 +24,7 @@ class UFUImagePicker {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const UFUText(
-                    text: "Select from",
+                    text: "Upload Photo",
                     textSize: UFUTextSize.heading3,
                     fontWeight: UFUFontWeight.medium,
                     fontFamily: UFUFontFamily.productSans,

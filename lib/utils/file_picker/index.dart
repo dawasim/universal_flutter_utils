@@ -20,7 +20,7 @@ import 'audio_file_handeling/index.dart';
 
 class UFFilePickerUtil {
 
-  Future<String?> selectDocument() async {
+  Future<String?> selectDocument({List<String>? allowedExtensions}) async {
 
     // if (!(await UFUtils.permissionUtils.getStoragePermission())) {
     //   await permissionDeniedDialogue();
@@ -30,7 +30,7 @@ class UFFilePickerUtil {
     // Pick a file with allowed extensions
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
+      allowedExtensions: allowedExtensions ?? [
         'pdf',
         'doc',
         'docx',

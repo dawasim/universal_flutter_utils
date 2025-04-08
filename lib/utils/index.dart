@@ -336,8 +336,7 @@ class UFUtils {
     }
   }
 
-  static Future<bool> openAppSetting() async =>
-      await Geolocator.openAppSettings();
+  static Future<bool> openAppSetting() async => await Geolocator.openAppSettings();
 
   static openLocationSetting() => Geolocator.openLocationSettings();
 
