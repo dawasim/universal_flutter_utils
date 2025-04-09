@@ -108,6 +108,7 @@ class ErrorInterceptor extends Interceptor {
 
     if (UFUtils.isLoaderVisible()) Get.back();
     if (error.response?.statusCode == 401) {
+      await UFUtils.preferences.clearPref();
       final String mTitle;
       final String errorMessage;
       final String btnText;
