@@ -34,7 +34,7 @@ class UFUSocialLogin {
             .signIn()
             .catchError((onError) => onError.printError());
       } catch (e) {
-        e.printError();
+        rethrow;
       }
 
       if (googleSignInAccount != null) {
@@ -50,7 +50,7 @@ class UFUSocialLogin {
       }
     } catch (e) {
       e.printError();
-      return null;
+      rethrow;
     }
     return null;
   }
@@ -75,7 +75,8 @@ class UFUSocialLogin {
         nonce: GetPlatform.isIOS ? nonce : null,
       ).catchError((error) {
         error.toString().printError();
-        displayError(error.toString());
+        // displayError(error.toString());
+        if(UFUtils.isLoaderVisible()) Get.back();
       });
 
       // Create an `OAuthCredential` from the credential returned by Apple.
@@ -98,7 +99,7 @@ class UFUSocialLogin {
 
     } catch (e) {
       // showSnackBar(e.toString());
-      return null;
+      rethrow;
     }
   }
 
