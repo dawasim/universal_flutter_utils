@@ -182,7 +182,9 @@ class ErrorInterceptor extends Interceptor {
 
   String fetchError(data, statusCode) {
     try {
-      return data?["message"] ?? 'Server error: HTTP $statusCode';
+      return (data.response?.data?["errors"] as List).firstOrNull?["message"]
+          ?? data?["message"]
+          ?? 'Server error: HTTP $statusCode';
     } catch (e) {
       return "Something went wrong!";
     }

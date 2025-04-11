@@ -83,10 +83,18 @@ class UFUSocialLogin {
       final oauthCredential = OAuthProvider("apple.com").credential(
         idToken: appleCredential.identityToken,
         rawNonce: rawNonce,
+        accessToken: appleCredential.authorizationCode,
       );
 
-      final displayName =
-          '${appleCredential.givenName} ${appleCredential.familyName}';
+      String displayName = "";
+
+      if(appleCredential.givenName?.isNotEmpty ?? false) {
+        displayName = appleCredential.givenName ?? "";
+      }
+
+      if(appleCredential.familyName?.isNotEmpty ?? false) {
+        displayName = displayName.isNotEmpty ? " ${appleCredential.familyName}" : appleCredential.familyName ?? "";
+      }
 
       // Sign in the user with Firebase. If the nonce we generated earlier does
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
@@ -99,6 +107,9 @@ class UFUSocialLogin {
 
     } catch (e) {
       // showSnackBar(e.toString());
+      // try {
+      //   UserCredential await FirebaseAuth.instance.signInWithPopup(AppleAuthProvider());
+      // }
       rethrow;
     }
   }
