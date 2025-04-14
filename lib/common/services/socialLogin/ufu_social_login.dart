@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:math' show Random;
-import 'package:crypto/crypto.dart';
 
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -14,10 +14,11 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'ufu_social_login_platform_interface.dart';
 
 class UFUSocialLogin {
-  Future<void>iniFirebase()async{
+  Future<void> iniFirebase() async {
     await Firebase.initializeApp();
   }
-   Future<String?> getPlatformVersion() {
+
+  Future<String?> getPlatformVersion() {
     return UFUSocialLoginPlatform.instance.getPlatformVersion();
   }
 
@@ -32,14 +33,18 @@ class UFUSocialLogin {
       try {
         googleSignInAccount = await googleSignIn
             .signIn()
-            .catchError((onError) => onError.printError());
+            .catchError((onError) {
+          if (UFUtils.isLoaderVisible()) Get.back();
+          onError.printError();
+        });
       } catch (e) {
         rethrow;
       }
 
       if (googleSignInAccount != null) {
         // Obtain the auth details from the request
-        final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+        final GoogleSignInAuthentication googleAuth = await googleSignInAccount
+            .authentication;
         // Create a new credential
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
@@ -56,7 +61,7 @@ class UFUSocialLogin {
   }
 
 
-  Future<Map<String,dynamic>?> signInWithApple(String clientId) async {
+  Future<Map<String, dynamic>?> signInWithApple(String clientId) async {
     try {
       final rawNonce = generateNonce();
       final nonce = sha256ofString(rawNonce);
@@ -71,12 +76,13 @@ class UFUSocialLogin {
             ? null
             : WebAuthenticationOptions(
             clientId: clientId,
-            redirectUri: Uri.parse('https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple')),
+            redirectUri: Uri.parse(
+                'https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple')),
         nonce: GetPlatform.isIOS ? nonce : null,
       ).catchError((error) {
         error.toString().printError();
         // displayError(error.toString());
-        if(UFUtils.isLoaderVisible()) Get.back();
+        if (UFUtils.isLoaderVisible()) Get.back();
       });
 
       // Create an `OAuthCredential` from the credential returned by Apple.
@@ -88,23 +94,25 @@ class UFUSocialLogin {
 
       String displayName = "";
 
-      if(appleCredential.givenName?.isNotEmpty ?? false) {
+      if (appleCredential.givenName?.isNotEmpty ?? false) {
         displayName = appleCredential.givenName ?? "";
       }
 
-      if(appleCredential.familyName?.isNotEmpty ?? false) {
-        displayName = displayName.isNotEmpty ? " ${appleCredential.familyName}" : appleCredential.familyName ?? "";
+      if (appleCredential.familyName?.isNotEmpty ?? false) {
+        displayName = displayName.isNotEmpty
+            ? " ${appleCredential.familyName}"
+            : appleCredential.familyName ?? "";
       }
 
       // Sign in the user with Firebase. If the nonce we generated earlier does
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-      final mUser = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      final mUser = await FirebaseAuth.instance.signInWithCredential(
+          oauthCredential);
 
       return {
-        "displayName":displayName,
-        "user":mUser
+        "displayName": displayName,
+        "user": mUser
       };
-
     } catch (e) {
       // showSnackBar(e.toString());
       // try {
@@ -128,7 +136,7 @@ class UFUSocialLogin {
     return digest.toString();
   }
 
-  Future<Map<String,dynamic>?> signInWithFacebook(int socialType) async {
+  Future<Map<String, dynamic>?> signInWithFacebook(int socialType) async {
     try {
       // Create an instance of FacebookLogin
       final fb = FacebookLogin();
@@ -173,6 +181,7 @@ class UFUSocialLogin {
   }
 
 }
+
 void displayError(dynamic error) {
   log("Error: $error");
   UFUToast.showToast("An error occurred: ${error.toString()}");

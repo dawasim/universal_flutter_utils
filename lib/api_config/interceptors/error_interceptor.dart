@@ -25,6 +25,7 @@ class ErrorInterceptor extends Interceptor {
 
   Future<void> _handleError(DioException error, ErrorInterceptorHandler handler,
       VoidCallback retryCallback) async {
+    print("$error");
     String title = 'An Error Occurred';
     String message = 'Something went wrong. Please try again.';
     bool showRetry = false;
@@ -180,15 +181,19 @@ class ErrorInterceptor extends Interceptor {
     // );
   }
 
-  String fetchError(data, statusCode) {
+  String fetchError(dynamic data, int statusCode) {
     try {
-      return (data?["errors"] as List).firstOrNull?["message"]
-          ?? data?["message"]
-          ?? 'Server error: HTTP $statusCode';
-    } catch (e) {
+      final errors = data?["errors"];
+      final message = (errors is List && errors.isNotEmpty && errors.first is Map)
+          ? errors.first["message"]
+          : data?["message"];
+
+      return message is String ? message : 'Server error: HTTP $statusCode';
+    } catch (_) {
       return "Something went wrong!";
     }
   }
+
 
   String? getFirstErrorMessage(
     Map<String, dynamic> response,
