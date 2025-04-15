@@ -148,37 +148,10 @@ class ErrorInterceptor extends Interceptor {
       // Ensure the error is thrown so the calling function can catch it
       // handler.reject(error);
       Future.delayed(const Duration(milliseconds: 1000), () {
-        Get.back();
+        if(Get.isSnackbarOpen) Get.back();
         handler.reject(error);
       });
     }
-
-    // Ensure the error is thrown so the calling function can catch it
-    // handler.reject(error);
-
-    // Get.bottomSheet(
-    //   UFUConfirmationDialog(
-    //     title: title,
-    //     subTitle: message,
-    //     type: showRetry ? UFUConfirmationDialogType.message : UFUConfirmationDialogType.alert,
-    //     suffixBtnText: "Retry",
-    //     onTapSuffix: () {
-    //       Get.back();
-    //       retryCallback();
-    //     },
-    //     onTapPrefix: error.response?.statusCode == 401 ? () async {
-    //       await UFUtils.preferences.clearPref();
-    //       Get.back();
-    //     } : null,
-    //
-    //   ),
-    //   // _buildErrorBottomSheet(title, message, showRetry, retryCallback),
-    //   backgroundColor: AppTheme.themeColors.base,
-    //   isScrollControlled: true,
-    //   shape: const RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-    //   ),
-    // );
   }
 
   String fetchError(dynamic data, int statusCode) {
