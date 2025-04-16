@@ -128,12 +128,7 @@ class ErrorInterceptor extends Interceptor {
       handler.reject(error);
     } else {
       UFUToast.showToast(message);
-      // Ensure the error is thrown so the calling function can catch it
-      // handler.reject(error);
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        if(Get.isSnackbarOpen) Get.closeAllSnackbars();
-        handler.reject(error);
-      });
+      handler.reject(error);
     }
   }
 
