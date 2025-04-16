@@ -35,7 +35,7 @@ class UFUSocialLogin {
             .signIn()
             .catchError((onError) {
           onError.printError();
-          rethrow;
+          throw Exception(onError.toString());
         });
       } catch (e) {
         rethrow;
@@ -81,7 +81,7 @@ class UFUSocialLogin {
         nonce: GetPlatform.isIOS ? nonce : null,
       ).catchError((error) {
         error.toString().printError();
-        rethrow;
+        throw Exception(error.toString());
       });
 
       // Create an `OAuthCredential` from the credential returned by Apple.

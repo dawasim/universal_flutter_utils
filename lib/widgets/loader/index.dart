@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-ShowUFULoader({String? msg}) {
-  if(UFUtils.isLoaderVisible()) return;
+Future<void> ShowUFULoader({String? msg}) async {
+  if (Get.isSnackbarOpen) Get.closeAllSnackbars();
+  if (UFUtils.isLoaderVisible()) return;
 
   Get.generalDialog(
     barrierDismissible: false,
@@ -26,12 +26,9 @@ ShowUFULoader({String? msg}) {
 /// parameters: show[optional]
 /// show:- it is a bool variable which can be used to show or hide loader
 ///        default value is [false]
-Widget? showUFUConfirmationLoader({bool? show = false, double size = 20}){
-  return show!
-      ? SpinKitThreeBounce(color: UFUColor.white, size: size)
-      : null;
+Widget? showUFUConfirmationLoader({bool? show = false, double size = 20}) {
+  return show! ? SpinKitThreeBounce(color: UFUColor.white, size: size) : null;
 }
-
 
 class UFULoader extends StatelessWidget {
   const UFULoader({
@@ -54,7 +51,7 @@ class UFULoader extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          if(text != null)
+          if (text != null)
             UFUText(
               text: text!,
               textSize: UFUTextSize.heading5,

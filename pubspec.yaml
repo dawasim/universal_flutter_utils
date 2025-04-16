@@ -50,6 +50,8 @@ dependencies:
   flutter_login_facebook: ^2.0.1
   plugin_platform_interface: ^2.0.2
 
+  fluttertoast: ^8.2.12
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

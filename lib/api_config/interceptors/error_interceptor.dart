@@ -90,23 +90,6 @@ class ErrorInterceptor extends Interceptor {
         break;
     }
 
-    // Display error using Get.bottomSheet
-/*
-    await ShowUFUConfirmationDialog(
-      title: title,
-      subTitle: message,
-      suffixBtnText: showRetry ? "Retry" : null,
-      onTapSuffix: showRetry ? () {
-        Get.back();
-        retryCallback();
-      } : null,
-      onTapPrefix: error.response?.statusCode == 401 ? () async {
-        await UFUtils.preferences.clearPref();
-        Get.back();
-      } : null,
-    );
-*/
-
     if (UFUtils.isLoaderVisible()) Get.back();
     if (error.response?.statusCode == 401) {
       await UFUtils.preferences.clearPref();
@@ -148,7 +131,7 @@ class ErrorInterceptor extends Interceptor {
       // Ensure the error is thrown so the calling function can catch it
       // handler.reject(error);
       Future.delayed(const Duration(milliseconds: 1000), () {
-        if(Get.isSnackbarOpen) Get.back();
+        if(Get.isSnackbarOpen) Get.closeAllSnackbars();
         handler.reject(error);
       });
     }
