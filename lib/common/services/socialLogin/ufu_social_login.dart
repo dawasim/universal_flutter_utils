@@ -34,8 +34,8 @@ class UFUSocialLogin {
         googleSignInAccount = await googleSignIn
             .signIn()
             .catchError((onError) {
-          if (UFUtils.isLoaderVisible()) Get.back();
           onError.printError();
+          rethrow;
         });
       } catch (e) {
         rethrow;
@@ -81,8 +81,7 @@ class UFUSocialLogin {
         nonce: GetPlatform.isIOS ? nonce : null,
       ).catchError((error) {
         error.toString().printError();
-        // displayError(error.toString());
-        if (UFUtils.isLoaderVisible()) Get.back();
+        rethrow;
       });
 
       // Create an `OAuthCredential` from the credential returned by Apple.
@@ -170,9 +169,11 @@ class UFUSocialLogin {
           return mData;
         case FacebookLoginStatus.cancel:
         // User cancel log in
+          throw Exception("Login has been cancelled");
           return null;
         case FacebookLoginStatus.error:
         // Log in failed
+          throw Exception("${FacebookLoginStatus.error}");
           return null;
       }
     } catch (e) {
