@@ -54,6 +54,7 @@ class UFUSocialLogin {
         return await FirebaseAuth.instance.signInWithCredential(credential);
       }
     } catch (e) {
+      if (UFUtils.isLoaderVisible()) Get.back();
       e.printError();
       rethrow;
     }
@@ -113,6 +114,7 @@ class UFUSocialLogin {
         "user": mUser
       };
     } catch (e) {
+      if (UFUtils.isLoaderVisible()) Get.back();
       // showSnackBar(e.toString());
       // try {
       //   UserCredential await FirebaseAuth.instance.signInWithPopup(AppleAuthProvider());
