@@ -10,6 +10,7 @@ class UFUScaffold extends StatelessWidget {
     this.floatingActionButtonLocation,
     this.floatingActionButton,
     this.bottomNavigationBar,
+    this.bottomSheet,
   });
 
   final PreferredSizeWidget? appBar;
@@ -18,6 +19,7 @@ class UFUScaffold extends StatelessWidget {
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
+  final Widget? bottomSheet;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class UFUScaffold extends StatelessWidget {
           floatingActionButtonLocation: floatingActionButtonLocation,
           floatingActionButton: floatingActionButton,
           bottomNavigationBar: bottomNavigationBar,
+          bottomSheet: bottomSheet,
         ),
       ),
     );
