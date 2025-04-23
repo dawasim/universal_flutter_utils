@@ -13,6 +13,7 @@ dependencies:
 
   flutter_svg: ^2.0.17
   pinput: ^5.0.1
+  fluttertoast: ^8.2.12
 
   shimmer_animation: ^2.2.2
   scroll_to_index: ^3.0.1
@@ -49,8 +50,7 @@ dependencies:
   sign_in_with_apple: ^7.0.1
   flutter_login_facebook: ^2.0.1
   plugin_platform_interface: ^2.0.2
-
-  fluttertoast: ^8.2.12
+  firebase_crashlytics: ^4.3.5
 
 dev_dependencies:
   flutter_test:

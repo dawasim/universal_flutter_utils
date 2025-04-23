@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,6 +24,7 @@ import 'shared_preferences/index.dart';
 
 class UFUtils {
   static String appName = UFUAppConfig.appName;
+  static String appVersion = UFUAppConfig.appVersion;
   static String baseUrl = UFUAppConfig.baseUrl;
   static String socketBaseUrl = UFUAppConfig.socketBaseUrl;
   static String encryptionIV = UFUAppConfig.encryptionIV;
@@ -57,7 +59,7 @@ class UFUtils {
           isRequired: isRequired, minCount: minCount);
 
   ///   Date-Time Formatting
-  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyy'}) =>
+  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyyy'}) =>
       DateTimeUtils.formatDate(dateTime, format: format);
 
   static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) =>
@@ -327,12 +329,33 @@ class UFUtils {
   static launchEmail(String email, {String subject = ''}) async =>
       await launchUrl("mailto:$email?subject=$subject");
 
-  static void handleError(Object e) {
-    if (e is DioException && e.type == DioExceptionType.cancel) {
-      debugPrint('API REQUEST CANCELLED');
+  static Future<void> handleError(Object e) async {
+
+    if (e is DioException) {
+      debugPrint('🔴 🔴 🔴 🔴 DioException caught! 🔴 🔴 🔴 🔴 ');
+      debugPrint('Request Path: ${e.requestOptions.path}');
+      debugPrint('Type: ${e.type}');
+      debugPrint('Status Code: ${e.response?.statusCode}');
+      debugPrint('Data: ${e.response?.data}');
+      debugPrint('Message: ${e.message}');
+      debugPrint('🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 ');
       return;
     } else {
-      throw e;
+      String? user = await UFUtils.preferences.readObject(UFUtils.preferences.userData);
+      Map<String, dynamic>? userJson = user != null ? jsonDecode(user) : null;
+
+      List<String> information = [];
+      information.add("user_id: ${userJson?['_id']?.toString()}");
+      information.add("screen: ${Get.currentRoute}");
+      information.add("app_version: ${UFUtils.appVersion}");
+
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        StackTrace.current,
+        fatal: false,
+        information: information
+      );
+      return;
     }
   }
 
