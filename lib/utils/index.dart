@@ -31,59 +31,36 @@ class UFUtils {
   static String xPortal = "";
   static String startDestination = "";
 
-  static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey =
-      GlobalKey<UFUConfirmationDialogState>();
+  static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
+  static GlobalKey<UFUConfirmationDialogState> ufuTokenExpireKey = GlobalKey<UFUConfirmationDialogState>();
 
   ///   Form Validations
-  static String? emailValidator(String? value,
-          {bool isRequired = true, String field = "Email"}) =>
-      FormValidator.emailValidator(value, isRequired: isRequired, field: field);
+  static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) => FormValidator.emailValidator(value, isRequired: isRequired, field: field);
 
-  static String? passwordValidator(String? value,
-          {bool isRequired = true, String field = "Password"}) =>
-      FormValidator.passwordValidator(value,
-          isRequired: isRequired, field: field);
+  static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) => FormValidator.passwordValidator(value, isRequired: isRequired, field: field);
 
-  static String? confirmPasswordValidator(String? value,
-          {bool isRequired = true, required String password}) =>
-      FormValidator.confirmPasswordValidator(value,
-          isRequired: isRequired, password: password);
+  static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) => FormValidator.confirmPasswordValidator(value, isRequired: isRequired, password: password);
 
-  static String? phoneValidator(String? value,
-          {bool isRequired = true, String field = "Phone Number"}) =>
-      FormValidator.phoneValidator(value, isRequired: isRequired, field: field);
+  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number"}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field);
 
-  static String? textValidator(String? value,
-          {bool isRequired = true, int minCount = 3}) =>
-      FormValidator.textValidator(value,
-          isRequired: isRequired, minCount: minCount);
+  static String? textValidator(String? value, {bool isRequired = true, int minCount = 3}) => FormValidator.textValidator(value, isRequired: isRequired, minCount: minCount);
 
   ///   Date-Time Formatting
-  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyyy'}) =>
-      DateTimeUtils.formatDate(dateTime, format: format);
+  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyyy'}) => DateTimeUtils.formatDate(dateTime, format: format);
 
-  static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) =>
-      DateTimeUtils.formatTime(dateTime, format: format);
+  static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) => DateTimeUtils.formatTime(dateTime, format: format);
 
-  static String? formatCompleteDateTime(DateTime dateTime,
-          {String format = 'dd/MM/yyy hh:mm a'}) =>
-      DateTimeUtils.formatCompleteDateTime(dateTime, format: format);
+  static String? formatCompleteDateTime(DateTime dateTime, {String format = 'dd/MM/yyy hh:mm a'}) => DateTimeUtils.formatCompleteDateTime(dateTime, format: format);
 
   static String? timeAgo(DateTime dateTime) => DateTimeUtils.timeAgo(dateTime);
 
   static String? dayWishes() => DateTimeUtils.dayWishes();
 
-  static DateTime? parseDate(String dateString,
-          {String format = 'dd/MM/yyy'}) =>
-      DateTimeUtils.parseDate(dateString, format: format);
+  static DateTime? parseDate(String dateString, {String format = 'dd/MM/yyy'}) => DateTimeUtils.parseDate(dateString, format: format);
 
-  static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) =>
-      DateTimeUtils.parseTime(timeString, format: format);
+  static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) => DateTimeUtils.parseTime(timeString, format: format);
 
-  static DateTime? parseCompleteDateTime(String completeDateTimeString,
-          {String format = 'dd/MM/yyy hh:mm a'}) =>
-      DateTimeUtils.parseCompleteDateTime(completeDateTimeString,
-          format: format);
+  static DateTime? parseCompleteDateTime(String completeDateTimeString, {String format = 'dd/MM/yyy hh:mm a'}) => DateTimeUtils.parseCompleteDateTime(completeDateTimeString, format: format);
 
   static DateTime? timeOfDayToDateTime(TimeOfDay time) {
     final now = DateTime.now();
@@ -112,6 +89,7 @@ class UFUtils {
   static UFUCommonMethods commonMethods = UFUCommonMethods();
 
   static bool isLoaderVisible() => ufuLoaderKey.currentContext != null;
+  static bool isTokenExpiredVisible() => ufuTokenExpireKey.currentContext != null;
 
   //Add additional arguments to existing arguments
   static void addArguments(Map<String, int> args) {
@@ -328,6 +306,25 @@ class UFUtils {
 
   static launchEmail(String email, {String subject = ''}) async =>
       await launchUrl("mailto:$email?subject=$subject");
+
+  // static launchEmail(String email, {String subject = ''}) async {
+  //   final Uri emailUri = Uri(
+  //     scheme: 'mailto',
+  //     path: 'support@example.com',
+  //     queryParameters: {
+  //       'subject': 'App Feedback',
+  //       'body': 'Hello, I have a question about...',
+  //       'cc': 'cc@example.com',
+  //       'bcc': 'hidden@example.com',
+  //     },
+  //   );
+  //
+  //   if (await canLaunchUrl(emailUri)) {
+  //     await launchUrl(emailUri);
+  //   } else {
+  //     throw 'Could not launch $emailUri';
+  //   }
+  // }
 
   static Future<void> handleError(Object e) async {
 

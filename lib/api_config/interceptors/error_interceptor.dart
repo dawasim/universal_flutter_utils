@@ -105,8 +105,10 @@ class ErrorInterceptor extends Interceptor {
         btnText = "Login";
         mTitle = title;
       }
+      if(UFUtils.isTokenExpiredVisible()) return;
       await Get.bottomSheet(
         UFUConfirmationDialog(
+          key: UFUtils.ufuTokenExpireKey,
           title: mTitle,
           subTitle: errorMessage,
           type: UFUConfirmationDialogType.alert,
@@ -124,6 +126,7 @@ class ErrorInterceptor extends Interceptor {
             }
           },
         ),
+        isDismissible: false
       );
       handler.reject(error);
     } else {
