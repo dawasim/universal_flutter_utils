@@ -16,6 +16,8 @@ import 'package:url_launcher/url_launcher.dart' as ul;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../common/methods/index.dart';
+import '../common/services/firebase.dart';
+import '../socket_config/socket_config.dart';
 import 'date_time/index.dart';
 import 'file_picker/index.dart';
 import 'form_validator/index.dart';
@@ -27,6 +29,7 @@ class UFUtils {
   static String appVersion = UFUAppConfig.appVersion;
   static String baseUrl = UFUAppConfig.baseUrl;
   static String socketBaseUrl = UFUAppConfig.socketBaseUrl;
+  static String fcmToken = UFUAppConfig.fcmToken;
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
   static String startDestination = "";
@@ -72,6 +75,9 @@ class UFUtils {
 
   ///   Shared Preferences Handling
   static UFPrefUtils preferences = UFPrefUtils();
+
+  ///   Firebase Handling
+  static UFFirebaseUtils firebaseUtils = UFFirebaseUtils();
 
   ///   Storage Max File Size
   static int maxAllowedFileSize = 52428800; // Size is in bytes

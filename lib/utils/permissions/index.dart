@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 class UFPermissionUtils {
 
   Future<bool> getAllPermissions() async {
-    // Request permissions for storage, camera, gallery, and notifications
+    // Request permissions for storage, camera, gallery, and notification
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
       Permission.camera,

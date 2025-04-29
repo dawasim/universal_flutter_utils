@@ -1,6 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'ufu_social_login_method_channel.dart';
+import 'method_channel.dart';
 
 abstract class UFUSocialLoginPlatform extends PlatformInterface {
   /// Constructs a UFUSocialLoginPlatform.

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import 'ufu_social_login_platform_interface.dart';
+import 'platform_interface.dart';
 
 /// An implementation of [UFUMethodChannelSocialLogin] that uses method channels.
 class UFUMethodChannelSocialLogin extends UFUSocialLoginPlatform {

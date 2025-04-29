@@ -25,11 +25,9 @@ class UFApiConfig {
   }
 
   // Unified GET request
-  Future<dynamic> get(String path,
-      {Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response = await _dio.get(UFUtils.baseUrl + path,
-          queryParameters: queryParameters);
+      final response = await _dio.get(UFUtils.baseUrl + path, queryParameters: queryParameters);
       return response.data;
     } catch (e) {
       rethrow;

@@ -11,12 +11,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-import 'ufu_social_login_platform_interface.dart';
+import 'platform_interface.dart';
 
 class UFUSocialLogin {
-  Future<void> iniFirebase() async {
-    await Firebase.initializeApp();
-  }
+  // Future<void> iniFirebase() async {
+  //   await Firebase.initializeApp();
+  // }
 
   Future<String?> getPlatformVersion() {
     return UFUSocialLoginPlatform.instance.getPlatformVersion();

@@ -22,7 +22,6 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 
@@ -130,7 +129,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
     final overflow = defaultTextStyle.overflow;
 
     TextSpan link = UFUTextSpan.getSpan(
-      isReadMore ? widget.trimCollapsedText.capitalize! : widget.trimExpandedText.capitalize!,
+      isReadMore ? widget.trimCollapsedText.capitalize() : widget.trimExpandedText.capitalize(),
       recognizer: TapGestureRecognizer()..onTap = _onTapLink,
       textColor: AppTheme.themeColors.primary,
       fontStyle: FontStyle.italic,
