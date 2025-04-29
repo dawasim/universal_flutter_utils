@@ -17,14 +17,12 @@ class ErrorInterceptor extends Interceptor {
         final retryResponse = await _retryRequest(err.requestOptions);
         handler.resolve(retryResponse); // Return the successful retry response
       } catch (retryError) {
-        handler
-            .next(retryError as DioException); // Pass the error if retry fails
+        handler.next(retryError as DioException); // Pass the error if retry fails
       }
     });
   }
 
-  Future<void> _handleError(DioException error, ErrorInterceptorHandler handler,
-      VoidCallback retryCallback) async {
+  Future<void> _handleError(DioException error, ErrorInterceptorHandler handler, VoidCallback retryCallback) async {
     print("$error");
     String title = 'An Error Occurred';
     String message = 'Something went wrong. Please try again.';
@@ -53,15 +51,13 @@ class ErrorInterceptor extends Interceptor {
             title = responseData.toString() ?? "Oops!!!";
             try {
               final decodedData = responseData != null
-                  ? jsonDecode(responseData) as Map<String, dynamic>
-                  : null;
+                ? jsonDecode(responseData) as Map<String, dynamic>
+                : null;
               message = decodedData != null
-                  ? getFirstErrorMessage(
-                        decodedData,
-                        () => fetchError(error.response?.data, statusCode),
-                      ) ??
-                      "Something Went Wrong!"
-                  : "Something Went Wrong!";
+                ? getFirstErrorMessage(decodedData,
+                    () => fetchError(error.response?.data, statusCode))
+                  ?? "Something Went Wrong!"
+                : "Something Went Wrong!";
             } catch (e) {
               message = fetchError(error.response?.data, statusCode);
             }
@@ -71,8 +67,8 @@ class ErrorInterceptor extends Interceptor {
             try {
               print(error.response?.data);
               message = (error.response?.data?["errors"] as List).firstOrNull?["message"]
-                  ?? error.response?.data?["message"]
-                  ?? 'Server error: HTTP $statusCode';
+                ?? error.response?.data?["message"]
+                ?? 'Server error: HTTP $statusCode';
               showRetry = false;
             } catch (e) {
               message = "Something went wrong!";
@@ -106,6 +102,12 @@ class ErrorInterceptor extends Interceptor {
         mTitle = title;
       }
       if(UFUtils.isTokenExpiredVisible()) return;
+
+      if(error.response?.realUri.path.contains("logout") ?? false) {
+        Get.offAndToNamed(UFUtils.startDestination);
+        return;
+      }
+
       await Get.bottomSheet(
         UFUConfirmationDialog(
           key: UFUtils.ufuTokenExpireKey,
