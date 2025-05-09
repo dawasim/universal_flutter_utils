@@ -4,6 +4,7 @@ class UFPrefUtils {
 
   final String isLoggedIn = 'isLoggedIn';
   String authToken = 'authToken';
+  String selectedLanguage = 'selectedLanguage';
   String rememberMeData = 'rememberMeData';
   String userData = 'userData';
   String skippedAppVersion = 'skippedAppVersion';
@@ -52,6 +53,11 @@ class UFPrefUtils {
   Future<String> readAuthToken() async {
     SharedPreferences mStorage = await getStorage();
     return await mStorage.getString(authToken) ?? '';
+  }
+
+  Future<String> readSelectedLanguage() async {
+    SharedPreferences mStorage = await getStorage();
+    return await mStorage.getString(selectedLanguage) ?? '';
   }
 
   Future<bool> readIsUserLoggedIn() async {
