@@ -66,13 +66,13 @@ class TextHelper {
   static FontWeight getFontWeight(UFUFontWeight fontWeight) {
     switch (fontWeight) {
       case UFUFontWeight.regular:
-        return FontWeight.w400;
+        return FontWeight.w300;
       case UFUFontWeight.medium:
         return FontWeight.w500;
       case UFUFontWeight.bold:
         return FontWeight.w700;
       default:
-        return FontWeight.w400;
+        return FontWeight.w300;
     }
   }
 
@@ -80,8 +80,8 @@ class TextHelper {
     return TextStyle(
       color: textColor ?? AppTheme.themeColors.text,
       fontSize: dynamicFontSize ?? getTextSize(textSize ?? UFUTextSize.heading4),
-      fontFamily: getFontFamily(fontFamily ?? UFUFontFamily.productSans, fontWeight ?? UFUFontWeight.regular),
-      package: 'UFU_mobile_flutter_ui',
+      fontFamily: UFUtils.fontFamily, // TODO - getFontFamily(fontFamily ?? UFUFontFamily.productSans, fontWeight ?? UFUFontWeight.regular),
+      // package: 'UFU_mobile_flutter_ui',
       overflow: overflow,
       fontWeight: getFontWeight(fontWeight ?? UFUFontWeight.regular),
       height: height,

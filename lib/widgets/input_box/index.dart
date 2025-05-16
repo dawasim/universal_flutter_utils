@@ -210,11 +210,11 @@ class _UFUInputBoxState extends State<UFUInputBox> {
   /// Default text style for label and hint text.
   TextStyle getStyle() {
     return TextStyle(
-      fontFamily: 'Roboto',
-      package: 'UFU_mobile_flutter_ui',
+      fontFamily: UFUtils.fontFamily, // TODO - 'Roboto',
+      // package: 'UFU_mobile_flutter_ui',
       fontWeight: widget.type == UFUInputBoxType.withoutLabel
           ? FontWeight.w500
-          : FontWeight.w400,
+          : FontWeight.w300,
       height: 1.2,
       fontSize: TextHelper.getTextSize(widget.textSize),
     );

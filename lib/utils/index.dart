@@ -33,7 +33,10 @@ class UFUtils {
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
   static String startDestination = "";
-
+  
+  static String fontFamily = "";
+  static Gradient buttonGradient = LinearGradient(colors: [AppTheme.themeColors.primary, AppTheme.themeColors.primary]);
+  
   static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
   static GlobalKey<UFUConfirmationDialogState> ufuTokenExpireKey = GlobalKey<UFUConfirmationDialogState>();
 

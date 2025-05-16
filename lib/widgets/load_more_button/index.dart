@@ -25,7 +25,7 @@ class UFULoadMoreButton extends StatelessWidget {
               ? FadingCircle(color: AppTheme.themeColors.base, size: 20)
               : null,
           colorType: UFUButtonColorType.tertiary,
-          fontFamily: UFUFontFamily.productSans,
+          // fontFamily: UFUFontFamily.productSans,
         ));
   }
 }

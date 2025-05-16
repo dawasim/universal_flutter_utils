@@ -42,7 +42,7 @@ class UFUNoDataFound extends StatelessWidget {
                 text: title ?? '',
                 textSize: textSize ?? UFUTextSize.heading3,
                 textAlign: TextAlign.center,
-                fontFamily: UFUFontFamily.productSans,
+                // fontFamily: UFUFontFamily.productSans,
                 fontWeight: UFUFontWeight.medium,
                 textColor: textColor,
               ),

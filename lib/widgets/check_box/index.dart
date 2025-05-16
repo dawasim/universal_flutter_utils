@@ -10,7 +10,7 @@ class UFUCheckbox extends StatelessWidget {
     this.text,
     this.textSize = UFUTextSize.heading4,
     this.textColor,
-    this.fontFamily = UFUFontFamily.productSans,
+    // this.fontFamily = UFUFontFamily.productSans,
     this.fontWeight = UFUFontWeight.regular,
     this.borderColor,
     this.color,
@@ -39,7 +39,7 @@ class UFUCheckbox extends StatelessWidget {
   final Color? textColor;
 
   /// Defines text fontFamily[UFUFontFamily.roboto] of a checkbox.
-  final UFUFontFamily? fontFamily;
+  // final UFUFontFamily? fontFamily;
 
   /// Defines text fontWeight[UFUFontWeight.regular] of a checkbox.
   final UFUFontWeight? fontWeight;
@@ -102,7 +102,7 @@ class UFUCheckbox extends StatelessWidget {
         textColor: getColor(),
         textSize: textSize,
         fontWeight: fontWeight,
-        fontFamily: fontFamily,
+        // fontFamily: fontFamily,
         textAlign: TextAlign.start,
       );
     }

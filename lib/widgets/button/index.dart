@@ -5,6 +5,7 @@ class UFUButton extends StatelessWidget {
   const UFUButton({
     this.disabled = false,
     this.colorType = UFUButtonColorType.primary,
+    this.gradient,
     this.opacity = 1,
     this.onPressed,
     this.onLongPress,
@@ -13,7 +14,7 @@ class UFUButton extends StatelessWidget {
     this.text,
     this.size = UFUButtonSize.flat,
     this.textColor,
-    this.fontFamily = UFUFontFamily.productSans,
+    // this.fontFamily = UFUFontFamily.poppins,
     this.fontWeight = UFUFontWeight.bold,
     this.textSize = UFUTextSize.heading3,
     this.type = UFUButtonType.solid,
@@ -28,6 +29,9 @@ class UFUButton extends StatelessWidget {
 
   /// Used to set button color, text color, border color.
   final UFUButtonColorType colorType;
+
+  /// The [gradient] is drawn under the [image].
+  final Gradient? gradient;
 
   /// Called when the button is tapped or otherwise activated.
   final VoidCallback? onPressed;
@@ -50,7 +54,7 @@ class UFUButton extends StatelessWidget {
   final UFUTextSize? textSize;
 
   /// Defines text font family of a button.
-  final UFUFontFamily fontFamily;
+  // final UFUFontFamily fontFamily;
 
   /// Defines font weight of a button.
   final UFUFontWeight fontWeight;
@@ -118,8 +122,12 @@ class UFUButton extends StatelessWidget {
         color = textColor ?? AppTheme.themeColors.primary;
         break;
 
+      case UFUButtonColorType.base:
+        color = textColor ?? AppTheme.themeColors.text;
+        break;
+
       default:
-        color = AppTheme.themeColors.base;
+        color = textColor ?? AppTheme.themeColors.base;
         break;
     }
 
@@ -165,6 +173,14 @@ class UFUButton extends StatelessWidget {
         color = UFUColor.transparent;
         break;
 
+      case UFUButtonColorType.gradient:
+        color = UFUColor.transparent;
+        break;
+
+      case UFUButtonColorType.base:
+        color = AppTheme.themeColors.base;
+        break;
+
       default:
         color = AppTheme.themeColors.themeGreen;
         break;
@@ -188,6 +204,9 @@ class UFUButton extends StatelessWidget {
         return AppTheme.themeColors.inverse;
       
       case UFUButtonColorType.base:
+        return AppTheme.themeColors.base;
+
+      case UFUButtonColorType.gradient:
         return AppTheme.themeColors.base;
         
       default:
@@ -383,20 +402,27 @@ class UFUButton extends StatelessWidget {
     final result = Material(
       shape: shapeBorderType,
       type: MaterialType.button,
-      color: getButtonColor(colorType),
-      child: InkWell(
-        splashColor: Colors.transparent,
-        onLongPress: onLongPress,
-        highlightColor: getHighlightColor(colorType),
-        customBorder: borderShape ?? shapeBorderType,
-        onTap: disabled ? null : onPressed,
-        child: Container(
-            width: width,
-            constraints: isFlat ? getConstraint() : getConstraintForFlatButton(),
-            height: getButtonHeight(size),
-            padding: EdgeInsets.symmetric(
-              horizontal: (iconWidget == null && suffixIconWidget == null && text != null) ? 10 : 5),
-            child: getContainerData()),
+      color: Colors.transparent, //getButtonColor(colorType),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: colorType == UFUButtonColorType.gradient ? null : getButtonColor(colorType),
+          gradient: colorType == UFUButtonColorType.gradient ? gradient ?? UFUtils.buttonGradient : null,
+          borderRadius: BorderRadius.circular(shapeRadius())
+        ),
+        child: InkWell(
+          splashColor: Colors.transparent,
+          onLongPress: onLongPress,
+          highlightColor: getHighlightColor(colorType),
+          customBorder: borderShape ?? shapeBorderType,
+          onTap: disabled ? null : onPressed,
+          child: Container(
+              width: width,
+              constraints: isFlat ? getConstraint() : getConstraintForFlatButton(),
+              height: getButtonHeight(size),
+              padding: EdgeInsets.symmetric(
+                horizontal: (iconWidget == null && suffixIconWidget == null && text != null) ? 10 : 5),
+              child: getContainerData()),
+        ),
       ),
     );
 
@@ -425,7 +451,7 @@ class UFUButton extends StatelessWidget {
     }
     return UFUText(
       text: text ?? 'Default',
-      fontFamily: fontFamily,
+      // fontFamily: fontFamily,
       height: 1,
       fontWeight: fontWeight,
       textColor: getTextColor(colorType),

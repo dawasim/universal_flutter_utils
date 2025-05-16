@@ -5,7 +5,7 @@ class UFUText extends StatelessWidget {
   const UFUText({
     required this.text,
     this.textSize = UFUTextSize.heading4,
-    this.fontFamily = UFUFontFamily.productSans,
+    // this.fontFamily = UFUFontFamily.productSans,
     this.fontWeight = UFUFontWeight.regular,
     this.textColor,
     this.overflow,
@@ -27,7 +27,7 @@ class UFUText extends StatelessWidget {
   final UFUTextSize? textSize;
 
   /// Defines fontFamily of a text.
-  final UFUFontFamily? fontFamily;
+  // final UFUFontFamily? fontFamily;
 
   /// Defines fontWeight of a text.
   final UFUFontWeight? fontWeight;
@@ -81,7 +81,8 @@ class UFUText extends StatelessWidget {
             fontWeight,
             textSize,
             dynamicFontSize,
-            fontFamily,
+            null,
+            // fontFamily,
             overflow,
             height,
             letterSpacing,
@@ -97,7 +98,8 @@ class UFUText extends StatelessWidget {
             fontWeight,
             textSize,
             dynamicFontSize,
-            fontFamily,
+            null,
+            // fontFamily,
             overflow,
             height,
             letterSpacing,

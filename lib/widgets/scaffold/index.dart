@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:universal_flutter_utils/universal_flutter_utils.dart';
+
+import '../../theme/app_theme.dart';
+import '../../utils/index.dart';
+
 
 class UFUScaffold extends StatelessWidget {
   const UFUScaffold({
     super.key,
+    this.backgroundDecoration,
     this.appBar,
     this.drawer,
     this.body,
@@ -13,6 +17,7 @@ class UFUScaffold extends StatelessWidget {
     this.bottomSheet,
   });
 
+  final BoxDecoration? backgroundDecoration;
   final PreferredSizeWidget? appBar;
   final Widget? drawer;
   final Widget? body;
@@ -26,12 +31,12 @@ class UFUScaffold extends StatelessWidget {
     return GestureDetector(
       onTap: () => UFUtils.commonMethods.hideKeyboard(),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: backgroundDecoration ?? BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0XFF551600), AppTheme.themeColors.themeBlue],
+            colors: [const Color(0XFF551600), AppTheme.themeColors.themeBlue],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0.0, 0.5],
+            stops: const [0.0, 0.5],
           ),
         ),
         child: Scaffold(

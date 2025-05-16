@@ -153,7 +153,7 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                             textColor: AppTheme.themeColors.primary,
                             textSize: UFUTextSize.heading3,
                             fontWeight: UFUFontWeight.medium,
-                            fontFamily: UFUFontFamily.productSans,
+                            // fontFamily: UFUFontFamily.productSans,
                           ),
                         ),
                         if (widget.subTitle != null)

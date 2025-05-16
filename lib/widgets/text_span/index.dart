@@ -6,7 +6,7 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 class UFUTextSpan {
   static TextSpan getSpan(String text, {
     UFUTextSize textSize = UFUTextSize.heading4,
-    UFUFontFamily fontFamily = UFUFontFamily.productSans,
+    // UFUFontFamily fontFamily = UFUFontFamily.productSans,
     UFUFontWeight fontWeight = UFUFontWeight.regular,
     Color? textColor,
     TextOverflow? overflow,
@@ -24,9 +24,9 @@ class UFUTextSpan {
         style: TextStyle(
           color: textColor ?? AppTheme.themeColors.text,
           fontSize: TextHelper.getTextSize(textSize),
-          fontFamily: TextHelper.getFontFamily(fontFamily,fontWeight),
+          fontFamily: UFUtils.fontFamily, // TODO - TextHelper.getFontFamily(fontFamily,fontWeight),
           fontWeight: TextHelper.getFontWeight(fontWeight),
-          package: 'UFU_mobile_flutter_ui',
+          // package: 'UFU_mobile_flutter_ui',
           overflow: overflow,
           height: height,
           fontStyle: fontStyle,

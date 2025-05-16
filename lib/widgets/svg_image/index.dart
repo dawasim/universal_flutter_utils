@@ -7,13 +7,15 @@ class UFUSvgImage extends StatelessWidget {
     required this.assetPath,
     this.height,
     this.width,
-    this.fit = BoxFit.none
+    this.fit = BoxFit.none,
+    this.colorFilter
   });
 
   final String assetPath;
   final double? height;
   final double? width;
   final BoxFit fit;
+  final ColorFilter? colorFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class UFUSvgImage extends StatelessWidget {
       height: height,
       width: width,
       fit: fit,
+      colorFilter: colorFilter,
     );
   }
 }

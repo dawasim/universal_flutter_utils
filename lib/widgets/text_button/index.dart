@@ -9,7 +9,7 @@ class UFUTextButton extends StatelessWidget {
     this.highlightColor,
     this.icon,
     this.iconPosition = UFUPosition.end,
-    this.fontFamily,
+    // this.fontFamily,
     this.fontWeight,
     this.color,
     this.padding = 5,
@@ -27,7 +27,7 @@ class UFUTextButton extends StatelessWidget {
   final String? text;
 
   // Defines fontFamily of text used in textButton
-  final UFUFontFamily? fontFamily;
+  // final UFUFontFamily? fontFamily;
 
   // Defines fontweight of text used in textbutton
   final UFUFontWeight? fontWeight;
@@ -76,7 +76,7 @@ class UFUTextButton extends StatelessWidget {
 
     Widget buttonText = UFUText(
       text: text!,
-      fontFamily: fontFamily,
+      // fontFamily: fontFamily,
       fontWeight: fontWeight,
       textColor: color ?? AppTheme.themeColors.text,
       textDecoration: textDecoration,

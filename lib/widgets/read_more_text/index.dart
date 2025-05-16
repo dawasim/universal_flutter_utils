@@ -47,7 +47,7 @@ class UFUReadMoreText extends StatefulWidget {
     this.delimiter = ellipsisChar + ' ',
     this.callback,
     this.textSize = UFUTextSize.heading4,
-    this.fontFamily = UFUFontFamily.productSans,
+    // this.fontFamily = UFUFontFamily.productSans,
     this.fontWeight = UFUFontWeight.regular,
     this.textColor,
     this.height,
@@ -79,7 +79,7 @@ class UFUReadMoreText extends StatefulWidget {
   final String? semanticsLabel;
 
   final UFUTextSize textSize;
-  final UFUFontFamily fontFamily;
+  // final UFUFontFamily fontFamily;
   
   final UFUFontWeight fontWeight;
   final Color? textColor;
@@ -152,7 +152,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
           widget.text,
           textColor: widget.textColor,
           textSize: widget.textSize,
-          fontFamily: widget.fontFamily,
+          // fontFamily: widget.fontFamily,
           fontWeight: widget.fontWeight
         );
 
@@ -209,7 +209,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 children: <TextSpan>[delimiter, link],
                 textColor: widget.textColor,
                 textSize: widget.textSize,
-                fontFamily: widget.fontFamily,
+                // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
                  height: widget.height
               );
@@ -218,7 +218,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 widget.text,
                 textColor: widget.textColor,
                 textSize: widget.textSize,
-                fontFamily: widget.fontFamily,
+                // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
                 height: widget.height
               );
@@ -234,7 +234,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 children: <TextSpan>[delimiter, link],
                 textColor: widget.textColor,
                 textSize: widget.textSize,
-                fontFamily: widget.fontFamily,
+                // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
                 height: widget.height
               );
@@ -242,7 +242,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
               textSpan = UFUTextSpan.getSpan(
                 widget.text,
                 textColor: widget.textColor,
-                fontFamily: widget.fontFamily,
+                // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
                 textSize: widget.textSize,
                 height: widget.height

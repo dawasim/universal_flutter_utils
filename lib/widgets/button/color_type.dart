@@ -23,4 +23,7 @@ enum UFUButtonColorType {
 
   /// [UFUButtonColorType.base], used for set base color
   base,
+
+  /// [UFUButtonColorType.gradient], used for set gradient color
+  gradient,
 }

@@ -27,7 +27,7 @@ class UFUImagePicker {
                     text: "Upload Photo",
                     textSize: UFUTextSize.heading3,
                     fontWeight: UFUFontWeight.medium,
-                    fontFamily: UFUFontFamily.productSans,
+                    // fontFamily: UFUFontFamily.productSans,
                   ),
                   UFUIconButton(
                     onTap: () => Get.back(),
@@ -90,7 +90,7 @@ class UFUImagePicker {
                     child: UFUText(
                       text: "Camera",
                       textSize: UFUTextSize.heading4,
-                      fontFamily: UFUFontFamily.productSans,
+                      // fontFamily: UFUFontFamily.productSans,
                     ),
                   ),
                   SizedBox(width: 10,),
@@ -99,7 +99,7 @@ class UFUImagePicker {
                     child: UFUText(
                       text: "Gallery",
                       textSize: UFUTextSize.heading4,
-                      fontFamily: UFUFontFamily.productSans,
+                      // fontFamily: UFUFontFamily.productSans,
                     ),
                   )
                 ],
