@@ -37,6 +37,9 @@ class UFUInputBox extends StatefulWidget {
     this.cancelButtonSize,
     this.padding,
     this.textSize = UFUTextSize.heading4,
+    this.hintTextSize,
+    this.fontWeight,
+    this.hintFontWeight,
     this.onTapSuffix,
     this.borderColor,
     this.isCounterText = false,
@@ -153,6 +156,12 @@ class UFUInputBox extends StatefulWidget {
   /// textSize is used to adjust textField text size, default value is [UFUTextSize.heading4]
   final UFUTextSize textSize;
 
+  final double? hintTextSize;
+
+  final FontWeight? fontWeight;
+
+  final FontWeight? hintFontWeight;
+
   /// onTapSuffix will handle tap on suffix icon
   final VoidCallback? onTapSuffix;
 
@@ -213,7 +222,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
       fontFamily: UFUtils.fontFamily, // TODO - 'Roboto',
       // package: 'UFU_mobile_flutter_ui',
       fontWeight: widget.type == UFUInputBoxType.withoutLabel
-          ? FontWeight.w500
+          ? widget.fontWeight ?? FontWeight.w500
           : FontWeight.w300,
       height: 1.2,
       fontSize: TextHelper.getTextSize(widget.textSize),
@@ -430,7 +439,6 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           ? AppTheme.themeColors.inverse.withValues(alpha: 0.6)
           : widget.fillColor ?? AppTheme.themeColors.base,
       child: TextFormField(
-
         textCapitalization: widget.textCapitalization,
         keyboardAppearance: MediaQuery
             .of(context)
@@ -488,6 +496,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
               ? ''
               : null,
           border: UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(
+              getBorderRadius(),
+            ),
             borderSide: BorderSide(
                 color: AppTheme.themeColors.inverse, width: 1.5),
           ),
@@ -508,7 +519,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintStyle: getStyle().copyWith(
               color: AppTheme.themeColors.secondaryText,
               fontSize: typeToHintFontSize(),
-              fontWeight: FontWeight.normal,
+              fontWeight: widget.hintFontWeight ?? FontWeight.w500,
               letterSpacing: 0
           ),
           errorStyle: const TextStyle(
@@ -727,7 +738,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
         return 4;
 
       default:
-        return 8;
+        return 14;
     }
   }
 
@@ -754,7 +765,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
         return 15;
 
       default:
-        return 14.0;
+        return widget.hintTextSize ?? 14.0;
     }
   }
 }

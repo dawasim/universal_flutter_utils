@@ -7,14 +7,15 @@ class UFUIcon extends StatelessWidget {
       super.key,
       this.size,
       this.color,
-      this.textDirection
+      this.textDirection,
+      this.weight,
     });
 
  final IconData icon;
  final double? size;
  final Color? color;
  final TextDirection? textDirection;
-
+ final double? weight;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class UFUIcon extends StatelessWidget {
       size: size,
       color: color,
       textDirection: textDirection,
+      weight: weight,
     );
   }
 }

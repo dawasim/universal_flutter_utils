@@ -21,6 +21,7 @@ class UFUButton extends StatelessWidget {
     this.width,
     this.isFlat = true,
     this.buttonRadius = UFUButtonRadius.roundSquare,
+    this.radius,
     super.key,
   });
 
@@ -74,6 +75,8 @@ class UFUButton extends StatelessWidget {
   final bool isFlat;
 
   final UFUButtonRadius? buttonRadius;
+
+  final double? radius;
 
   /// Return textSize by using button size and default size is [UFUTextSize.heading3].
   UFUTextSize getTextSize(UFUButtonSize size) {
@@ -232,7 +235,7 @@ class UFUButton extends StatelessWidget {
         return 26.0;
 
       case UFUButtonSize.mediumWithIcon:
-        return 32.0;
+        return 38.0;
 
       case UFUButtonSize.smallIcon:
         return 26;
@@ -271,9 +274,9 @@ class UFUButton extends StatelessWidget {
       case UFUButtonRadius.circular:
         return 50;
       case UFUButtonRadius.roundSquare:
-        return 12;
+        return radius ?? 12;
       default:
-        return 12;
+        return radius ?? 12;
     }
   }
 

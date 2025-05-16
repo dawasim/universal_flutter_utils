@@ -1,7 +1,7 @@
 /// [UFUFontWeight] is used to change the fontWeight of the text.
 enum UFUFontWeight {
   /// Default fontWeight is [UFUFontWeight.regular] is used to set fontWeight of a text widget
-  /// Set Font Weight 300
+  /// Set Font Weight 400
   regular,
 
   ///  [UFUFontWeight.medium] is used to set fontWeight of a text widget
@@ -9,6 +9,6 @@ enum UFUFontWeight {
   medium,
 
   ///  [UFUFontWeight.bold] is used to set fontWeight of a text widget
-  /// /// Set Font Weight 700
+  /// /// Set Font Weight 600
   bold,
 }

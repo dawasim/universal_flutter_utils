@@ -8,7 +8,8 @@ class UFUSvgImage extends StatelessWidget {
     this.height,
     this.width,
     this.fit = BoxFit.none,
-    this.colorFilter
+    this.colorFilter,
+    this.isRtl
   });
 
   final String assetPath;
@@ -16,15 +17,22 @@ class UFUSvgImage extends StatelessWidget {
   final double? width;
   final BoxFit fit;
   final ColorFilter? colorFilter;
+  final bool? isRtl;
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      assetPath,
-      height: height,
-      width: width,
-      fit: fit,
-      colorFilter: colorFilter,
+    final isWithRtl = isRtl ?? Directionality.of(context) == TextDirection.rtl;
+
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.identity()..scale(isWithRtl ? -1.0 : 1.0, 1.0),
+      child: SvgPicture.asset(
+        assetPath,
+        height: height,
+        width: width,
+        fit: fit,
+        colorFilter: colorFilter,
+      ),
     );
   }
 }
