@@ -1,0 +1,2 @@
+D:/projects/shaima_property_maintenance/universal_flutter_utils/example/android/app/.cxx/Debug/271s15q1/x86/CMakeFiles/edit_cache.dir
+D:/projects/shaima_property_maintenance/universal_flutter_utils/example/android/app/.cxx/Debug/271s15q1/x86/CMakeFiles/rebuild_cache.dir
