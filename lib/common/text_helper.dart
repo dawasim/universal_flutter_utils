@@ -66,13 +66,13 @@ class TextHelper {
   static FontWeight getFontWeight(UFUFontWeight fontWeight) {
     switch (fontWeight) {
       case UFUFontWeight.regular:
-        return FontWeight.w400;
+        return FontWeight.w300;
       case UFUFontWeight.medium:
         return FontWeight.w500;
       case UFUFontWeight.bold:
-        return FontWeight.w600;
+        return FontWeight.w700;
       default:
-        return FontWeight.w400;
+        return FontWeight.w300;
     }
   }
 

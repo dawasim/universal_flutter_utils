@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class FormValidator {
 
   static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) {
@@ -96,17 +98,18 @@ class FormValidator {
     return null; // Return null if the password is valid
   }
 
-  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone number"}) {
+  static String? phoneValidator(String? value, {bool isRequired = true,
+    String field = "Phone number", RegExp? phoneRegex}) {
     value = value?.replaceAll(" ", "");
 
     if (isRequired && (value == null || value.isEmpty)) {
-      return '$field is required';
+      return '$field ${"is_required".tr}';
     }
 
-    if (value != null && value.isNotEmpty) {
-      final phoneRegex = RegExp(r'^\d{6,12}$'); // Allows numbers with a length between 6 and 12
+    if (value != null && value.isNotEmpty) { // Allows numbers with a length between 6 and 12
+      phoneRegex ??= RegExp(r'^\d{6,12}$');
       if (!phoneRegex.hasMatch(value)) {
-        return 'Enter a valid phone number';
+        return 'enter_valid_phone_number'.tr;
       }
     }
 

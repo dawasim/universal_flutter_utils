@@ -7,6 +7,7 @@ import '../../utils/index.dart';
 class UFUScaffold extends StatelessWidget {
   const UFUScaffold({
     super.key,
+    this.resizeToAvoidBottomInset = true,
     this.backgroundDecoration,
     this.appBar,
     this.drawer,
@@ -17,6 +18,7 @@ class UFUScaffold extends StatelessWidget {
     this.bottomSheet,
   });
 
+  final bool resizeToAvoidBottomInset;
   final BoxDecoration? backgroundDecoration;
   final PreferredSizeWidget? appBar;
   final Widget? drawer;
@@ -40,6 +42,7 @@ class UFUScaffold extends StatelessWidget {
           ),
         ),
         child: Scaffold(
+          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
           backgroundColor: AppTheme.themeColors.transparent,
           appBar: appBar,
           drawer: drawer,

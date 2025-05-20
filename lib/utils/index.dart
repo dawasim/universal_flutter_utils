@@ -48,7 +48,7 @@ class UFUtils {
 
   static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) => FormValidator.confirmPasswordValidator(value, isRequired: isRequired, password: password);
 
-  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number"}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field);
+  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number", RegExp? phoneRegex}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field, phoneRegex: phoneRegex);
 
   static String? textValidator(String? value, {bool isRequired = true, int minCount = 3}) => FormValidator.textValidator(value, isRequired: isRequired, minCount: minCount);
 
@@ -301,6 +301,10 @@ class UFUtils {
   static hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
   static showKeyboard() => FocusManager.instance.primaryFocus?.requestFocus();
+
+  static void hideLoaderDialog() {
+    if (UFUtils.isLoaderVisible()) Get.back();
+  }
 
   static launchUrl(String url, {bool isInExternalMode = true}) async =>
       await ul.launchUrl(Uri.parse(url),
