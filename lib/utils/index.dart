@@ -30,6 +30,7 @@ class UFUtils {
   static String baseUrl = UFUAppConfig.baseUrl;
   static String socketBaseUrl = UFUAppConfig.socketBaseUrl;
   static String fcmToken = UFUAppConfig.fcmToken;
+  static bool applyEncryption = true;
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
   static String startDestination = "";

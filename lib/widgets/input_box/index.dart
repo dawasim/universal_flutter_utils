@@ -36,6 +36,7 @@ class UFUInputBox extends StatefulWidget {
     this.cancelButtonColor,
     this.cancelButtonSize,
     this.padding,
+    this.errorTextPadding,
     this.textSize = UFUTextSize.heading4,
     this.hintTextSize,
     this.fontWeight,
@@ -152,6 +153,9 @@ class UFUInputBox extends StatefulWidget {
 
   /// padding is used to adjust text field padding
   final EdgeInsets? padding;
+
+  /// padding is used to adjust text field padding
+  final EdgeInsets? errorTextPadding;
 
   /// textSize is used to adjust textField text size, default value is [UFUTextSize.heading4]
   final UFUTextSize textSize;
@@ -417,15 +421,18 @@ class _UFUInputBoxState extends State<UFUInputBox> {
             : const SizedBox.shrink(),
         errorText.isEmpty || widget.type == UFUInputBoxType.searchbar
             ? const SizedBox.shrink()
-            : Align(
-          alignment: Alignment.topLeft,
-          child: UFUText(
-            textAlign: TextAlign.start,
-            text: errorText,
-            textSize: UFUTextSize.heading5,
-            textColor: AppTheme.themeColors.red,
-          ),
-        )
+            : Padding(
+              padding: widget.errorTextPadding ?? EdgeInsets.zero,
+              child: Align(
+                        alignment: Alignment.topLeft,
+                        child: UFUText(
+              textAlign: TextAlign.start,
+              text: errorText,
+              textSize: UFUTextSize.heading5,
+              textColor: AppTheme.themeColors.red,
+                        ),
+                      ),
+            )
       ],
     );
   }

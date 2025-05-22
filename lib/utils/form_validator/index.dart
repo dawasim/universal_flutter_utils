@@ -118,11 +118,11 @@ class FormValidator {
 
   static String? textValidator(String? value, {bool isRequired = true, int minCount = 3}) {
     if (isRequired && (value == null || value.isEmpty)) {
-      return 'This field is required';
+      return 'this_field_is_required'.tr;
     }
     if (value != null && value.isNotEmpty) {
       if (value.length < minCount) {
-        return 'Must be at least $minCount characters';
+        return '${"must_be_at_least".tr} $minCount ${"characters".tr}';
       }
     }
     return null;
