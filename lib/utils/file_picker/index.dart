@@ -64,7 +64,9 @@ class UFFilePickerUtil {
     try {
 
       if (!(await UFUtils.permissionUtils.getCameraPermission())) {
-        await permissionDeniedDialogue();
+        if(await Permission.camera.status.isPermanentlyDenied) {
+          await permissionDeniedDialogue();
+        }
         return [];
       }
 
@@ -237,6 +239,7 @@ class UFFilePickerUtil {
     await ShowUFUBottomSheet(child: (UFUBottomSheetController controller) => UFUConfirmationDialog(
       title: "Permission Denied",
       subTitle: "This action requires additional permissions. Please enable the necessary permissions in your device settings",
+      subTitleColor: AppTheme.themeColors.text,
       type: UFUConfirmationDialogType.message,
       suffixBtnText: "Go to Settings",
       onTapSuffix: () async => await openAppSettings(),

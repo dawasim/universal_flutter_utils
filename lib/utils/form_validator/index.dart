@@ -98,17 +98,24 @@ class FormValidator {
     return null; // Return null if the password is valid
   }
 
-  static String? phoneValidator(String? value, {bool isRequired = true,
-    String field = "Phone number", RegExp? phoneRegex}) {
+  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone number", RegExp? phoneRegex}) {
     value = value?.replaceAll(" ", "");
 
+    // 1. Check for required field
     if (isRequired && (value == null || value.isEmpty)) {
       return '$field ${"is_required".tr}';
     }
 
-    if (value != null && value.isNotEmpty) { // Allows numbers with a length between 6 and 12
+    // 2. Validate phone number format
+    // Allows numbers with a length between 6 and 12
+    if (value != null && value.isNotEmpty) {
       phoneRegex ??= RegExp(r'^\d{6,12}$');
       if (!phoneRegex.hasMatch(value)) {
+        return 'enter_valid_phone_number'.tr;
+      }
+
+      // 3. Reject phone numbers with only zeros
+      if (RegExp(r'^0+$').hasMatch(value)) {
         return 'enter_valid_phone_number'.tr;
       }
     }

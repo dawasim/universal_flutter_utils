@@ -167,7 +167,7 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                             child: UFUText(
                               text: widget.subTitle!,
                               textSize: UFUTextSize.heading4,
-                              textColor: widget.subTitleColor ?? AppTheme.themeColors.themeBlue,
+                              textColor: widget.subTitleColor ?? AppTheme.themeColors.text,
                               height: 1.5,
                             ),
                           ),
