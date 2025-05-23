@@ -36,7 +36,6 @@ class AESUtil {
 
   static Map<String, String>? secKeyEncryptWithHeaderAppKey(String auth) {
     try {
-      print('Token ---- $auth');
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       final key = Key.fromSecureRandom(32).bytes;
       final appKeyData = DateTime.now().toUtc().toString();
