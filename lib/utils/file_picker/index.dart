@@ -65,6 +65,7 @@ class UFFilePickerUtil {
 
       if (!(await UFUtils.permissionUtils.getCameraPermission())) {
         if(await Permission.camera.status.isPermanentlyDenied) {
+          UFUtils.hideLoaderDialog();
           await permissionDeniedDialogue();
         }
         return [];
@@ -242,7 +243,10 @@ class UFFilePickerUtil {
       subTitleColor: AppTheme.themeColors.text,
       type: UFUConfirmationDialogType.message,
       suffixBtnText: "Go to Settings",
-      onTapSuffix: () async => await openAppSettings(),
+      onTapSuffix: () async {
+        Get.back();
+        await openAppSettings();
+      },
     ));
   }
 
