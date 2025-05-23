@@ -15,6 +15,7 @@ class UFUInputBox extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     this.hintText,
+    this.hintFontColor,
     this.prefixChild,
     this.suffixChild,
     this.validator,
@@ -165,6 +166,8 @@ class UFUInputBox extends StatefulWidget {
   final FontWeight? fontWeight;
 
   final FontWeight? hintFontWeight;
+
+  final Color? hintFontColor;
 
   /// onTapSuffix will handle tap on suffix icon
   final VoidCallback? onTapSuffix;
@@ -524,7 +527,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintText: widget.hintText,
           floatingLabelAlignment: FloatingLabelAlignment.start,
           hintStyle: getStyle().copyWith(
-              color: AppTheme.themeColors.secondaryText,
+              color: widget.hintFontColor ?? AppTheme.themeColors.secondaryText,
               fontSize: typeToHintFontSize(),
               fontWeight: widget.hintFontWeight ?? FontWeight.w500,
               letterSpacing: 0
