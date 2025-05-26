@@ -450,20 +450,19 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           : widget.fillColor ?? AppTheme.themeColors.base,
       child: TextFormField(
         textCapitalization: widget.textCapitalization,
-        keyboardAppearance: MediaQuery
-            .of(context)
-            .platformBrightness,
+        keyboardAppearance: MediaQuery.of(context).platformBrightness,
         showCursor: widget.readOnly ? false : widget.showCursor ?? true,
         onChanged: (value) {
-          if (widget.debounceTime != null &&
-              (widget.type == UFUInputBoxType.searchbar ||
-                  widget.type ==
-                      UFUInputBoxType.searchbarWithoutBorder)) {
-            debounce(() {
-              getOnChanged(value);
-            });
+          if (widget.debounceTime != null
+            && (widget.type == UFUInputBoxType.searchbar
+            || widget.type == UFUInputBoxType.searchbarWithoutBorder)) {
+            debounce(() => getOnChanged(value));
           } else {
-            getOnChanged(value);
+            if (widget.debounceTime != null) {
+              debounce(() => getOnChanged(value));
+            } else {
+              getOnChanged(value);
+            }
           }
         },
         controller: showChips ? null : inputBoxController.controller,
