@@ -99,7 +99,10 @@ class UFFilePickerUtil {
     ///   Check contact permission
     if (Platform.isAndroid) {
       if (!(await UFUtils.permissionUtils.getContactsPermission())) {
-        await permissionDeniedDialogue();
+        if(await Permission.contacts.status.isPermanentlyDenied) {
+          // UFUtils.hideLoaderDialog();
+          await permissionDeniedDialogue();
+        }
         return null;
       }
     }

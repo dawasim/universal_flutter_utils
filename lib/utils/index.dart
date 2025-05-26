@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:universal_flutter_utils/utils/app_config/index.dart';
@@ -36,7 +37,7 @@ class UFUtils {
   static String startDestination = "";
   
   static String fontFamily = "";
-  static bool isRtl = Directionality.of(Get.context!) == TextDirection.rtl;
+  static bool isRtl = Directionality.of(Get.context!) == TextDirection.RTL;
   static Gradient buttonGradient = LinearGradient(colors: [AppTheme.themeColors.primary, AppTheme.themeColors.primary]);
   
   static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
@@ -74,6 +75,18 @@ class UFUtils {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day, time.hour, time.minute);
   }
+
+
+  ///   Number Formatting
+  static String? addComasToNumber(String? data) {
+    final parsed = num.tryParse(data ?? "");
+    if (parsed != null) {
+      return NumberFormat.decimalPattern().format(parsed);
+    }
+
+    return null;
+  }
+
 
   ///   Permission Handling
   static UFPermissionUtils permissionUtils = UFPermissionUtils();
