@@ -1,5 +1,0 @@
-
-enum UFUSingleSelectType {
-  network,
-  local
-}
