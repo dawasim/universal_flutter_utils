@@ -64,10 +64,7 @@ class UFFilePickerUtil {
     try {
 
       if (!(await UFUtils.permissionUtils.getCameraPermission())) {
-        if(await Permission.camera.status.isPermanentlyDenied) {
-          UFUtils.hideLoaderDialog();
-          await permissionDeniedDialogue();
-        }
+        await permissionDeniedDialogue();
         return [];
       }
 
@@ -99,10 +96,7 @@ class UFFilePickerUtil {
     ///   Check contact permission
     if (Platform.isAndroid) {
       if (!(await UFUtils.permissionUtils.getContactsPermission())) {
-        if(await Permission.contacts.status.isPermanentlyDenied) {
-          // UFUtils.hideLoaderDialog();
-          await permissionDeniedDialogue();
-        }
+        await permissionDeniedDialogue();
         return null;
       }
     }
@@ -243,13 +237,9 @@ class UFFilePickerUtil {
     await ShowUFUBottomSheet(child: (UFUBottomSheetController controller) => UFUConfirmationDialog(
       title: "Permission Denied",
       subTitle: "This action requires additional permissions. Please enable the necessary permissions in your device settings",
-      subTitleColor: AppTheme.themeColors.text,
       type: UFUConfirmationDialogType.message,
       suffixBtnText: "Go to Settings",
-      onTapSuffix: () async {
-        Get.back();
-        await openAppSettings();
-      },
+      onTapSuffix: () async => await openAppSettings(),
     ));
   }
 

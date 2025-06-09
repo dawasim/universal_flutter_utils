@@ -7,9 +7,14 @@ import '../AESUtil.dart';
 
 class RequestInterceptor extends Interceptor {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(RequestOptions options,
+      RequestInterceptorHandler handler) async {
     // Check internet connection
-    String? token = await UFUtils.preferences.readAuthToken();
+    String token = await UFUtils.preferences.readAuthToken();
+    if (token.isEmpty) {
+      print("TOKEN IS EMPTY");
+      token = await UFUtils.preferences.readRefereshToken();
+    }
     // bool isConnected = await _checkInternetConnection();
     // if (!isConnected) {
     //   return handler.reject(
@@ -25,7 +30,6 @@ class RequestInterceptor extends Interceptor {
     if (options.extra["skipInterceptor"] == true) {
       return handler.next(options); // Skip interceptor
     } else {
-      print(">>>>>>>>>>>>>> $token");
       options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token);
       print('Request: ${options.method} ${options.path}');
       return handler.next(options);
