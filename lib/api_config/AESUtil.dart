@@ -15,8 +15,7 @@ class AESUtil {
   // static var ENCRYPTION_IV = UFUtils.encryptionIV;
   // static final iv = IV.fromUtf8(ENCRYPTION_IV);
 
-  static Map<String, dynamic>? secKeyEncryptWithBodyAppKey(
-      Map<String, dynamic> mParams) {
+  static Map<String, dynamic>? secKeyEncryptWithBodyAppKey(Map<String, dynamic> mParams) {
     try {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       print("TESTING ------- ${UFUtils.encryptionIV}");
@@ -24,7 +23,10 @@ class AESUtil {
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(mParams);
       final encrypted = encrypter.encrypt(randomString, iv: iv);
-      final result = {SEK: hex.encode(encrypted.bytes), HASH: hex.encode(key)};
+      final result = {
+        SEK: hex.encode(encrypted.bytes),
+        HASH: hex.encode(key)
+      };
       return result;
     } catch (e) {
       print(e);
@@ -34,21 +36,22 @@ class AESUtil {
 
   static Map<String, String>? secKeyEncryptWithHeaderAppKey(String auth) {
     try {
-      print('Token ---- $auth');
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       final key = Key.fromSecureRandom(32).bytes;
       final appKeyData = DateTime.now().toUtc().toString();
       final jsonMap = {DATE_KEY: appKeyData, ACCOUNT_TYPE: UFUtils.xPortal};
-      if (auth.isNotEmpty) jsonMap['authorization'] = "bearer $auth";
+      if (auth.isNotEmpty) jsonMap['authorization'] = "Bearer $auth";
       print("Headers ----------- ${jsonMap}");
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(jsonMap);
       final encrypted = encrypter.encrypt(randomString, iv: iv);
-      final result = {
-        SEK: hex.encode(encrypted.bytes),
-        HASH: hex.encode(key),
-        DEVICE_TYPE_KEY: 'android',
-      };
+
+      final result = UFUtils.applyEncryption
+        ? {
+            SEK: hex.encode(encrypted.bytes),
+            HASH: hex.encode(key),
+            DEVICE_TYPE_KEY: 'android',
+          } : jsonMap;
       return result;
     } catch (e) {
       print(e);

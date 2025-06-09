@@ -5,6 +5,14 @@ class TextHelper {
   /// Return double  textSize of a text and default textSize is [UFUTextSize.heading4]
   static double getTextSize(UFUTextSize textSize) {
     switch (textSize) {
+      case UFUTextSize.size30:
+        return 30;
+      case UFUTextSize.size28:
+        return 28;
+      case UFUTextSize.size26:
+        return 26;
+      case UFUTextSize.size24:
+        return 24;
       case UFUTextSize.heading1:
         return 20;
       case UFUTextSize.heading2:
@@ -17,10 +25,6 @@ class TextHelper {
         return 12;
       case UFUTextSize.heading6:
         return 11;
-      case UFUTextSize.size30:
-        return 30;
-      case UFUTextSize.size28:
-        return 28;
       default:
         return 14;
     }

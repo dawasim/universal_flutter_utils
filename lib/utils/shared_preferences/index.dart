@@ -4,7 +4,6 @@ class UFPrefUtils {
 
   final String isLoggedIn = 'isLoggedIn';
   String authToken = 'authToken';
-  String refreshToken = 'refreshToken';
   String selectedLanguage = 'selectedLanguage';
   String rememberMeData = 'rememberMeData';
   String userData = 'userData';
@@ -20,12 +19,6 @@ class UFPrefUtils {
       }
     }
   }
-
-  Future<void> clearAuthToken() async {
-    SharedPreferences mStorage = await getStorage();
-    mStorage.remove(authToken);
-  }
-
 
   Future<void> writeString(String key, String value) async {
     SharedPreferences mStorage = await getStorage();
@@ -60,11 +53,6 @@ class UFPrefUtils {
   Future<String> readAuthToken() async {
     SharedPreferences mStorage = await getStorage();
     return await mStorage.getString(authToken) ?? '';
-  }
-
-  Future<String> readRefereshToken() async {
-    SharedPreferences mStorage = await getStorage();
-    return await mStorage.getString(refreshToken) ?? '';
   }
 
   Future<String> readSelectedLanguage() async {

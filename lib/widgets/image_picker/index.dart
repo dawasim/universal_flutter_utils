@@ -117,13 +117,13 @@ class UFUImagePicker {
     ShowUFULoader();
     List<XFile> fileList = await UFUtils.picker.selectImageFromGallery();
     Get.back();
-    return fileList.first.path;
+    return fileList.firstOrNull?.path;
   }
 
   static Future<String?> pickImageFromCamera() async {
     ShowUFULoader();
     List<XFile> fileList = await UFUtils.picker.captureImageFromCamera();
     Get.back();
-    return fileList.first.path;
+    return fileList.firstOrNull?.path;
   }
 }

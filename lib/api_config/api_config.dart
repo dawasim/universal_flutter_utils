@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -37,7 +38,7 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> post(String path, {Map<String, dynamic>? data}) async {
     try {
-      final body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+      final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
       final response = await _dio.post(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
@@ -48,9 +49,8 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {
     try {
-      final body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
-      final response =
-          await _dio.delete(UFUtils.baseUrl + path, data: body);
+      final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
+      final response = await _dio.delete(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
       rethrow;
@@ -60,7 +60,7 @@ class UFApiConfig {
   // Unified Put request
   Future<dynamic> put(String path, {Map<String, dynamic>? data}) async {
     try {
-      final body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+      final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
       final response = await _dio.put(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
