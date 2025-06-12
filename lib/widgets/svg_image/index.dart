@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../utils/index.dart';
+
 class UFUSvgImage extends StatelessWidget {
   const UFUSvgImage({
     super.key,
@@ -21,7 +23,10 @@ class UFUSvgImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWithRtl = isRtl ?? Directionality.of(context) == TextDirection.rtl;
+
+    bool isWithRtl = isRtl ?? Directionality.of(context) == TextDirection.rtl;
+
+    if(Directionality.of(context) == TextDirection.rtl && isRtl == true) isWithRtl = false;
 
     return Transform(
       alignment: Alignment.center,

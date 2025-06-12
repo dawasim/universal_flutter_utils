@@ -20,6 +20,7 @@ import '../common/methods/index.dart';
 import '../common/services/firebase.dart';
 import '../socket_config/socket_config.dart';
 import 'date_time/index.dart';
+import 'direction_helper.dart';
 import 'file_picker/index.dart';
 import 'form_validator/index.dart';
 import 'permissions/index.dart';
@@ -37,7 +38,7 @@ class UFUtils {
   static String startDestination = "";
   
   static String fontFamily = "";
-  static bool isRtl = Directionality.of(Get.context!) == TextDirection.RTL;
+  static bool isRtl = DirectionHelper.isRtl;
   static Gradient buttonGradient = LinearGradient(colors: [AppTheme.themeColors.primary, AppTheme.themeColors.primary]);
   
   static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
