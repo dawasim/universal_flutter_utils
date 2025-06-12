@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subTitleColor,
+ShowUFUConfirmationDialog({required String? title, String? subTitle,
   String? prefixBtnText = 'Cancel', String? suffixBtnText = '', VoidCallback? onTapPrefix,
   VoidCallback? onTapSuffix, IconData? icon, double? iconSize,  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
   bool disableButtons = false, Widget? suffixBtnIcon, Widget? content,
@@ -11,7 +11,6 @@ ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subT
     UFUConfirmationDialog(
       title: title,
       subTitle: subTitle,
-      subTitleColor: subTitleColor,
       prefixBtnText: prefixBtnText,
       suffixBtnText: suffixBtnText,
       onTapPrefix: onTapPrefix,
@@ -40,7 +39,6 @@ class UFUConfirmationDialog extends StatefulWidget {
     super.key,
     required this.title,
     this.subTitle,
-    this.subTitleColor,
     this.prefixBtnText = 'Cancel',
     this.suffixBtnText = '',
     this.onTapPrefix,
@@ -60,9 +58,6 @@ class UFUConfirmationDialog extends StatefulWidget {
 
   /// It can be used to set subtitle, this is an optional field
   final String? subTitle;
-
-  /// It can be used to set subtitle, this is an optional field
-  final Color? subTitleColor;
 
   /// It can be used to set text of the button, one on the left side
   /// default value is [CANCEL]
@@ -167,7 +162,7 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                             child: UFUText(
                               text: widget.subTitle!,
                               textSize: UFUTextSize.heading4,
-                              textColor: widget.subTitleColor ?? AppTheme.themeColors.text,
+                              textColor: AppTheme.themeColors.themeBlue,
                               height: 1.5,
                             ),
                           ),

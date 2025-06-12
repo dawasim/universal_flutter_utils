@@ -15,7 +15,6 @@ class UFUInputBox extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     this.hintText,
-    this.hintFontColor,
     this.prefixChild,
     this.suffixChild,
     this.validator,
@@ -37,7 +36,6 @@ class UFUInputBox extends StatefulWidget {
     this.cancelButtonColor,
     this.cancelButtonSize,
     this.padding,
-    this.errorTextPadding,
     this.textSize = UFUTextSize.heading4,
     this.hintTextSize,
     this.fontWeight,
@@ -155,9 +153,6 @@ class UFUInputBox extends StatefulWidget {
   /// padding is used to adjust text field padding
   final EdgeInsets? padding;
 
-  /// padding is used to adjust text field padding
-  final EdgeInsets? errorTextPadding;
-
   /// textSize is used to adjust textField text size, default value is [UFUTextSize.heading4]
   final UFUTextSize textSize;
 
@@ -166,8 +161,6 @@ class UFUInputBox extends StatefulWidget {
   final FontWeight? fontWeight;
 
   final FontWeight? hintFontWeight;
-
-  final Color? hintFontColor;
 
   /// onTapSuffix will handle tap on suffix icon
   final VoidCallback? onTapSuffix;
@@ -424,18 +417,15 @@ class _UFUInputBoxState extends State<UFUInputBox> {
             : const SizedBox.shrink(),
         errorText.isEmpty || widget.type == UFUInputBoxType.searchbar
             ? const SizedBox.shrink()
-            : Padding(
-              padding: widget.errorTextPadding ?? EdgeInsets.zero,
-              child: Align(
-                        alignment: Alignment.topLeft,
-                        child: UFUText(
-              textAlign: TextAlign.start,
-              text: errorText,
-              textSize: UFUTextSize.heading5,
-              textColor: AppTheme.themeColors.red,
-                        ),
-                      ),
-            )
+            : Align(
+          alignment: Alignment.topLeft,
+          child: UFUText(
+            textAlign: TextAlign.start,
+            text: errorText,
+            textSize: UFUTextSize.heading5,
+            textColor: AppTheme.themeColors.red,
+          ),
+        )
       ],
     );
   }
@@ -450,19 +440,20 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           : widget.fillColor ?? AppTheme.themeColors.base,
       child: TextFormField(
         textCapitalization: widget.textCapitalization,
-        keyboardAppearance: MediaQuery.of(context).platformBrightness,
+        keyboardAppearance: MediaQuery
+            .of(context)
+            .platformBrightness,
         showCursor: widget.readOnly ? false : widget.showCursor ?? true,
         onChanged: (value) {
-          if (widget.debounceTime != null
-            && (widget.type == UFUInputBoxType.searchbar
-            || widget.type == UFUInputBoxType.searchbarWithoutBorder)) {
-            debounce(() => getOnChanged(value));
-          } else {
-            if (widget.debounceTime != null) {
-              debounce(() => getOnChanged(value));
-            } else {
+          if (widget.debounceTime != null &&
+              (widget.type == UFUInputBoxType.searchbar ||
+                  widget.type ==
+                      UFUInputBoxType.searchbarWithoutBorder)) {
+            debounce(() {
               getOnChanged(value);
-            }
+            });
+          } else {
+            getOnChanged(value);
           }
         },
         controller: showChips ? null : inputBoxController.controller,
@@ -526,7 +517,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           hintText: widget.hintText,
           floatingLabelAlignment: FloatingLabelAlignment.start,
           hintStyle: getStyle().copyWith(
-              color: widget.hintFontColor ?? AppTheme.themeColors.secondaryText,
+              color: AppTheme.themeColors.secondaryText,
               fontSize: typeToHintFontSize(),
               fontWeight: widget.hintFontWeight ?? FontWeight.w500,
               letterSpacing: 0

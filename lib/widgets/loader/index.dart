@@ -55,7 +55,7 @@ class UFULoader extends StatelessWidget {
             UFUText(
               text: text!,
               textSize: UFUTextSize.heading5,
-              textColor: AppTheme.themeColors.primary,
+              textColor: AppTheme.themeColors.tertiary,
             ),
         ],
       ),
