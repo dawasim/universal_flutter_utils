@@ -36,15 +36,46 @@ class UFApiConfig {
   }
 
   // Unified POST request
-  Future<dynamic> post(String path, {Map<String, dynamic>? data}) async {
+  Future<dynamic> post(String path, {Map<String, dynamic>? data, bool infiniteTimeout = false,}) async {
     try {
-      final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
+      // Backup current timeout settings
+      final originalConnectTimeout = _dio.options.connectTimeout;
+      final originalReceiveTimeout = _dio.options.receiveTimeout;
+
+      // Apply infinite timeout if requested
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = Duration.zero; // 0 = infinite
+        _dio.options.receiveTimeout = Duration.zero;
+      }
+
+      final body = UFUtils.applyEncryption
+          ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {})
+          : jsonEncode(data);
+
       final response = await _dio.post(UFUtils.baseUrl + path, data: body);
+
+      // Restore original timeout settings
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = originalConnectTimeout;
+        _dio.options.receiveTimeout = originalReceiveTimeout;
+      }
+
       return response.data;
     } catch (e) {
       rethrow;
     }
   }
+
+
+  // Future<dynamic> post(String path, {Map<String, dynamic>? data}) async {
+  //   try {
+  //     final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
+  //     final response = await _dio.post(UFUtils.baseUrl + path, data: body);
+  //     return response.data;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   // Unified POST request
   Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {

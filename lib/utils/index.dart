@@ -38,7 +38,7 @@ class UFUtils {
   static String startDestination = "";
   
   static String fontFamily = "";
-  static bool isRtl = DirectionHelper.isRtl;
+  static bool get isRtl => DirectionHelper.isRtl;
   static Gradient buttonGradient = LinearGradient(colors: [AppTheme.themeColors.primary, AppTheme.themeColors.primary]);
   
   static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
