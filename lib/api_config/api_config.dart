@@ -26,14 +26,49 @@ class UFApiConfig {
   }
 
   // Unified GET request
-  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters, bool infiniteTimeout = false}) async {
     try {
-      final response = await _dio.get(UFUtils.baseUrl + path, queryParameters: queryParameters);
+      // Backup current timeout settings
+      final originalConnectTimeout = _dio.options.connectTimeout;
+      final originalReceiveTimeout = _dio.options.receiveTimeout;
+
+      // Apply infinite timeout if requested
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = Duration.zero; // 0 = infinite
+        _dio.options.receiveTimeout = Duration.zero;
+      }
+
+      // Optional: apply encryption to query parameters
+      final encodedParams = UFUtils.applyEncryption
+          ? AESUtil.secKeyEncryptWithBodyAppKey(queryParameters ?? {})
+          : queryParameters;
+
+      final response = await _dio.get(
+        UFUtils.baseUrl + path,
+        queryParameters: encodedParams,
+      );
+
+      // Restore original timeout settings
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = originalConnectTimeout;
+        _dio.options.receiveTimeout = originalReceiveTimeout;
+      }
+
       return response.data;
     } catch (e) {
       rethrow;
     }
   }
+
+
+  // Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  //   try {
+  //     final response = await _dio.get(UFUtils.baseUrl + path, queryParameters: queryParameters);
+  //     return response.data;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   // Unified POST request
   Future<dynamic> post(String path, {Map<String, dynamic>? data, bool infiniteTimeout = false,}) async {
