@@ -24,16 +24,16 @@ class ErrorInterceptor extends Interceptor {
 
   Future<void> _handleError(DioException error, ErrorInterceptorHandler handler, VoidCallback retryCallback) async {
     print("$error");
-    String title = 'An Error Occurred';
-    String message = 'Something went wrong. Please try again.';
+    String title = 'an_error_occurred'.tr;
+    String message = 'something_went_wrong_try_again'.tr;
     bool showRetry = false;
 
     // Customize message and actions based on error type
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.receiveTimeout:
-        title = 'Request Timed Out';
-        message = 'It seems the server is taking too long to respond.';
+        title = 'request_timed_out'.tr;
+        message = 'it_seems_server_is_taking_too_long'.tr;
         showRetry = false;
         break;
       case DioExceptionType.badResponse:
@@ -42,13 +42,13 @@ class ErrorInterceptor extends Interceptor {
         debugPrint("${error.response?.data}");
         switch (statusCode) {
           case 401:
-            title = 'Unauthrizer Access';
+            title = 'unauthorized_access'.tr;
             message = fetchError(error.response?.data, statusCode);
             showRetry = false;
             break;
           case 400:
             final responseData = error.response?.data;
-            title = responseData.toString() ?? "Oops!!!";
+            title = responseData.toString() ?? "${"oops".tr}!!!";
             try {
               final decodedData = responseData != null
                 ? jsonDecode(responseData) as Map<String, dynamic>
@@ -56,8 +56,8 @@ class ErrorInterceptor extends Interceptor {
               message = decodedData != null
                 ? getFirstErrorMessage(decodedData,
                     () => fetchError(error.response?.data, statusCode))
-                  ?? "Something Went Wrong!"
-                : "Something Went Wrong!";
+                  ?? "something_went_wrong".tr
+                : "something_went_wrong".tr;
             } catch (e) {
               message = fetchError(error.response?.data, statusCode);
             }
@@ -68,17 +68,17 @@ class ErrorInterceptor extends Interceptor {
               print(error.response?.data);
               message = (error.response?.data?["errors"] as List).firstOrNull?["message"]
                 ?? error.response?.data?["message"]
-                ?? 'Server error: HTTP $statusCode';
+                ?? '${"server_error".tr} HTTP $statusCode';
               showRetry = false;
             } catch (e) {
-              message = "Something went wrong!";
+              message = "something_went_wrong".tr;
             }
 
             break;
         }
         break;
       case DioExceptionType.connectionError:
-        message = 'No internet connection.';
+        message = 'no_internet_connection'.tr;
         break;
       default:
         message = error.message ?? message;
@@ -94,11 +94,11 @@ class ErrorInterceptor extends Interceptor {
       final String btnText;
       if (message.contains("blocked")) {
         errorMessage = message;
-        btnText = "Ok";
-        mTitle = "Account Blocked";
+        btnText = "ok".tr;
+        mTitle = "account_blocked".tr;
       } else {
-        errorMessage = "Your session has expired! Please login again";
-        btnText = "Login";
+        errorMessage = "your_session_has_expired_please_login_again".tr;
+        btnText = "login".tr;
         mTitle = title;
       }
       if(UFUtils.isTokenExpiredVisible()) return;
@@ -144,9 +144,9 @@ class ErrorInterceptor extends Interceptor {
           ? errors.first["message"]
           : data?["message"];
 
-      return message is String ? message : 'Server error: HTTP $statusCode';
+      return message is String ? message : '${"server_error".tr} HTTP $statusCode';
     } catch (_) {
-      return "Something went wrong!";
+      return "something_went_wrong".tr;
     }
   }
 

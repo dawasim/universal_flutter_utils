@@ -45,7 +45,7 @@ class UFNotificationUtils {
         );
       }
 
-      handleNotificationTap?.call(jsonDecode(makeValidJson(message.data.toString())));
+      // handleNotificationTap?.call(jsonDecode(makeValidJson(message.data.toString())));
 
     });
 
