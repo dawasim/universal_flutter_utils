@@ -12,6 +12,7 @@ class ThemeColors {
   Color inverse;
   Color text;
   Color secondaryText;
+  Color hintText;
   Color success;
   Color warning;
   Color dimGray;
@@ -61,6 +62,7 @@ class ThemeColors {
     this.inverse = UFUColor.lightGray,
     this.text = UFUColor.black,
     this.secondaryText = UFUColor.gray,
+    this.hintText = UFUColor.gray.withAlpha(300),
     this.success = UFUColor.success,
     this.warning = UFUColor.warning,
     this.dimGray = UFUColor.dimGray,
@@ -111,6 +113,7 @@ class ThemeColors {
     this.inverse = UFUColor.lightGray,
     this.text = UFUColor.black,
     this.secondaryText = UFUColor.gray,
+    this.hintText = UFUColor.gray.withAlpha(300),
     this.success = UFUColor.success,
     this.warning = UFUColor.warning,
     this.dimGray = UFUColor.dimGray,

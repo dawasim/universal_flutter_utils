@@ -73,11 +73,11 @@ class TextHelper {
         return FontWeight.w400;
       case UFUFontWeight.medium:
         return FontWeight.w500;
-      case UFUFontWeight.bold:
+      case UFUFontWeight.semiBold:
         return FontWeight.w600;
-      default:
-        return FontWeight.w400;
-    }
+      case UFUFontWeight.bold:
+        return FontWeight.w700;
+      }
   }
 
   static TextStyle getTextStyle(Color? textColor, UFUFontWeight? fontWeight, UFUTextSize? textSize, double?  dynamicFontSize, UFUFontFamily? fontFamily,TextOverflow? overflow, double? height, double? letterSpacing,TextDecoration? textDecoration, FontStyle? fontStyle, Color? decorationColor) {

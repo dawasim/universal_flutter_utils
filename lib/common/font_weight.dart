@@ -8,7 +8,11 @@ enum UFUFontWeight {
   /// /// Set Font Weight 500
   medium,
 
-  ///  [UFUFontWeight.bold] is used to set fontWeight of a text widget
+  ///  [UFUFontWeight.semiBold] is used to set fontWeight of a text widget
   /// /// Set Font Weight 600
+  semiBold,
+
+  ///  [UFUFontWeight.bold] is used to set fontWeight of a text widget
+  /// /// Set Font Weight 700
   bold,
 }
