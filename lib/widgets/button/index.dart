@@ -22,6 +22,7 @@ class UFUButton extends StatelessWidget {
     this.isFlat = true,
     this.buttonRadius = UFUButtonRadius.roundSquare,
     this.radius,
+    this.bgColor,
     super.key,
   });
 
@@ -78,6 +79,8 @@ class UFUButton extends StatelessWidget {
 
   final double? radius;
 
+  final Color? bgColor;
+
   /// Return textSize by using button size and default size is [UFUTextSize.heading3].
   UFUTextSize getTextSize(UFUButtonSize size) {
     switch (size) {
@@ -89,7 +92,9 @@ class UFUButton extends StatelessWidget {
         return UFUTextSize.heading4;
       case UFUButtonSize.mediumWithIcon:
       case UFUButtonSize.extraSmall:
-        return (textSize != UFUTextSize.heading4) ? textSize ?? UFUTextSize.heading3 : UFUTextSize.heading3;
+        return (textSize != UFUTextSize.heading4)
+            ? textSize ?? UFUTextSize.heading3
+            : UFUTextSize.heading3;
       case UFUButtonSize.datePickerButton:
       case UFUButtonSize.size24:
         return UFUTextSize.heading5;
@@ -134,16 +139,18 @@ class UFUButton extends StatelessWidget {
         break;
     }
 
-    return disabled ? color.withValues(alpha:0.4) : color;
+    return disabled ? color.withValues(alpha: 0.4) : color;
   }
 
   /// Return Color  by using colorType and default color is [AppTheme.themeColors.primary] but for outline button color is [UFUColor.transparent].
   Color getButtonColor(UFUButtonColorType colorType) {
+
     if (type == UFUButtonType.outline) {
       return UFUColor.transparent;
     }
 
     Color color = AppTheme.themeColors.secondary;
+    if (bgColor != null) color = bgColor!;
 
     switch (colorType) {
       case UFUButtonColorType.primary:
@@ -189,9 +196,9 @@ class UFUButton extends StatelessWidget {
         break;
     }
 
-    color = color.withValues(alpha:opacity);
+    color = color.withValues(alpha: opacity);
 
-    return disabled ? color.withValues(alpha:0.4) : color;
+    return disabled ? color.withValues(alpha: 0.4) : color;
   }
 
   /// Return Color by using colorType and default color is [AppTheme.themeColors.primary].
@@ -205,13 +212,13 @@ class UFUButton extends StatelessWidget {
 
       case UFUButtonColorType.lightGray:
         return AppTheme.themeColors.inverse;
-      
+
       case UFUButtonColorType.base:
         return AppTheme.themeColors.base;
 
       case UFUButtonColorType.gradient:
         return AppTheme.themeColors.base;
-        
+
       default:
         return AppTheme.themeColors.primary;
     }
@@ -242,7 +249,7 @@ class UFUButton extends StatelessWidget {
 
       case UFUButtonSize.floatingButton:
         return 62;
-      
+
       case UFUButtonSize.size24:
         return 24;
 
@@ -255,17 +262,17 @@ class UFUButton extends StatelessWidget {
   Color getHighlightColor(UFUButtonColorType colorType) {
     switch (colorType) {
       case UFUButtonColorType.primary:
-        return AppTheme.themeColors.primary.withValues(alpha:0.2);
+        return AppTheme.themeColors.primary.withValues(alpha: 0.2);
       case UFUButtonColorType.tertiary:
-        return AppTheme.themeColors.tertiary.withValues(alpha:0.2);
+        return AppTheme.themeColors.tertiary.withValues(alpha: 0.2);
       case UFUButtonColorType.lightGray:
-        return AppTheme.themeColors.inverse.withValues(alpha:0.2);
+        return AppTheme.themeColors.inverse.withValues(alpha: 0.2);
       case UFUButtonColorType.lightBlue:
-        return AppTheme.themeColors.lightBlue.withValues(alpha:0.2);
+        return AppTheme.themeColors.lightBlue.withValues(alpha: 0.2);
       case UFUButtonColorType.secondary:
-        return AppTheme.themeColors.themeGreen.withValues(alpha:0.2);
+        return AppTheme.themeColors.themeGreen.withValues(alpha: 0.2);
       default:
-        return AppTheme.themeColors.primary.withValues(alpha:0.2);
+        return AppTheme.themeColors.primary.withValues(alpha: 0.2);
     }
   }
 
@@ -337,21 +344,15 @@ class UFUButton extends StatelessWidget {
         case UFUButtonSize.large:
         case UFUButtonSize.medium:
           return const BoxConstraints(
-            minWidth: 250.0,
-            maxWidth: UFUResponsiveDesign.maxButtonWidth
-          );
+              minWidth: 250.0, maxWidth: UFUResponsiveDesign.maxButtonWidth);
         case UFUButtonSize.small:
           return const BoxConstraints(
-            minWidth: 150.0,
-            maxWidth: UFUResponsiveDesign.maxButtonWidth
-          );
-        
-         case UFUButtonSize.size24:
+              minWidth: 150.0, maxWidth: UFUResponsiveDesign.maxButtonWidth);
+
+        case UFUButtonSize.size24:
           return const BoxConstraints(
-            minWidth: 60.0,
-            maxWidth: UFUResponsiveDesign.maxButtonWidth
-          );
-          
+              minWidth: 60.0, maxWidth: UFUResponsiveDesign.maxButtonWidth);
+
         case UFUButtonSize.datePickerButton:
         case UFUButtonSize.extraSmall:
           return const BoxConstraints(
@@ -408,10 +409,13 @@ class UFUButton extends StatelessWidget {
       color: Colors.transparent, //getButtonColor(colorType),
       child: Ink(
         decoration: BoxDecoration(
-          color: colorType == UFUButtonColorType.gradient ? null : getButtonColor(colorType),
-          gradient: colorType == UFUButtonColorType.gradient ? gradient ?? UFUtils.buttonGradient : null,
-          borderRadius: BorderRadius.circular(shapeRadius())
-        ),
+            color: colorType == UFUButtonColorType.gradient
+                ? null
+                : getButtonColor(colorType),
+            gradient: colorType == UFUButtonColorType.gradient
+                ? gradient ?? UFUtils.buttonGradient
+                : null,
+            borderRadius: BorderRadius.circular(shapeRadius())),
         child: InkWell(
           splashColor: Colors.transparent,
           onLongPress: onLongPress,
@@ -420,10 +424,15 @@ class UFUButton extends StatelessWidget {
           onTap: disabled ? null : onPressed,
           child: Container(
               width: width,
-              constraints: isFlat ? getConstraint() : getConstraintForFlatButton(),
+              constraints:
+                  isFlat ? getConstraint() : getConstraintForFlatButton(),
               height: getButtonHeight(size),
               padding: EdgeInsets.symmetric(
-                horizontal: (iconWidget == null && suffixIconWidget == null && text != null) ? 10 : 5),
+                  horizontal: (iconWidget == null &&
+                          suffixIconWidget == null &&
+                          text != null)
+                      ? 10
+                      : 5),
               child: getContainerData()),
         ),
       ),
@@ -442,8 +451,9 @@ class UFUButton extends StatelessWidget {
     if (iconWidget == null) return const SizedBox.shrink();
     return iconWidget!;
   }
-  Widget getSuffixIcon(){
-    if(suffixIconWidget == null) return const SizedBox.shrink();
+
+  Widget getSuffixIcon() {
+    if (suffixIconWidget == null) return const SizedBox.shrink();
     return suffixIconWidget!;
   }
 
@@ -473,13 +483,13 @@ class UFUButton extends StatelessWidget {
           : const SizedBox.shrink(),
       getText(),
       (suffixIconWidget != null && text != null)
-        ? const SizedBox(
+          ? const SizedBox(
               width: 4,
-          )
-        : const SizedBox.shrink(),
+            )
+          : const SizedBox.shrink(),
       getSuffixIcon(),
     ];
-    
+
     return FittedBox(
       fit: BoxFit.scaleDown,
       child: Row(

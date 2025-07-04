@@ -615,7 +615,7 @@ class _UFUInputBoxState extends State<UFUInputBox> {
 
     switch (widget.type) {
       case UFUInputBoxType.withoutLabel:
-        return 16;
+        return widget.padding?.vertical ?? 16;
       case UFUInputBoxType.composeEmail:
         return 15;
       default:
