@@ -150,7 +150,7 @@ class UFUButton extends StatelessWidget {
     }
 
     Color color = AppTheme.themeColors.secondary;
-    if (bgColor != null) color = bgColor!;
+    if (bgColor != null) return bgColor!;
 
     switch (colorType) {
       case UFUButtonColorType.primary:
