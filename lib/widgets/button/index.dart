@@ -107,6 +107,8 @@ class UFUButton extends StatelessWidget {
   Color getTextColor(UFUButtonColorType colorType) {
     Color color = AppTheme.themeColors.base;
 
+    if(textColor != null) return textColor!;
+
     switch (colorType) {
       case UFUButtonColorType.primary:
         color = (type == UFUButtonType.outline)
