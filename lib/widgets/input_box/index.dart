@@ -562,11 +562,9 @@ class _UFUInputBoxState extends State<UFUInputBox> {
             : BorderRadius.circular(14.0),
         borderSide: BorderSide(
             width: 0.8,
-            color: widget.borderColor ??
-                (errorText.isNotEmpty &&
-                        widget.type != UFUInputBoxType.searchbar
-                    ? AppTheme.themeColors.red.withValues(alpha: 0.4)
-                    : AppTheme.themeColors.dimGray)),
+            color: errorText.isNotEmpty
+                ? AppTheme.themeColors.red.withValues(alpha: 0.4)
+                : (widget.borderColor ?? AppTheme.themeColors.dimGray)),
       );
     }
   }
