@@ -36,6 +36,7 @@ class UFUtils {
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
   static String startDestination = "";
+  static Function()? refreshToken;
   
   static String fontFamily = "";
   static bool get isRtl => DirectionHelper.isRtl;

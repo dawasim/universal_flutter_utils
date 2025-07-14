@@ -66,9 +66,10 @@ class ErrorInterceptor extends Interceptor {
           default:
             try {
               print(error.response?.data);
-              message = (error.response?.data?["errors"] as List).firstOrNull?["message"]
-                ?? error.response?.data?["message"]
-                ?? '${"server_error".tr} HTTP $statusCode';
+              message = fetchError(error.response?.data, statusCode);
+              // message = (error.response?.data?["errors"] as List).firstOrNull?["message"]
+              //   ?? error.response?.data?["message"]
+              //   ?? '${"server_error".tr} HTTP $statusCode';
               showRetry = false;
             } catch (e) {
               message = "something_went_wrong".tr;
