@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +14,6 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
 
-import '../../models/contact.dart';
 import 'audio_file_handeling/index.dart';
 
 class UFFilePickerUtil {
@@ -77,7 +75,7 @@ class UFFilePickerUtil {
         multiple: selectMultiple,
       );
       return value;
-    } catch (e, stacktrace) {
+    } catch (e, _) {
       rethrow;
     }
 
@@ -208,7 +206,7 @@ class UFFilePickerUtil {
         files.clear();
         files.addAll(filesX);
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       rethrow;
     }
 

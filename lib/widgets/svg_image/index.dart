@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../utils/index.dart';
-
 class UFUSvgImage extends StatelessWidget {
   const UFUSvgImage({
     super.key,

@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class UFUToast {
   static DateTime? _lastShownTime;

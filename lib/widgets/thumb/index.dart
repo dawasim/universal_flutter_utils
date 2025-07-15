@@ -124,8 +124,8 @@ class UFUThumb extends StatelessWidget {
         return 'image.png';
       case UFUThumbType.icon:
         return 'File Name';
-      default:
-        return 'Folder Name';
+      // default:
+      //   return 'Folder Name';
     }
   }
 
@@ -137,8 +137,8 @@ class UFUThumb extends StatelessWidget {
         return getImage();
       case UFUThumbType.icon:
         return getIcon();
-      default:
-        return getFolder();
+      // default:
+      //   return getFolder();
     }
   }
 

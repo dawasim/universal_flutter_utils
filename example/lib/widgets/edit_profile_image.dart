@@ -141,7 +141,7 @@ class EditProfileImageController extends GetxController {
 
   Future<void> loadUserProfile() async {
     String? token = await UFUtils.preferences.readAuthToken();
-    print(token);
+    debugPrint(token);
   }
 
   void toggleIsEdit() => isEdit.value = !isEdit.value;

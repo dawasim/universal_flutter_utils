@@ -193,9 +193,9 @@ class UFUButton extends StatelessWidget {
         color = AppTheme.themeColors.base;
         break;
 
-      default:
-        color = AppTheme.themeColors.themeGreen;
-        break;
+      // default:
+      //   color = AppTheme.themeColors.themeGreen;
+      //   break;
     }
 
     color = color.withValues(alpha: opacity);
@@ -255,8 +255,8 @@ class UFUButton extends StatelessWidget {
       case UFUButtonSize.size24:
         return 24;
 
-      default:
-        return 52.0;
+      // default:
+      //   return 52.0;
     }
   }
 
@@ -376,10 +376,10 @@ class UFUButton extends StatelessWidget {
             minWidth: 62.0,
           );
 
-        default:
-          return BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width,
-          );
+        // default:
+        //   return BoxConstraints(
+        //     minWidth: MediaQuery.of(context).size.width,
+        //   );
       }
     }
 

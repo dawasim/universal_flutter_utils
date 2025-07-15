@@ -27,8 +27,8 @@ class UFUResponsiveBuilder extends StatelessWidget {
       case DeviceType.desktop:
         return desktop ?? tablet ?? const SizedBox();
 
-      default:
-        return mobile ?? const SizedBox();
+      // default:
+      //   return mobile ?? const SizedBox();
     }
   }
 }

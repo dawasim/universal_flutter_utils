@@ -21,8 +21,8 @@ class UFUSocialLogin {
     return UFUSocialLoginPlatform.instance.getPlatformVersion();
   }
 
-  static const _successConst = "success";
-  static const _failureConst = "failure";
+  // static const _successConst = "success";
+  // static const _failureConst = "failure";
 
 
   Future<UserCredential?> signInWithGoogle() async {
@@ -151,7 +151,7 @@ class UFUSocialLogin {
       switch (res.status) {
         case FacebookLoginStatus.success:
         // Logged In
-          final accessToken = res.accessToken?.token;
+        //   final accessToken = res.accessToken?.token;
           final profile = await fb.getUserProfile();
           final name = profile?.name;
           final userID = profile?.userId;
@@ -171,11 +171,9 @@ class UFUSocialLogin {
         case FacebookLoginStatus.cancel:
         // User cancel log in
           throw Exception("Login has been cancelled");
-          return null;
         case FacebookLoginStatus.error:
         // Log in failed
           throw Exception("${FacebookLoginStatus.error}");
-          return null;
       }
     } catch (e) {
       rethrow;
