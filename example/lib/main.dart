@@ -23,24 +23,18 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     UFUtils.appName = "Universal Flutter Utils Demo";
-    // UFUtils.baseUrl = "https://dummyjson.com/";
-    UFUtils.baseUrl = "http://aapkedukan.in:8000/api/v1/";
-    UFUtils.preferences.writeString(UFUtils.preferences.authToken, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjdhNWExZDIxYWFhNDU2OTVhMTI0OWUxIiwicGhvbmVfbm8iOiIrOTExMTExMTExMTExIiwiaXNfdmVyaWZpZWQiOmZhbHNlfQ.k7XBFdPZx7KFVoVbErKLMBrHVJKDoX_QoB7Hi6sLw0I");
-    AppTheme.setThemeColors(
-      primary: Color(0xff9381ff),
-      secondary: Color(0xffb8b8ff),
-      tertiary: Color(0xffffd8be),
-    );
+    UFUtils.baseUrl = "https://dummyjson.com/";
+
+    AppTheme.themeColors.primary = Color(0xff9381ff);
+    AppTheme.themeColors.secondary = Color(0xffb8b8ff);
+    AppTheme.themeColors.tertiary = Color(0xffffd8be);
   }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: UFUtils.appName,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true),
       home: const MyHomePage(),
     );
   }
