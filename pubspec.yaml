@@ -1,8 +1,11 @@
 name: universal_flutter_utils
-description: "A new Flutter project."
+
+description: "A powerful, all-in-one Flutter utilities and widgets package to speed up development and keep your code clean."
 version: 0.0.1
+
 homepage: https://github.com/dawasim/universal_flutter_utils/blob/main/README.md
 repository: https://github.com/dawasim/universal_flutter_utils
+
 license: MIT
 
 environment:
