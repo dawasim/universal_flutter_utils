@@ -64,6 +64,7 @@ export 'thumb/thumb_size.dart';
 export 'thumb/type.dart';
 export 'dashed_border/index.dart';
 export 'image_picker/index.dart';
+export 'file_picker/index.dart';
 export 'shimmer/index.dart';
 export 'video_player/index.dart';
 export 'video_player/controller.dart';
