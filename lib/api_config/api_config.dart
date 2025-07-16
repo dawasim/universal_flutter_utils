@@ -86,7 +86,7 @@ class UFApiConfig {
       final body = UFUtils.applyEncryption
           ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {})
           : jsonEncode(data);
-
+      
       final response = await _dio.post(UFUtils.baseUrl + path, data: body);
 
       // Restore original timeout settings
