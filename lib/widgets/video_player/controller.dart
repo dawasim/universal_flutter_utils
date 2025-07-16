@@ -1,6 +1,5 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:video_player/video_player.dart';

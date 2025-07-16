@@ -13,6 +13,8 @@ class TextHelper {
         return 26;
       case UFUTextSize.size24:
         return 24;
+      case UFUTextSize.size22:
+        return 22;
       case UFUTextSize.heading1:
         return 20;
       case UFUTextSize.heading2:
@@ -25,8 +27,8 @@ class TextHelper {
         return 12;
       case UFUTextSize.heading6:
         return 11;
-      default:
-        return 14;
+      // default:
+      //   return 14;
     }
   }
 
@@ -35,10 +37,8 @@ class TextHelper {
     switch (fontFamily) {
       case UFUFontFamily.productSans:
         return getRobotoFontFamily(fontWeight);
-      case UFUFontFamily.productSans:
-        return getMontserratFontFamily(fontWeight);
-      default:
-        return 'productSans';
+      // default:
+      //   return 'productSans';
     }
   }
 

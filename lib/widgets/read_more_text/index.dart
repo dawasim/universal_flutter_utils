@@ -249,8 +249,8 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
               );
             }
             break;
-          default:
-            throw Exception('TrimMode type: ${widget.trimMode} is not supported');
+          // default:
+          //   throw Exception('TrimMode type: ${widget.trimMode} is not supported');
         }
 
         return RichText(

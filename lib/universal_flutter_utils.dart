@@ -7,4 +7,3 @@ export 'theme/index.dart';
 export 'models/index.dart';
 export 'extensions/index.dart';
 export 'socket_config/socket_config.dart';
-export 'socket_config/socket_config.dart';

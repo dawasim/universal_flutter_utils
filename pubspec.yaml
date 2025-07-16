@@ -1,7 +1,11 @@
 name: universal_flutter_utils
-description: "A new Flutter project."
-version: 0.0.1
-homepage:
+
+description: "A powerful, all-in-one Flutter utilities and widgets package to speed up development and keep your code clean."
+version: 0.0.2
+
+homepage: https://github.com/dawasim/universal_flutter_utils/blob/main/README.md
+
+license: MIT
 
 environment:
   sdk: ^3.5.3
@@ -45,19 +49,22 @@ dependencies:
 
   encrypt: ^5.0.3
   convert: ^3.1.2
+  crypto: ^3.0.6
+  path: ^1.9.1
+  html: ^0.15.6
 
   # Push Notifications
-  firebase_messaging: ^15.2.5
-  flutter_local_notifications: ^19.0.0
+  firebase_messaging: ^15.2.7
+  flutter_local_notifications: ^19.3.0
   flutter_app_badge_control: ^0.0.2
 
-  firebase_core: ^3.13.0
-  firebase_auth: ^5.5.2
+  firebase_core: ^3.14.0
+  firebase_auth: ^5.6.0
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^7.0.1
   flutter_login_facebook: ^2.0.1
   plugin_platform_interface: ^2.0.2
-  firebase_crashlytics: ^4.3.5
+  firebase_crashlytics: ^4.3.9
 
 dev_dependencies:
   flutter_test:
@@ -91,34 +98,6 @@ flutter:
     - assets/folder.svg
     - assets/images/default_image.png
 
-  fonts:
-    - family: RobotoRegular
-      fonts:
-        - asset: fonts/Roboto-Regular.ttf
-
-    - family: RobotoMedium
-      fonts:
-        - asset: fonts/Roboto-Medium.ttf
-
-    - family: RobotoBold
-      fonts:
-        - asset: fonts/Roboto-Bold.ttf
-
-    - family: MontserratRegular
-      fonts:
-        - asset: fonts/Montserrat-Regular.ttf
-
-    - family: MontserratMedium
-      fonts:
-        - asset: fonts/Montserrat-Medium.ttf
-
-    - family: ProductSansRegular
-      fonts:
-        - asset: fonts/product_sans_regular.ttf
-
-    - family: ProductSansBold
-      fonts:
-        - asset: fonts/product_sans_bold.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

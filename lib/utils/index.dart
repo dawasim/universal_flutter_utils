@@ -18,7 +18,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../common/methods/index.dart';
 import '../common/services/firebase.dart';
-import '../socket_config/socket_config.dart';
 import 'date_time/index.dart';
 import 'direction_helper.dart';
 import 'file_picker/index.dart';

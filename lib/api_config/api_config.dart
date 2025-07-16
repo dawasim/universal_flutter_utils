@@ -157,7 +157,7 @@ class UFApiConfig {
         data: formData,
         options: Options(
           headers: {
-            'authorization': 'bearer ${token ?? ""}',
+            'authorization': 'bearer $token',
             "Content-Type": "multipart/form-data",
             "x-portal": "user",
           },

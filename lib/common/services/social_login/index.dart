@@ -4,14 +4,12 @@ import 'dart:math' show Random;
 
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-import 'platform_interface.dart';
 
 class UFUSocialLogin {
   // Future<void> iniFirebase() async {
@@ -22,8 +20,8 @@ class UFUSocialLogin {
     return UFUSocialLoginPlatform.instance.getPlatformVersion();
   }
 
-  static const _successConst = "success";
-  static const _failureConst = "failure";
+  // static const _successConst = "success";
+  // static const _failureConst = "failure";
 
 
   Future<UserCredential?> signInWithGoogle() async {
@@ -152,7 +150,7 @@ class UFUSocialLogin {
       switch (res.status) {
         case FacebookLoginStatus.success:
         // Logged In
-          final accessToken = res.accessToken?.token;
+        //   final accessToken = res.accessToken?.token;
           final profile = await fb.getUserProfile();
           final name = profile?.name;
           final userID = profile?.userId;
@@ -172,11 +170,9 @@ class UFUSocialLogin {
         case FacebookLoginStatus.cancel:
         // User cancel log in
           throw Exception("Login has been cancelled");
-          return null;
         case FacebookLoginStatus.error:
         // Log in failed
           throw Exception("${FacebookLoginStatus.error}");
-          return null;
       }
     } catch (e) {
       rethrow;

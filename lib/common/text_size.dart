@@ -24,6 +24,10 @@ enum UFUTextSize {
   /// Font Size - 20
   heading1,
 
+  ///  [UFUTextSize.size22] is used to set textSize of a text widget
+  /// Font Size - 22
+  size22,
+
   ///  [UFUTextSize.size24] is used to set textSize of a text widget
   /// Font Size - 24
   size24,

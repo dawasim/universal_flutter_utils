@@ -54,8 +54,8 @@ class UFUPopUpBuilder extends StatelessWidget {
             ),
           ),
         );
-      default:
-        return popOverChild;
+      // default:
+      //   return popOverChild;
     }
   }
 }

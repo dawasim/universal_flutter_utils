@@ -26,7 +26,7 @@ class ErrorInterceptor extends Interceptor {
     print("$error");
     String title = 'an_error_occurred'.tr;
     String message = 'something_went_wrong_try_again'.tr;
-    bool showRetry = false;
+    // bool showRetry = false;
 
     // Customize message and actions based on error type
     switch (error.type) {
@@ -34,7 +34,6 @@ class ErrorInterceptor extends Interceptor {
       case DioExceptionType.receiveTimeout:
         title = 'request_timed_out'.tr;
         message = 'it_seems_server_is_taking_too_long'.tr;
-        showRetry = false;
         break;
       case DioExceptionType.badResponse:
         // Handle server errors (like 4xx and 5xx)
@@ -44,11 +43,10 @@ class ErrorInterceptor extends Interceptor {
           case 401:
             title = 'unauthorized_access'.tr;
             message = fetchError(error.response?.data, statusCode);
-            showRetry = false;
             break;
           case 400:
             final responseData = error.response?.data;
-            title = responseData.toString() ?? "${"oops".tr}!!!";
+            title = responseData.toString();
             try {
               final decodedData = responseData != null
                 ? jsonDecode(responseData) as Map<String, dynamic>
@@ -61,7 +59,6 @@ class ErrorInterceptor extends Interceptor {
             } catch (e) {
               message = fetchError(error.response?.data, statusCode);
             }
-            showRetry = false;
             break;
           default:
             try {
@@ -70,7 +67,6 @@ class ErrorInterceptor extends Interceptor {
               // message = (error.response?.data?["errors"] as List).firstOrNull?["message"]
               //   ?? error.response?.data?["message"]
               //   ?? '${"server_error".tr} HTTP $statusCode';
-              showRetry = false;
             } catch (e) {
               message = "something_went_wrong".tr;
             }
@@ -83,7 +79,6 @@ class ErrorInterceptor extends Interceptor {
         break;
       default:
         message = error.message ?? message;
-        showRetry = false;
         break;
     }
 
@@ -168,6 +163,7 @@ class ErrorInterceptor extends Interceptor {
     } catch (e) {
       callback.call();
     }
+    return null;
   }
 
   Future<dynamic> _retryRequest(RequestOptions requestOptions) async {
