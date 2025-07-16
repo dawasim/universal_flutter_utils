@@ -62,7 +62,8 @@ class UFUInputBox extends StatefulWidget {
       this.textCapitalization = TextCapitalization.sentences,
       this.borderRadius,
       this.textInputAction,
-      super.key});
+      super.key,
+      this.onFieldSubmitted, this.onTapOutside, this.onTapUpOutside});
 
   /// It is required to add label of a inputBox.
   final String? label;
@@ -212,6 +213,12 @@ class UFUInputBox extends StatefulWidget {
   final double? borderRadius;
 
   final TextInputAction? textInputAction;
+
+  final Function(String value)? onFieldSubmitted;
+
+  final TapRegionCallback? onTapOutside;
+
+  final TapRegionUpCallback? onTapUpOutside;
 
   @override
   _UFUInputBoxState createState() => _UFUInputBoxState();
@@ -540,9 +547,11 @@ class _UFUInputBoxState extends State<UFUInputBox> {
           prefixIcon: getPrefixChild(),
           suffixIcon: getSuffixChild(),
           suffixIconConstraints: const BoxConstraints(maxHeight: 40),
-
         ),
         inputFormatters: widget.inputFormatters,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        onTapOutside: widget.onTapOutside,
+        onTapUpOutside: widget.onTapUpOutside,
       ),
     );
   }
@@ -558,8 +567,8 @@ class _UFUInputBoxState extends State<UFUInputBox> {
         borderRadius: (widget.borderRadius != null)
             ? BorderRadius.circular(widget.borderRadius!)
             : (widget.type == UFUInputBoxType.searchbar)
-            ? BorderRadius.circular(12.0)
-            : BorderRadius.circular(14.0),
+                ? BorderRadius.circular(12.0)
+                : BorderRadius.circular(14.0),
         borderSide: BorderSide(
             width: 0.8,
             color: errorText.isNotEmpty
@@ -750,7 +759,6 @@ class _UFUInputBoxState extends State<UFUInputBox> {
     });
     return errorText.isEmpty ? null : errorText;
   }
-
 
   double typeToHintFontSize() {
     return widget.hintTextSize ??

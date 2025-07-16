@@ -100,7 +100,7 @@ class ErrorInterceptor extends Interceptor {
       if(UFUtils.isTokenExpiredVisible()) return;
 
       if(error.response?.realUri.path.contains("logout") ?? false) {
-        Get.offAndToNamed(UFUtils.startDestination);
+        Get.offAllNamed(UFUtils.startDestination);
         return;
       }
 
@@ -118,7 +118,7 @@ class ErrorInterceptor extends Interceptor {
           },
           onTapPrefix: () async {
             if (UFUtils.startDestination.isNotEmpty) {
-              Get.offAndToNamed(UFUtils.startDestination);
+              Get.offAllNamed(UFUtils.startDestination);
             } else {
               Get.back();
             }
