@@ -418,4 +418,21 @@ class UFUtils {
       return "${appLibraryDirectory.path}/LocalDatabase/$dataBaseName";
     }
   }
+
+  static String formatCardNumber(String input) {
+    // Remove all non-digit characters
+    final digitsOnly = input.replaceAll(RegExp(r'\D'), '');
+    final buffer = StringBuffer();
+
+    // Add space after every 4 digits (except at the end)
+    for (int i = 0; i < digitsOnly.length; i++) {
+      buffer.write(digitsOnly[i]);
+
+      if ((i + 1) % 4 == 0 && i + 1 != digitsOnly.length) {
+        buffer.write(' ');
+      }
+    }
+
+    return buffer.toString();
+  }
 }

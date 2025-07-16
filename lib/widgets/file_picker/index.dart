@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-class UFUImagePicker {
-  static Future<String?> show({primary, Color? bgColor}) async {
+class UFUFilePicker {
+  static Future<String?> show({primary, Color? bgColor, List<String>? allowedExtensions}) async {
     return await ShowUFUBottomSheet(
     child: (controller) => Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -24,7 +24,7 @@ class UFUImagePicker {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const UFUText(
-                    text: "Upload Photo",
+                    text: "Select File",
                     textSize: UFUTextSize.heading3,
                     fontWeight: UFUFontWeight.medium,
                     // fontFamily: UFUFontFamily.productSans,
@@ -67,7 +67,7 @@ class UFUImagePicker {
                       height: 100,
                       child: UFUIconButton(
                         onTap: () async {
-                          String? filepath = await pickImageFromGallery();
+                          String? filepath = await pickImageFromDocuments(allowedExtensions: allowedExtensions);
                           Get.back(result: filepath);
                         },
                         iconSize: 40,
@@ -97,7 +97,7 @@ class UFUImagePicker {
                   Expanded(
                     flex: 1,
                     child: UFUText(
-                      text: "Gallery",
+                      text: "Documents",
                       textSize: UFUTextSize.heading4,
                       // fontFamily: UFUFontFamily.productSans,
                     ),
@@ -113,11 +113,11 @@ class UFUImagePicker {
     ));
   }
 
-  static Future<String?> pickImageFromGallery() async {
+  static Future<String?> pickImageFromDocuments({List<String>? allowedExtensions}) async {
     ShowUFULoader();
-    List<XFile> fileList = await UFUtils.picker.selectImageFromGallery();
+    String? document = await UFUtils.picker.selectDocument(allowedExtensions: allowedExtensions);
     Get.back();
-    return fileList.firstOrNull?.path;
+    return document;
   }
 
   static Future<String?> pickImageFromCamera() async {
