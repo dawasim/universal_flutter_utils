@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UFPrefUtils {
@@ -18,6 +19,20 @@ class UFPrefUtils {
       if (element != rememberMeData) {
         mStorage.remove(element);
       }
+    }
+  }
+
+  Future<void> clearPrefExcept({List<String>? keysToKeep}) async {
+    SharedPreferences mStorage = await getStorage();
+    Set<String>? allKeys = mStorage.getKeys();
+
+    Set<String> keysToRemove = (keysToKeep?.isNotEmpty ?? false)
+        ? allKeys.difference(keysToKeep!.toSet())
+        : allKeys;
+
+    for (final key in keysToRemove) {
+      debugPrint('Removing key: $key');
+      mStorage.remove(key);
     }
   }
 
