@@ -39,9 +39,11 @@ class UFApiConfig {
       }
 
       // Optional: apply encryption to query parameters
-      final encodedParams = UFUtils.applyEncryption
-          ? AESUtil.secKeyEncryptWithBodyAppKey(queryParameters ?? {})
-          : queryParameters;
+      // final encodedParams = UFUtils.applyEncryption
+      //     ? AESUtil.secKeyEncryptWithBodyAppKey(queryParameters ?? {})
+      //     : queryParameters;
+
+      final encodedParams = queryParameters;
 
       final uri = Uri.parse(UFUtils.baseUrl + path).replace(queryParameters: encodedParams);
       print('Request URL: $uri');

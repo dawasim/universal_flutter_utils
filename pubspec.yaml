@@ -53,6 +53,9 @@ dependencies:
   path: ^1.9.1
   html: ^0.15.6
 
+  #   Biometric Recognition
+  local_auth: ^2.3.0
+
   # Push Notifications
   firebase_messaging: ^15.2.7
   flutter_local_notifications: ^19.3.0

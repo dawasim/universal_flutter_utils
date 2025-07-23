@@ -2,6 +2,7 @@ library universal_flutter_utils;
 
 export 'common/index.dart';
 export 'utils/index.dart';
+export 'utils/biometric_recognition/index.dart';
 export 'widgets/index.dart';
 export 'theme/index.dart';
 export 'models/index.dart';
