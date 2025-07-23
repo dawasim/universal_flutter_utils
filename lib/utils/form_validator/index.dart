@@ -2,7 +2,8 @@ import 'package:get/get.dart';
 
 class FormValidator {
 
-  static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) {
+  static String? emailValidator(String? text, {bool isRequired = true, String field = "Email"}) {
+    final value = text?.trim();
     if (isRequired && (value == null || value.isEmpty)) {
       return '$field is required';
     }
@@ -15,7 +16,8 @@ class FormValidator {
     return null;
   }
 
-  static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) {
+  static String? passwordValidator(String? text, {bool isRequired = true, String field = "Password"}) {
+    final value = text?.trim();
     // Check if the password is required and empty
     if (isRequired && (value == null || value.isEmpty)) {
       return '$field is required';
@@ -54,7 +56,9 @@ class FormValidator {
     return null; // Return null if the password is valid
   }
 
-  static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) {
+  static String? confirmPasswordValidator(String? text, {bool isRequired = true, required String passwordText}) {
+    final value = text?.trim();
+    final password = passwordText.trim();
     // Check if the password is required and empty
     if (isRequired && (value == null || value.isEmpty)) {
       return 'Confirm password is required';
@@ -98,7 +102,8 @@ class FormValidator {
     return null; // Return null if the password is valid
   }
 
-  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone number", RegExp? phoneRegex}) {
+  static String? phoneValidator(String? text, {bool isRequired = true, String field = "Phone number", RegExp? phoneRegex}) {
+    var value = text?.trim();
     value = value?.replaceAll(" ", "");
 
     // 1. Check for required field
@@ -123,7 +128,8 @@ class FormValidator {
     return null;
   }
 
-  static String? textValidator(String? value, {bool isRequired = true, int minCount = 3}) {
+  static String? textValidator(String? text, {bool isRequired = true, int minCount = 3}) {
+    final value = text?.trim();
     if (isRequired && (value == null || value.isEmpty)) {
       return 'this_field_is_required'.tr;
     }

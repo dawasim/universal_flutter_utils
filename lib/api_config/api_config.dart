@@ -45,11 +45,11 @@ class UFApiConfig {
 
       final encodedParams = queryParameters;
 
-      final response = await _dio.get(
-        UFUtils.baseUrl + path,
-        queryParameters: encodedParams,
-      );
+      final uri = Uri.parse(UFUtils.baseUrl + path).replace(queryParameters: encodedParams);
+      print('Request URL: $uri');
 
+      final response = await _dio.getUri(uri);
+      
       // Restore original timeout settings
       if (infiniteTimeout) {
         _dio.options.connectTimeout = originalConnectTimeout;

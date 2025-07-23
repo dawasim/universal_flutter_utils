@@ -41,7 +41,7 @@ class UFUMultiSelectFooter extends StatelessWidget {
               size: UFUButtonSize.small,
               disabled: disableButtons,
               text: 'CANCEL',
-              textColor: AppTheme.themeColors.themeBlue,
+              textColor: AppTheme.themeColors.text,
               colorType: UFUButtonColorType.lightGray,
             ),
           ),
@@ -58,7 +58,7 @@ class UFUMultiSelectFooter extends StatelessWidget {
               size: UFUButtonSize.small,
               iconWidget: doneIcon,
               disabled: disableButtons || (selectedItemCount == 0 && canDisableDoneButton),
-              textColor: AppTheme.themeColors.text,
+              textColor: AppTheme.themeColors.base,
               colorType: UFUButtonColorType.primary,
             ),
           )
