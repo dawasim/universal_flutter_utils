@@ -82,7 +82,7 @@ class UFUCheckbox extends StatelessWidget {
 
     textColors = textColor ?? AppTheme.themeColors.text;
     borderColors = borderColor ?? AppTheme.themeColors.text;
-    colors = color ?? AppTheme.themeColors.themeGreen;
+    colors = color ?? AppTheme.themeColors.primary;
 
     ///Defines border of a checkbox.
     getBorder() {
