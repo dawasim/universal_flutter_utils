@@ -171,8 +171,8 @@ class UFUMultiSelectList extends StatelessWidget {
                     onItemTap!(list[index].id);
                   },
                   disabled: list[index].isDisabled,
-                  borderColor: AppTheme.themeColors.themeGreen,
-                  color: AppTheme.themeColors.themeGreen,
+                  borderColor: AppTheme.themeColors.primary,
+                  color: AppTheme.themeColors.primary,
                   checkColor: AppTheme.themeColors.base,
                 )
               ],

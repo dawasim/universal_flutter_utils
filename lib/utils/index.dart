@@ -49,7 +49,7 @@ class UFUtils {
 
   static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) => FormValidator.passwordValidator(value, isRequired: isRequired, field: field);
 
-  static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) => FormValidator.confirmPasswordValidator(value, isRequired: isRequired, password: password);
+  static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) => FormValidator.confirmPasswordValidator(value, isRequired: isRequired, passwordText: password);
 
   static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number", RegExp? phoneRegex}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field, phoneRegex: phoneRegex);
 

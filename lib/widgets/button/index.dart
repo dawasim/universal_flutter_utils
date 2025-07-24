@@ -194,7 +194,7 @@ class UFUButton extends StatelessWidget {
         break;
 
       // default:
-      //   color = AppTheme.themeColors.themeGreen;
+      //   color = AppTheme.themeColors.primary;
       //   break;
     }
 
@@ -272,7 +272,7 @@ class UFUButton extends StatelessWidget {
       case UFUButtonColorType.lightBlue:
         return AppTheme.themeColors.lightBlue.withValues(alpha: 0.2);
       case UFUButtonColorType.secondary:
-        return AppTheme.themeColors.themeGreen.withValues(alpha: 0.2);
+        return AppTheme.themeColors.primary.withValues(alpha: 0.2);
       default:
         return AppTheme.themeColors.primary.withValues(alpha: 0.2);
     }

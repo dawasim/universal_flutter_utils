@@ -131,10 +131,10 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
         if(tempSelectedItemsCount == 0){
           return AppTheme.themeColors.base;
         }
-      return AppTheme.themeColors.themeGreen;
+      return AppTheme.themeColors.primary;
     }
     }
-    return AppTheme.themeColors.themeGreen;
+    return AppTheme.themeColors.primary;
   }
 
   Widget getSelectAndClearList() {
@@ -173,7 +173,7 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
                         color: getColor(),
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: AppTheme.themeColors.themeGreen,
+                          color: AppTheme.themeColors.primary,
                           width: 1.0,
                         )),
                     child: getIcon(),

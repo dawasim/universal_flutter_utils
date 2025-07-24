@@ -126,8 +126,8 @@ class UFUMultiSelectSubList extends StatelessWidget {
                   onTap: (value) {
                     onSubItemTap!(subList[index].id);
                   },
-                  borderColor: AppTheme.themeColors.themeGreen,
-                  color: AppTheme.themeColors.themeGreen,
+                  borderColor: AppTheme.themeColors.primary,
+                  color: AppTheme.themeColors.primary,
                   checkColor: AppTheme.themeColors.base,
                 )
               ],
