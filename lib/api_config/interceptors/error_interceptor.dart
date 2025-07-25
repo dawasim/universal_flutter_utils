@@ -128,7 +128,7 @@ class ErrorInterceptor extends Interceptor {
       );
       handler.reject(error);
     } else {
-      UFUToast.showToast(message);
+      if(!message.contains("Record")) UFUToast.showToast(message);
       handler.reject(error);
     }
   }

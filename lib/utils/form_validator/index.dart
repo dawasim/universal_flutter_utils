@@ -4,17 +4,29 @@ class FormValidator {
 
   static String? emailValidator(String? text, {bool isRequired = true, String field = "Email"}) {
     final value = text?.trim();
+
     if (isRequired && (value == null || value.isEmpty)) {
       return '$field is required';
     }
+
     if (value != null && value.isNotEmpty) {
-      final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+      // Updated regex:
+      // - At least one letter before @
+      // - Valid email structure
+      // - No digit immediately after @
+      // - TLD should not be numeric only
+      final emailRegex = RegExp(
+          r'^(?=[^@]*[a-zA-Z])[^@\s]+@(?!(\d))[a-zA-Z0-9-]+\.(?!\d+$)[a-zA-Z]{2,}$'
+      );
+
       if (!emailRegex.hasMatch(value)) {
         return 'Enter a valid email';
       }
     }
+
     return null;
   }
+
 
   static String? passwordValidator(String? text, {bool isRequired = true, String field = "Password"}) {
     final value = text?.trim();
