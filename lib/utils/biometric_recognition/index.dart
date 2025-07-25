@@ -9,7 +9,19 @@ class UFUBiometricRecognition {
     try {
       bool canCheckBiometrics = await _auth.canCheckBiometrics;
       bool isDeviceSupported = await _auth.isDeviceSupported();
-      return canCheckBiometrics && isDeviceSupported;
+
+      if(canCheckBiometrics && isDeviceSupported) {
+        List<BiometricType> availableBiometrics = await _auth.getAvailableBiometrics();
+
+        if (availableBiometrics.isEmpty) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+      // return canCheckBiometrics && isDeviceSupported;
     } catch (e) {
       debugPrint('Error checking biometric support: $e');
       return false;
