@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-import 'footer.dart';
-import 'header.dart';
-import 'list.dart';
-import 'modal.dart';
 
 class UFUMultiSelectView extends StatelessWidget {
   const UFUMultiSelectView({

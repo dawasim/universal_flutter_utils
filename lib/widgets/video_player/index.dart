@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-import 'controller.dart';
-
 class UFUVideoPlayer extends StatelessWidget {
   const UFUVideoPlayer({super.key});
 

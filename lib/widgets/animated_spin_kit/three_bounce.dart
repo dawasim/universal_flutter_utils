@@ -25,10 +25,10 @@ class SpinKitThreeBounce extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitThreeBounceState createState() => _SpinKitThreeBounceState();
+  SpinKitThreeBounceState createState() => SpinKitThreeBounceState();
 }
 
-class _SpinKitThreeBounceState extends State<SpinKitThreeBounce> with SingleTickerProviderStateMixin {
+class SpinKitThreeBounceState extends State<SpinKitThreeBounce> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override

@@ -221,10 +221,10 @@ class UFUInputBox extends StatefulWidget {
   final TapRegionUpCallback? onTapUpOutside;
 
   @override
-  _UFUInputBoxState createState() => _UFUInputBoxState();
+  UFUInputBoxState createState() => UFUInputBoxState();
 }
 
-class _UFUInputBoxState extends State<UFUInputBox> {
+class UFUInputBoxState extends State<UFUInputBox> {
   FocusNode focusNode = FocusNode();
   bool showClearButton = false;
   String errorText = '';

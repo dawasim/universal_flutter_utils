@@ -98,10 +98,10 @@ class UFUSingleSelect extends StatefulWidget {
   final bool showIncludeInactiveButton;
 
   @override
-  _UFUSingleSelectState createState() => _UFUSingleSelectState();
+  UFUSingleSelectState createState() => UFUSingleSelectState();
 }
 
-class _UFUSingleSelectState extends State<UFUSingleSelect> {
+class UFUSingleSelectState extends State<UFUSingleSelect> {
   List<UFUSingleSelectModel> list = [];
   TextEditingController textEditingController = TextEditingController();
   final scrollController = AutoScrollController(

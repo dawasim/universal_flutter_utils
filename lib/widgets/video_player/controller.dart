@@ -35,7 +35,7 @@ class UFUVideoPlayerController extends GetxController {
         update();
       } catch (e) {
         Get.back();
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 2));
         UFUToast.showToast("Unable to load video");
       }
 

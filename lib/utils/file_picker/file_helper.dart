@@ -85,9 +85,9 @@ class FileHelper {
     double mb = size / 1000000;
 
     if (kb < 1024) {
-      return kb.toStringAsFixed(2) + ' KB';
+      return '${kb.toStringAsFixed(2)} KB';
     } else {
-      return mb.toStringAsFixed(2) + ' MB';
+      return '${mb.toStringAsFixed(2)} MB';
     }
   }
 
@@ -104,7 +104,7 @@ class FileHelper {
   }
 
   static Future<String> getTempDirPath() async {
-    return (await getTemporaryDirectory()).path + '/';
+    return '${(await getTemporaryDirectory()).path}/';
   }
 
   /// filterFilePath() : removes unwanted characters from picked file
@@ -117,7 +117,7 @@ class FileHelper {
   static Future<List<String>> saveToTempDirectory(List<String?> filePaths, {bool doShowLoader = true}) async {
     List<String> tempFiles = [];
 
-    if(doShowLoader) ShowUFULoader(msg: 'preparing_files'.tr + '...');
+    if(doShowLoader) ShowUFULoader(msg: '${'preparing_files'.tr}...');
 
     for (var path in filePaths) {
 
@@ -149,7 +149,7 @@ class FileHelper {
     }
     // Get the file name and extension
     String baseName = fileName.split('.').first;
-    String fileExtension = fileName.split('.').length > 1 ? '.' + fileName.split('.').last : '';
+    String fileExtension = fileName.split('.').length > 1 ? '.${fileName.split('.').last}' : '';
 
     // Check for existing files with the same base name
     int suffix = 1;

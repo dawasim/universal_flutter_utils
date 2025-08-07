@@ -10,8 +10,7 @@ import 'package:flutter/animation.dart';
 
 //Using this class to add delay in animated spinner animation
 class DelayTween extends Tween<double> {
-  DelayTween({double? begin, double? end, required this.delay})
-      : super(begin: begin, end: end);
+  DelayTween({super.begin, super.end, required this.delay});
 
   final double delay;
 

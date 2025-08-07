@@ -1,7 +1,5 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-import 'modal.dart';
 
 class UFUMultiSelectSubList extends StatelessWidget {
   const UFUMultiSelectSubList({
@@ -65,7 +63,7 @@ class UFUMultiSelectSubList extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20,left: 15),
               child: UFUText(
-                    text: subTitleHeader.toUpperCase()+' (${subList.length})',
+                    text: '${subTitleHeader.toUpperCase()} (${subList.length})',
                     fontWeight: UFUFontWeight.medium,
                     textAlign: TextAlign.left,
                     textSize: UFUTextSize.heading4),

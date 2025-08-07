@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-import 'list.dart';
 
 class UFUMultiListMultiSelect extends StatefulWidget {
 
@@ -140,7 +139,7 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: UFUText(
-              text: multiListData[index].label + " (${multiListData[index].displayCount})",
+              text: "${multiListData[index].label} (${multiListData[index].displayCount})",
               fontWeight: UFUFontWeight.medium,
             ),
           ),

@@ -7,11 +7,7 @@ class CookiesService {
 
     allCookies.replaceAll(" ", "").split(",").forEach((obj) {
       List<String> objList = obj.split(";");
-      cookieForSave = cookieForSave +
-          objList[0].split("=")[0] +
-          '=' +
-          objList[0].split("=")[1] +
-          '; ';
+      cookieForSave = '$cookieForSave${objList[0].split("=")[0]}=${objList[0].split("=")[1]}; ';
     });
 
     cookieForSave = cookieForSave.substring(1, cookieForSave.length - 2);

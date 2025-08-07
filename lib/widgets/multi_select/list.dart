@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-import 'modal.dart';
 
 class UFUMultiSelectList extends StatelessWidget {
   const UFUMultiSelectList({
@@ -124,11 +123,11 @@ class UFUMultiSelectList extends StatelessWidget {
                               ? Container(
                             margin: const EdgeInsets.only(right: 20),
                             child: UFUAvatar(
-                              child: list[index].child,
                               borderColor: list[index].borderColor ??
                                   UFUColor.transparent,
                               backgroundColor: list[index].color,
                               size: UFUAvatarSize.small,
+                              child: list[index].child,
                             ),
                           )
                               : const SizedBox.shrink(),

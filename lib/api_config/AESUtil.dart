@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:flutter/cupertino.dart' show debugPrint;
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class AESUtil {
@@ -18,7 +19,6 @@ class AESUtil {
   static Map<String, dynamic>? secKeyEncryptWithBodyAppKey(Map<String, dynamic> mParams) {
     try {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
-      print("TESTING ------- ${UFUtils.encryptionIV}");
       final key = Key.fromSecureRandom(32).bytes;
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(mParams);
@@ -29,7 +29,6 @@ class AESUtil {
       };
       return result;
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -41,7 +40,7 @@ class AESUtil {
       final appKeyData = DateTime.now().toUtc().toString();
       final jsonMap = {DATE_KEY: appKeyData, ACCOUNT_TYPE: UFUtils.xPortal};
       if (auth.isNotEmpty) jsonMap['authorization'] = "Bearer $auth";
-      print("Headers ----------- ${jsonMap}");
+      debugPrint("Headers ----------- $jsonMap");
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(jsonMap);
       final encrypted = encrypter.encrypt(randomString, iv: iv);
@@ -54,7 +53,6 @@ class AESUtil {
           } : jsonMap;
       return result;
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -68,7 +66,6 @@ class AESUtil {
       final decrypted = encrypter.decryptBytes(Encrypted(toDecode), iv: iv);
       return utf8.decode(decrypted);
     } catch (e) {
-      print(e);
       return null;
     }
   }

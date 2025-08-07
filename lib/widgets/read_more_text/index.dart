@@ -33,7 +33,7 @@ enum TrimMode {
 class UFUReadMoreText extends StatefulWidget {
   const UFUReadMoreText(
     this.text, {
-    Key? key,
+    super.key,
     this.trimExpandedText = 'less',
     this.trimCollapsedText = 'read more',
     this.trimLength = 250,
@@ -44,7 +44,7 @@ class UFUReadMoreText extends StatefulWidget {
     this.dialogSubTitle,
     this.textDirection,
     this.semanticsLabel,
-    this.delimiter = ellipsisChar + ' ',
+    this.delimiter = '$ellipsisChar ',
     this.callback,
     this.textSize = UFUTextSize.heading4,
     // this.fontFamily = UFUFontFamily.productSans,
@@ -52,7 +52,7 @@ class UFUReadMoreText extends StatefulWidget {
     this.textColor,
     this.height,
     this.showDialogOnReadMore = false,
-  }) : super(key: key);
+  });
 
   /// Used on TrimMode.Length
   final int trimLength;
@@ -111,10 +111,10 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
         barrierDismissible: false,
         barrierLabel: '',
         transitionDuration: const Duration(milliseconds: 200),
-        transitionBuilder: (context, _animation, _secondaryAnimation, _child) {
-          return !UFUScreen.isTablet ? Animations.fromBottom(_animation, _secondaryAnimation, _child) : _child;
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return !UFUScreen.isTablet ? Animations.fromBottom(animation, secondaryAnimation, child) : child;
         }, 
-        pageBuilder:(_animation, _secondaryAnimation, _child) {
+        pageBuilder:(animation, secondaryAnimation, child) {
           return UFUReadDialog(text: widget.text, title: widget.dialogTitle ?? 'Title', subtitle: widget.dialogSubTitle);
         });
       }
@@ -230,7 +230,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 isReadMore
                     ? widget.text.substring(0, endIndex) +
                         (linkLongerThanLine ? lineSeparator : '')
-                    : widget.text + ' ',
+                    : '${widget.text} ',
                 children: <TextSpan>[delimiter, link],
                 textColor: widget.textColor,
                 textSize: widget.textSize,

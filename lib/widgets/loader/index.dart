@@ -10,10 +10,10 @@ Future<void> ShowUFULoader({String? msg}) async {
     barrierDismissible: false,
     barrierLabel: '',
     transitionDuration: const Duration(milliseconds: UFUtils.transitionDuration),
-    transitionBuilder: (context, _animation, _secondaryAnimation, _child) {
-      return Animations.grow(_animation, _secondaryAnimation, _child);
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return Animations.grow(animation, secondaryAnimation, child);
     },
-    pageBuilder: (_animation, _secondaryAnimation, _child) {
+    pageBuilder: (animation, secondaryAnimation, child) {
       return UFULoader(
         key: UFUtils.ufuLoaderKey,
         text: msg,

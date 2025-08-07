@@ -3,7 +3,7 @@
 A **powerful, all-in-one Flutter utility package** to boost productivity, maintain consistency, and speed up your app development.\
 Includes beautifully crafted widgets, utilities, themes, extensions, API helpers, file pickers, and much more.
 
-> ✅ Version: `0.0.1` • 📦 [View on pub.dev](https://pub.dev/packages/universal_flutter_utils)
+> ✅ Version: `0.0.3` 
 
 ---
 
@@ -26,7 +26,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  universal_flutter_utils: ^0.0.1
+  universal_flutter_utils: ^0.0.3
 ```
 
 Then run:

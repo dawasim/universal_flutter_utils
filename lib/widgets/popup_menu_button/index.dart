@@ -4,7 +4,7 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 class UFUPopUpMenuButton<T> extends StatelessWidget {
 
   const UFUPopUpMenuButton({
-    Key? key,
+    super.key,
     this.popUpMenuButtonChild,
     required this.itemList,
     required this.popUpMenuChild,
@@ -12,7 +12,7 @@ class UFUPopUpMenuButton<T> extends StatelessWidget {
     this.onTap,
     this.childPadding = EdgeInsets.zero,
     this.toolTip
-  }) : super(key: key);
+  });
 
   /// itemList will contain list of items you want to display in popUpMenu
   final List<T> itemList;
@@ -41,16 +41,14 @@ class UFUPopUpMenuButton<T> extends StatelessWidget {
 
     return PopupMenuButton(
       offset: offset,
-      child: popUpMenuButtonChild,
       color: AppTheme.themeColors.base,
       itemBuilder: (context) => itemList.map((T e) {
         return PopupMenuItem<T>(
-          child: popUpMenuChild(e),
           value: e,
           padding: childPadding,
           height: childPadding!.vertical,
           enabled: onTap != null,
-
+          child: popUpMenuChild(e),
         );
       }).toList(),
       tooltip: toolTip,
@@ -58,6 +56,7 @@ class UFUPopUpMenuButton<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       onSelected: onTap,
+      child: popUpMenuButtonChild,
     );
   }
 }

@@ -74,17 +74,17 @@ class UFPrefUtils {
 
   Future<String> readAuthToken() async {
     SharedPreferences mStorage = await getStorage();
-    return await mStorage.getString(authToken) ?? '';
+    return mStorage.getString(authToken) ?? '';
   }
 
   Future<String> readRefereshToken() async {
     SharedPreferences mStorage = await getStorage();
-    return await mStorage.getString(refreshToken) ?? '';
+    return mStorage.getString(refreshToken) ?? '';
   }
 
   Future<String> readSelectedLanguage() async {
     SharedPreferences mStorage = await getStorage();
-    return await mStorage.getString(selectedLanguage) ?? '';
+    return mStorage.getString(selectedLanguage) ?? '';
   }
 
   Future<bool> readIsUserLoggedIn() async {

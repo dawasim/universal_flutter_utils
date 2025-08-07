@@ -46,10 +46,10 @@ class UFUListView extends StatefulWidget {
   });
 
   @override
-  _UFUListViewState createState() => _UFUListViewState();
+  UFUListViewState createState() => UFUListViewState();
 }
 
-class _UFUListViewState extends State<UFUListView> {
+class UFUListViewState extends State<UFUListView> {
   late final ScrollController infiniteScrollController;
 
   bool isRefreshing = false;

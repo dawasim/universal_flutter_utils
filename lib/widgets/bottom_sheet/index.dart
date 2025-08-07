@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-import 'controller.dart';
-
 class UFUPopUpBuilder extends StatelessWidget {
   const UFUPopUpBuilder({
     super.key,
@@ -141,7 +139,7 @@ Future<dynamic> showUFUGeneralDialog({
         transitionBuilder: (context, animation, secondaryAnimation, child) {
           return Animations.fromBottom(animation, secondaryAnimation, child);
         },
-        pageBuilder: (_animation, _secondaryAnimation, _child) {
+        pageBuilder: (animation, secondaryAnimation, child) {
           return persistentChild;
         });
   }

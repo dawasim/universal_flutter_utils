@@ -28,7 +28,6 @@ class RecordingDialogController extends GetxController {
         recorderController.reset();
         final path = await recorderController.stop(false);
         if (path != null) {
-          print(path);
           Get.back(result: path);
         }
       }

@@ -23,7 +23,7 @@ class ErrorInterceptor extends Interceptor {
   }
 
   Future<void> _handleError(DioException error, ErrorInterceptorHandler handler, VoidCallback retryCallback) async {
-    print("$error");
+    debugPrint("$error");
     String title = 'an_error_occurred'.tr;
     String message = 'something_went_wrong_try_again'.tr;
     // bool showRetry = false;
@@ -62,7 +62,6 @@ class ErrorInterceptor extends Interceptor {
             break;
           default:
             try {
-              print(error.response?.data);
               message = fetchError(error.response?.data, statusCode);
               // message = (error.response?.data?["errors"] as List).firstOrNull?["message"]
               //   ?? error.response?.data?["message"]

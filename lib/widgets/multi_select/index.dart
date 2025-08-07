@@ -125,10 +125,10 @@ class UFUMultiSelect extends StatefulWidget {
   final bool hideSelectAll;
 
   @override
-  _UFUMultiSelectState createState() => _UFUMultiSelectState();
+  UFUMultiSelectState createState() => UFUMultiSelectState();
 }
 
-class _UFUMultiSelectState extends State<UFUMultiSelect> {
+class UFUMultiSelectState extends State<UFUMultiSelect> {
   /// textEditingController is used in search field
   TextEditingController textEditingController = TextEditingController();
 

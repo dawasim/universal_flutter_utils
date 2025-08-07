@@ -6,8 +6,8 @@ class UFUThumbIcon extends StatelessWidget {
       this.isSelect = false,
       this.iconType = UFUThumbIconType.pdf,
       this.size,
-      Key? key,
-  }) : super(key: key);
+      super.key,
+  });
 
   /// It is used to set icon thumb is selected or not.
   final bool isSelect;

@@ -124,7 +124,6 @@ class UFFilePickerUtil {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.grey, // Set the dialog background color to grey
             colorScheme: ColorScheme.light(
               primary: AppTheme.themeColors.primary, // Header background color
               onPrimary: AppTheme.themeColors.themeBlue, // Header text color
@@ -134,7 +133,7 @@ class UFFilePickerUtil {
               style: TextButton.styleFrom(
                 foregroundColor: AppTheme.themeColors.primary, // Button text color
               ),
-            ),
+            ), dialogTheme: const DialogThemeData(backgroundColor: Colors.grey),
           ),
           child: child!,
         );
@@ -151,7 +150,6 @@ class UFFilePickerUtil {
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false), // Ensure AM/PM format
           child: Theme(
             data: Theme.of(context).copyWith(
-              dialogBackgroundColor: AppTheme.themeColors.darkGray,
               colorScheme: ColorScheme.light(
                 primary: AppTheme.themeColors.primary, // Header background color
                 onPrimary: AppTheme.themeColors.tertiary, // Header text color
@@ -179,7 +177,7 @@ class UFFilePickerUtil {
                   }
                   return AppTheme.themeColors.base; // Default background color
                 }),
-              ),
+              ), dialogTheme: DialogThemeData(backgroundColor: AppTheme.themeColors.darkGray),
             ),
 
             child: child!,
