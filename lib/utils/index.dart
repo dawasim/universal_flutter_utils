@@ -5,15 +5,18 @@ import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:universal_flutter_utils/utils/app_config/index.dart';
 import 'package:universal_flutter_utils/utils/file_picker/file_helper.dart';
 import 'package:url_launcher/url_launcher.dart' as ul;
+import 'package:location/location.dart' as loc;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../common/methods/index.dart';
@@ -336,6 +339,9 @@ class UFUtils {
   static launchEmail(String email, {String subject = ''}) async =>
       await launchUrl("mailto:$email?subject=$subject");
 
+  static launchShareIntent(String message) async =>
+      await SharePlus.instance.share(ShareParams(text: message));
+
   // static launchEmail(String email, {String subject = ''}) async {
   //   final Uri emailUri = Uri(
   //     scheme: 'mailto',
@@ -434,5 +440,59 @@ class UFUtils {
     }
 
     return buffer.toString();
+  }
+
+  static Future<LatLng?> fetchCurrentLocation() async {
+
+    /// get current location
+    if (!(await permissionUtils.getLocationPermission())) {
+      debugPrint("------> Permission denied ");
+      bool isPermanentlyDenied = await Permission.location.isPermanentlyDenied;
+      bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
+
+      if(isPermanentlyDenied) {
+        await picker.permissionDeniedDialogue();
+        return null;
+      } else if(!isLocationEnabled){
+        debugPrint("------> Location service denied ");
+        bool locationEnabled = await loc.Location().requestService();
+        if(!locationEnabled) {
+          bool? locEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
+          if(!locEnabled) {
+            return null;
+          }
+        }
+      }
+      return null;
+    } else {
+      bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
+      if(!isLocationEnabled) {
+        debugPrint("------> Location service denied ");
+        bool locationEnabled = await loc.Location().requestService();
+        if(!locationEnabled) {
+          bool? locEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
+          if(!locEnabled) {
+            return null;
+          }
+        }
+      }
+    }
+    try {
+      Position? position = await Geolocator.getLastKnownPosition(
+        forceAndroidLocationManager: true,
+      );
+
+      position ??= await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high, // Choose appropriate accuracy
+          distanceFilter: 10,
+        ),
+      );
+      return LatLng(position.latitude, position.longitude);
+    } catch (e) {
+      debugPrint(e.toString());
+      handleError(e);
+      return null;
+    }
   }
 }

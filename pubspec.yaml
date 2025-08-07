@@ -35,13 +35,20 @@ dependencies:
   flutter_native_contact_picker: ^0.0.10
   open_filex: ^4.6.0
 
+  # Location
+  map_location_picker: ^2.0.3
+  location: ^8.0.1
+
+  #  Display share prompt
+  share_plus: ^11.0.0
+
   ## Server communication
   dio: ^5.7.0
   socket_io_client: ^3.1.1
   cached_network_image: ^3.4.1
   url_launcher: ^6.3.1
   flutter_widget_from_html_core: ^0.16.0
-  geolocator: ^13.0.2
+  geolocator: ^14.0.2
 
   #   Video Player
   chewie: ^1.10.0
