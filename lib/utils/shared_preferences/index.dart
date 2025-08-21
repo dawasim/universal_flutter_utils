@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UFPrefUtils {
 
   final String isLoggedIn = 'isLoggedIn';
+  String isLoggedOut = 'isLoggedOut';
   String authToken = 'authToken';
   String refreshToken = 'refreshToken';
   String selectedLanguage = 'selectedLanguage';
