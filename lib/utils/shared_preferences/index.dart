@@ -11,6 +11,8 @@ class UFPrefUtils {
   String rememberMeData = 'rememberMeData';
   String userData = 'userData';
   String skippedAppVersion = 'skippedAppVersion';
+  String notificationPayload = "notification_payload";
+
 
   Future<void> clearPref() async {
     SharedPreferences mStorage = await getStorage();

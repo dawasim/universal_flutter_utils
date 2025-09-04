@@ -21,12 +21,14 @@ class UFNotificationUtils {
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) {
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
         debugPrint('Foreground notification tapped: ${response.payload}');
 
         if (response.payload == null || (response.payload?.isEmpty ?? true)) {
           return;
         }
+
+        await UFUtils.preferences.writeString(UFUtils.preferences.notificationPayload, jsonEncode(response.payload));
 
         handleNotificationTap?.call(jsonDecode(makeValidJson(response.payload ?? "")));
       },
@@ -68,6 +70,7 @@ class UFNotificationUtils {
   @pragma('vm:entry-point')
   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     debugPrint('Handling a background message: ${message.messageId}');
+    await UFUtils.preferences.writeString(UFUtils.preferences.notificationPayload, jsonEncode(message.data));
     FlutterAppBadgeControl.isAppBadgeSupported().then((value) async {
       if(value) {
         UFUtils.preferences.readString("unreadNotification").then((response) {
@@ -89,6 +92,8 @@ class UFNotificationUtils {
     );
 
     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await UFUtils.preferences.writeString(UFUtils.preferences.notificationPayload, jsonEncode(data));
 
     await flutterLocalNotificationsPlugin.show(
       0, // Notification ID
