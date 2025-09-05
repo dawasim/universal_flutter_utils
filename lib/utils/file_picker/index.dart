@@ -64,8 +64,15 @@ class UFFilePickerUtil {
     try {
 
       if (!(await UFUtils.permissionUtils.getCameraPermission())) {
-        await permissionDeniedDialogue();
-        return [];
+        debugPrint("------> Permission denied ");
+        bool isPermanentlyDenied = await Permission.camera.isPermanentlyDenied;
+
+        if(isPermanentlyDenied) {
+          await permissionDeniedDialogue();
+          return [];
+        } else {
+          return [];
+        }
       }
 
       final value = await _pickImageFile(

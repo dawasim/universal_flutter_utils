@@ -82,16 +82,18 @@ class UFPermissionUtils {
       status = await permission.request();
     }
 
-    // Check WRITE_CONTACTS (only needed on Android, as iOS combines them)
-    if (await permission.isPermanentlyDenied) {
-      // Handle the case where the permission is permanently denied
-      status = PermissionStatus.denied;
-    } else if (!status.isGranted) {
-      // Handle other denied statuses
-      status = await permission.request();
-    }
-
     return status.isGranted;
+
+    // Check WRITE_CONTACTS (only needed on Android, as iOS combines them)
+    // if (await permission.isPermanentlyDenied) {
+      // Handle the case where the permission is permanently denied
+      // status = PermissionStatus.denied;
+    // } else if (!status.isGranted) {
+      // Handle other denied statuses
+      // status = await permission.request();
+    // }
+
+    // return status.isGranted;
   }
 
   getContactPermissions() async {
