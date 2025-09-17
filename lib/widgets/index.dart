@@ -70,3 +70,4 @@ export 'video_player/index.dart';
 export 'video_player/controller.dart';
 export 'popup_menu_button/index.dart';
 export 'no_data_found/index.dart';
+export 'place_picker/index.dart';

@@ -7,7 +7,7 @@ ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subT
   VoidCallback? onTapSuffix, IconData? icon, double? iconSize,  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
   bool disableButtons = false, Widget? suffixBtnIcon, Widget? content,
   UFUButtonColorType? prefixBtnColorType, VoidCallback? onTapIcon,}) async {
-  await Get.bottomSheet(
+  return await Get.bottomSheet(
     UFUConfirmationDialog(
       title: title,
       subTitle: subTitle,
