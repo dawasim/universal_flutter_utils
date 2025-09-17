@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UFPrefUtils {
 
+  final String isFirstRun = 'isFirstRun';
   final String isLoggedIn = 'isLoggedIn';
   String isLoggedOut = 'isLoggedOut';
   String authToken = 'authToken';
@@ -93,6 +94,11 @@ class UFPrefUtils {
   Future<bool> readIsUserLoggedIn() async {
     SharedPreferences mStorage = await getStorage();
     return mStorage.getBool(isLoggedIn) ?? false;
+  }
+
+  Future<bool> readIsFirstRun() async {
+    SharedPreferences mStorage = await getStorage();
+    return mStorage.getBool(isFirstRun) ?? true;
   }
 
   getStorage() async {
