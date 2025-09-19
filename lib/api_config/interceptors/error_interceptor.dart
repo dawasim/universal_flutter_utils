@@ -85,6 +85,8 @@ class ErrorInterceptor extends Interceptor {
     if (error.response?.statusCode == 401) {
       await UFUtils.preferences.clearPref();
       await UFUtils.preferences.writeBoolean(UFUtils.preferences.isLoggedOut, true);
+      await UFUtils.preferences.writeBoolean(UFUtils.preferences.isFirstRun, false);
+
       final String mTitle;
       final String errorMessage;
       final String btnText;
