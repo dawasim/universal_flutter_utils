@@ -11,8 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_flutter_utils/theme/app_theme.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-import 'auto_complete.dart';
-
+import '../../auto_complete/widget/auto_complete.dart';
 
 class UFUPlacePicker extends StatefulWidget {
   /// Padding around the map
@@ -91,7 +90,7 @@ class UFUPlacePicker extends StatefulWidget {
   final Function(GeocodingResult?)? onNext;
 
   /// When tap on map decode address callback function
-  final Function(GeocodingResult?)? onDecodeAddress;
+  final Function(GeocodingResult?, {bool? isFromSearch})? onDecodeAddress;
 
   /// Show back button (default: true)
   final bool hideBackButton;
@@ -436,22 +435,10 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
   Set<Marker> markers = {};
 
+  bool isFromSearch = false;
+
   @override
   Widget build(BuildContext context) {
-    // final additionalMarkers = widget.additionalMarkers?.entries.map(
-    //       (e) => Marker(
-    //     markerId: MarkerId(e.key),
-    //     position: e.value,
-    //   ),
-    // ).toList() ?? [];
-    //
-    // final markers = Set<Marker>.from(additionalMarkers);
-    // markers.add(
-    //   Marker(
-    //       markerId: const MarkerId("one"),
-    //       position: _initialPosition,
-    //   ),
-    // );
 
     return PopScope(
       canPop: Navigator.of(context).userGestureInProgress,
@@ -517,16 +504,20 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                 final position = LatLng(centerLat, centerLng);
 
                 if(_initialPosition != const LatLng(40.741895, -73.989308)) {
-                  _decodeAddress(
-                    Location(
-                      lat: position.latitude,
-                      lng: position.longitude,
-                    ),
-                  );
+                  if(isFromSearch) {
+                   setState(() => isFromSearch = false);
+                  } else {
+                    _decodeAddress(
+                      Location(
+                        lat: position.latitude,
+                        lng: position.longitude,
+                      ),
+                    );
+                    if(_searchController.text.trim().isNotEmpty) {
+                      _searchController.text = "";
+                    }
+                  }
                 }
-
-                // updateMarker(MarkerId("one"), position);
-
               },
               onCameraMoveStarted: widget.onCameraMoveStarted,
               onLongPress: widget.onLongPress,
@@ -540,158 +531,172 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
               webGestureHandling: widget.webGestureHandling,
               zoomGesturesEnabled: widget.zoomGesturesEnabled,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                /// Search text field
-                if (!widget.hideSearchBar)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                    child: UFUPlaceAutoComplete(
-                      topCardMargin: EdgeInsets.zero,
-                      topCardColor: Colors.white,
-                      apiKey: widget.apiKey,
-                      searchHintText: widget.searchHintText,
-                      placesApiHeaders: widget.placesApiHeaders,
-                      mounted: false,
-                      hideBackButton: true,
-                      hideOnUnfocus: false,
-                      controller: _searchController,
-                      showClearButton: false,
-                      left: true,
-                      decoration: widget.decoration,
-                      suffixIcon: Icon(Icons.search, size: 18, color: AppTheme.themeColors.secondaryText),
-                      onGetDetailsByPlaceId: (p0) => saveCurrentLocation(p0?.result),
-                      emptyBuilder: (context) => _searchController.text.trim().isEmpty
-                          ? const SizedBox.shrink() : emptySearchResultBuilder(context),
-                      itemBuilder: (context, content) => searchResultItem(context, content),
-                    ),
-                  ),
-                const Spacer(),
-                if (!widget.hideMapTypeButton)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FloatingActionButton(
-                      onPressed: null,
-                      tooltip: 'Map Type',
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      child: PopupMenuButton(
-                        initialValue: _mapType,
-                        icon: Icon(
-                          Icons.layers,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                        onSelected: (MapType mapType) {
-                          setState(() {
-                            _mapType = mapType;
-                          });
-                        },
-                        itemBuilder: (context) => const [
-                          PopupMenuItem(
-                            value: MapType.normal,
-                            child: Text('Normal'),
-                          ),
-                          PopupMenuItem(
-                            value: MapType.hybrid,
-                            child: Text('Hybrid'),
-                          ),
-                          PopupMenuItem(
-                            value: MapType.satellite,
-                            child: Text('Satellite'),
-                          ),
-                          PopupMenuItem(
-                            value: MapType.terrain,
-                            child: Text('Terrain'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                if (!widget.hideLocationButton)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                    child: FloatingActionButton(
-                      shape: const CircleBorder(),
-                      tooltip: widget.fabTooltip,
-                      backgroundColor: AppTheme.themeColors.base,
-                      foregroundColor: Colors.white,
-                      onPressed: () => fetchAndNavigateToCurrentLocation(),
-                      child: Icon(widget.fabIcon),
-                    ),
-                  ),
-                if (!widget.hideBottomCard)
-                  widget.bottomCardBuilder
-                      ?.call(context, _geocodingResult, _address) ??
-                      Card(
-                        margin: widget.bottomCardMargin,
-                        shape: widget.bottomCardShape,
-                        color: widget.bottomCardColor,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
-                              title: Text(_address),
-                              trailing: IconButton(
-                                tooltip: widget.bottomCardTooltip,
-                                icon: widget.bottomCardIcon,
-                                onPressed: () async {
-                                  widget.onNext?.call(_geocodingResult);
-                                  if (widget.popOnNextButtonTaped) {
-                                    Navigator.pop(context, _geocodingResult);
-                                  }
-                                },
-                              ),
+            SafeArea( 
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  /// Search text field
+                  if (!widget.hideSearchBar)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if(widget.backButton != null)
+                          widget.backButton!,
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                            child: CustomPlaceAutoComplete(
+                              topCardMargin: EdgeInsets.zero,
+                              topCardColor: Colors.white,
+                              apiKey: widget.apiKey,
+                              searchHintText: widget.searchHintText,
+                              placesApiHeaders: widget.placesApiHeaders,
+                              mounted: false,
+                              hideBackButton: true,
+                              hideOnUnfocus: false,
+                              initialValue: null,
+                              controller: _searchController,
+                              showClearButton: true,
+                              left: true,
+                              decoration: widget.decoration,
+                              suffixIcon: Icon(Icons.search, size: 18, color: AppTheme.themeColors.secondaryText),
+                              onGetDetailsByPlaceId: (p0, {Prediction? searchedPlace}) => saveCurrentLocation(p0?.result, searchedItem: searchedPlace),
+                              // onSelected: (data) => saveCurrentLocation(null, searchedItem: data), //{print("====> ${data.toJson()}");},
+                              emptyBuilder: (context) => _searchController.text.trim().isEmpty
+                                  ? const SizedBox.shrink() : emptySearchResultBuilder(context),
+                              itemBuilder: (context, content) => searchResultItem(context, content),
                             ),
-                            if (!widget.hideMoreOptions &&
-                                _geocodingResultList.isNotEmpty)
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text(widget.dialogTitle),
-                                      scrollable: true,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children:
-                                        _geocodingResultList.map((element) {
-                                          return ListTile(
-                                            title: Text(
-                                                element.formattedAddress ?? ""),
-                                            onTap: () {
-                                              _address =
-                                                  element.formattedAddress ??
-                                                      "";
-                                              _geocodingResult = element;
-                                              setState(() {});
-                                              Navigator.pop(context, element);
-                                            },
-                                          );
-                                        }).toList(),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          child: const Text('Cancel'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                child: Chip(
-                                  label: Text(
-                                    "Tap to show ${(_geocodingResultList.length - 1)} more result options",
-                                  ),
-                                ),
-                              ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  const Spacer(),
+                  if (!widget.hideMapTypeButton)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FloatingActionButton(
+                        onPressed: null,
+                        tooltip: 'Map Type',
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        child: PopupMenuButton(
+                          initialValue: _mapType,
+                          icon: Icon(
+                            Icons.layers,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          onSelected: (MapType mapType) {
+                            setState(() {
+                              _mapType = mapType;
+                            });
+                          },
+                          itemBuilder: (context) => const [
+                            PopupMenuItem(
+                              value: MapType.normal,
+                              child: Text('Normal'),
+                            ),
+                            PopupMenuItem(
+                              value: MapType.hybrid,
+                              child: Text('Hybrid'),
+                            ),
+                            PopupMenuItem(
+                              value: MapType.satellite,
+                              child: Text('Satellite'),
+                            ),
+                            PopupMenuItem(
+                              value: MapType.terrain,
+                              child: Text('Terrain'),
+                            ),
                           ],
                         ),
                       ),
-              ],
+                    ),
+                  if (!widget.hideLocationButton)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                      child: FloatingActionButton(
+                        shape: const CircleBorder(),
+                        tooltip: widget.fabTooltip,
+                        backgroundColor: AppTheme.themeColors.base,
+                        foregroundColor: AppTheme.themeColors.primary,
+                        onPressed: () => fetchAndNavigateToCurrentLocation(),
+                        child: Icon(widget.fabIcon),
+                      ),
+                    ),
+                  if (!widget.hideBottomCard)
+                    widget.bottomCardBuilder
+                        ?.call(context, _geocodingResult, _address) ??
+                        Card(
+                          margin: widget.bottomCardMargin,
+                          shape: widget.bottomCardShape,
+                          color: widget.bottomCardColor,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                title: Text(_address),
+                                trailing: IconButton(
+                                  tooltip: widget.bottomCardTooltip,
+                                  icon: widget.bottomCardIcon,
+                                  onPressed: () async {
+                                    widget.onNext?.call(_geocodingResult);
+                                    if (widget.popOnNextButtonTaped) {
+                                      Navigator.pop(context, _geocodingResult);
+                                    }
+                                  },
+                                ),
+                              ),
+                              if (!widget.hideMoreOptions &&
+                                  _geocodingResultList.isNotEmpty)
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(widget.dialogTitle),
+                                        scrollable: true,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children:
+                                          _geocodingResultList.map((element) {
+                                            return ListTile(
+                                              title: Text(
+                                                  element.formattedAddress ?? ""),
+                                              onTap: () {
+                                                _address =
+                                                    element.formattedAddress ??
+                                                        "";
+                                                _geocodingResult = element;
+                                                setState(() {});
+                                                Navigator.pop(context, element);
+                                              },
+                                            );
+                                          }).toList(),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  child: Chip(
+                                    label: Text(
+                                      "Tap to show ${(_geocodingResultList.length - 1)} more result options",
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                ],
+              ),
             ),
           ],
         ),
@@ -783,6 +788,9 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
       if (response.results.length > 1) {
         _geocodingResultList = response.results;
       }
+      if(_searchController.text.trim().isNotEmpty) {
+        _searchController.text = "";
+      }
       setState(() {});
     } catch (e) {
       debugPrint(e.toString());
@@ -790,11 +798,11 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
   }
 
 
-  saveCurrentLocation(PlaceDetails? selectedPlace) async {
+  saveCurrentLocation(PlaceDetails? selectedPlace, {Prediction? searchedItem}) async {
     UFUtils.hideKeyboard();
-    if (selectedPlace == null) return;
+    if (selectedPlace == null && searchedItem == null) return;
 
-    Location sLocation = selectedPlace.geometry?.location
+    Location sLocation = selectedPlace?.geometry?.location
         ?? _geocodingResult?.geometry.location
         ?? widget.location
         ?? Location(
@@ -802,20 +810,44 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
           lng: _initialPosition.longitude,
         );
 
-    await _decodeAddress(sLocation);
+    if(searchedItem != null) {
+
+      Map<String, dynamic> addressComponent = {"address_components": []};
+      if(searchedItem.terms.isNotEmpty) {
+        for (var element in selectedPlace!.addressComponents) {
+          addressComponent["address_components"].add(element.toJson());
+        }
+      }
+
+      _geocodingResult = GeocodingResult.fromJson({
+        "geometry": {
+          "location": {
+            "lat": sLocation.lat,
+            "lng": sLocation.lng,
+          }
+        },
+        "place_id": searchedItem.placeId,
+        'formatted_address': searchedItem.description,
+        ...addressComponent
+      });
+
+      setState(() => isFromSearch = true);
+    }
 
     (await _controller.future).animateCamera(
         CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(sLocation.lat, sLocation.lng),
           zoom: _zoom,
         )));
+
+    widget.onDecodeAddress?.call(_geocodingResult);
   }
 
   Widget searchResultItem(BuildContext context, Prediction content) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     decoration: BoxDecoration(
       color: AppTheme.themeColors.base,
-      border: Border.all(color: AppTheme.themeColors.lightestGray, width: 1),
+      // border: Border.all(color: AppTheme.themeColors.tertiary, width: 1),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -823,17 +855,19 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Image.asset('assets/images/ic_location_marker.png', color: Colors.black, height: 18, width: 18),
+            Image.asset("assets/images/ic_location_pin.png", color: Colors.black, height: 18, width: 18),
             const SizedBox(width: 12),
-            Expanded(child:  UFUText(text: content.terms.first.value))
+            Expanded(child: UFUText(
+              text: content.terms.first.value,
+              textAlign: TextAlign.start,
+            ))
           ],
         ),
         const SizedBox(height: 5),
-        UFUText(
-          text: content.description ?? '',
+        UFUText(text: content.description ?? '',
           maxLine: 5,
-          textSize: UFUTextSize.heading5,
-          textColor: AppTheme.themeColors.secondaryText,
+          textSize: UFUTextSize.heading6,
+          textAlign: TextAlign.start,
         )
       ],
     ),
@@ -842,10 +876,10 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
   Widget emptySearchResultBuilder(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     decoration: BoxDecoration(
-      color: AppTheme.themeColors.base,
-      border: Border.all(color: AppTheme.themeColors.lightestGray, width: 1),
+      color: Colors.white,
+      border: Border.all(color: AppTheme.themeColors.tertiary, width: 1),
     ),
-    child: const Column(
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: UFUText(text: "No Address Found!"))
@@ -877,7 +911,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
             }
           }
         }  else {
-          await UFUtils.picker.permissionDeniedDialogue();
+
         }
         Get.back();
         return;
@@ -918,17 +952,16 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
       );
 
       // Decode address from latitude & longitude
-      _decodeAddress(
-        Location(
-          lat: _initialPosition.latitude,
-          lng: _initialPosition.longitude,
-        ),
-      );
+      // _decodeAddress(
+      //   Location(
+      //     lat: _initialPosition.latitude,
+      //     lng: _initialPosition.longitude,
+      //   ),
+      // );
 
       setState(() {});
     }
   }
-
 
   @override
   void dispose() {

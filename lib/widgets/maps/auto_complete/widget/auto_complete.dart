@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-class UFUPlaceAutoComplete extends StatefulWidget {
+class CustomPlaceAutoComplete extends StatefulWidget {
   /// API key for the map & places
   final String apiKey;
 
@@ -83,7 +83,7 @@ class UFUPlaceAutoComplete extends StatefulWidget {
   final List<String> fields;
 
   /// On get details callback
-  final void Function(PlacesDetailsResponse?)? onGetDetailsByPlaceId;
+  final void Function(PlacesDetailsResponse?, {Prediction? searchedPlace})? onGetDetailsByPlaceId;
 
   /// On suggestion selected callback
   final void Function(Prediction)? onSelected;
@@ -267,7 +267,7 @@ class UFUPlaceAutoComplete extends StatefulWidget {
   final bool showOnFocus;
   final SuggestionsController<Prediction>? suggestionsController;
 
-  const UFUPlaceAutoComplete({
+  const CustomPlaceAutoComplete({
     super.key,
     required this.apiKey,
     this.language,
@@ -349,10 +349,10 @@ class UFUPlaceAutoComplete extends StatefulWidget {
   });
 
   @override
-  State<UFUPlaceAutoComplete> createState() => _UFUPlaceAutoCompleteState();
+  State<CustomPlaceAutoComplete> createState() => _CustomPlaceAutoCompleteState();
 }
 
-class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
+class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
   /// Get [AutoCompleteState] for [AutoCompleteTextField]
   AutoCompleteState autoCompleteState() {
     return AutoCompleteState(
@@ -407,18 +407,12 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
             borderRadius: widget.borderRadius,
             child: FormBuilderTypeAhead<Prediction>(
               decoration: widget.decoration ?? InputDecoration(
-                    fillColor: Colors.white,
-                    hintText: widget.searchHintText,
-                    filled: true,
-                    border: customBorder(borderColor: Colors.blue),
-                    suffixIcon:
-                        (widget.showClearButton && widget.initialValue == null)
-                            ? IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: () => _controller.clear(),
-                              )
-                            : widget.suffixIcon,
-                  ),
+                fillColor: AppTheme.themeColors.base,
+                hintText: widget.searchHintText,
+                filled: true,
+                border: customBorder(borderColor: AppTheme.themeColors.primary),
+                suffixIcon: widget.suffixIcon,
+              ),
               name: "address".tr,
               controller: widget.initialValue == null ? _controller : null,
               selectionToTextTransformer: (result) {
@@ -459,7 +453,7 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
               },
               onSelected: (value) async {
                 _controller.selection = TextSelection.collapsed(offset: _controller.text.length);
-                _getDetailsByPlaceId(value.placeId ?? "", context);
+                _getDetailsByPlaceId(value, value.placeId ?? "", context);
                 widget.onSelected?.call(value);
               },
               initialValue: widget.initialValue,
@@ -500,6 +494,15 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
               suggestionsController: widget.suggestionsController,
             ),
           ),
+          trailing: _controller.text.trim().isNotEmpty ? UFUIconButton(
+            backgroundColor: AppTheme.themeColors.transparent,
+            icon: Icons.close,
+            iconColor: AppTheme.themeColors.primary,
+            onTap: () {
+              _controller.clear();
+              UFUtils.hideKeyboard();
+            },
+          ) : null,
         ),
       ),
     );
@@ -510,7 +513,7 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
       borderSide: BorderSide(color: borderColor ?? AppTheme.themeColors.lightestGray, width: 0));
 
   /// Get address details from place id
-  void _getDetailsByPlaceId(String placeId, BuildContext context) async {
+  void _getDetailsByPlaceId(Prediction place, String placeId, BuildContext context) async {
     try {
       final GoogleMapsPlaces places = GoogleMapsPlaces(
         apiKey: widget.apiKey,
@@ -518,6 +521,7 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
         apiHeaders: widget.placesApiHeaders,
         baseUrl: widget.placesBaseUrl,
       );
+
       final PlacesDetailsResponse response = await places.getDetailsByPlaceId(
         placeId,
         region: widget.region,
@@ -525,6 +529,7 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
         language: widget.language,
         fields: widget.fields,
       );
+      print("===> ${place.description}");
 
       /// When get any error from the API, show the error in the console.
       if (response.hasNoResults ||
@@ -544,7 +549,7 @@ class _UFUPlaceAutoCompleteState extends State<UFUPlaceAutoComplete> {
         }
         return;
       }
-      widget.onGetDetailsByPlaceId?.call(response);
+      widget.onGetDetailsByPlaceId?.call(response, searchedPlace: place);
     } catch (e) {
       debugPrint(e.toString());
     }

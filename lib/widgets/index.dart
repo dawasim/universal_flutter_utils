@@ -70,4 +70,7 @@ export 'video_player/index.dart';
 export 'video_player/controller.dart';
 export 'popup_menu_button/index.dart';
 export 'no_data_found/index.dart';
-export 'place_picker/index.dart';
+export 'maps/place_picker/index.dart';
+export 'maps/place_picker/widget/custom_place_picker.dart';
+export 'maps/auto_complete/index.dart';
+export 'maps/auto_complete/widget/auto_complete.dart';
