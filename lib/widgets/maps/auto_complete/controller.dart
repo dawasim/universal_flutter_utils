@@ -3,26 +3,53 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:map_location_picker/map_location_picker.dart';
+import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:universal_flutter_utils/models/address.dart';
-
-import '../../../utils/index.dart';
 
 class UFUPlaceAutoCompleteController extends GetxController {
 
   Completer<GoogleMapController> mapController = Completer();
 
-  TextEditingController? searchController;
+  UFUInputBoxController? searchController;
   GeocodingResult? _geocodingResult;
 
+  UFUTextSize textSize;
+  UFUFontWeight fontWeight;
 
-  UFUPlaceAutoCompleteController({this.searchController});
+
+  UFUPlaceAutoCompleteController({
+    this.searchController,
+    required this.textSize,
+    required this.fontWeight,
+  });
 
   @override
   void onInit() {
     super.onInit();
-
-    searchController ??= TextEditingController();
+    searchController ??= UFUInputBoxController();
   }
+
+  /// Default text style for label and hint text.
+  TextStyle getHintStyle() {
+    return TextStyle(
+      fontFamily: UFUtils.fontFamily, // TODO - 'Roboto',
+      fontWeight: TextHelper.getFontWeight(fontWeight), //fontWeight ?? FontWeight.w300,
+      height: 1.2,
+      color: AppTheme.themeColors.hintText,
+      fontSize: TextHelper.getTextSize(textSize),
+    );
+  }
+
+  TextStyle getErrorStyle() {
+    return TextStyle(
+      fontFamily: UFUtils.fontFamily, // TODO - 'Roboto',
+      fontWeight: TextHelper.getFontWeight(fontWeight), //fontWeight ?? FontWeight.w300,
+      height: 1.2,
+      color: AppTheme.themeColors.red,
+      fontSize: TextHelper.getTextSize(UFUTextSize.heading5),
+    );
+  }
+
 
   Future<void> saveCurrentLocation(PlaceDetails? selectedPlace, {Prediction? searchedItem, Function(UFUAddressModel?)? onDecodeAddress}) async {
     UFUtils.hideKeyboard();

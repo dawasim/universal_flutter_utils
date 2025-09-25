@@ -36,12 +36,12 @@ class UFULocationPickerController extends GetxController {
       selectedAddress.value = GeocodingResult.fromJson({
         "geometry": {
           "location": {
-            "lat": address?.latitude,
-            "lng": address?.longitude,
+            "lat": address?.latitude ?? "",
+            "lng": address?.longitude ?? "",
           }
         },
-        "place_id": address?.placeId,
-        'formatted_address': address?.getFormatedAddress(),
+        "place_id": address?.placeId ?? "",
+        'formatted_address': address?.getFormatedAddress() ?? "",
       });
       isEdit = true;
     }

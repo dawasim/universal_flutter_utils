@@ -107,6 +107,9 @@ class CustomPlaceAutoComplete extends StatefulWidget {
   /// prefix icon for search text field. You can use [showClearButton] to show clear button or replace with suffix icon
   final Widget? prefixIcon;
 
+  /// trailing icon for search text field. You can use [showClearButton] to show clear button or replace with suffix icon
+  final Widget? trailingIcon;
+
   /// Initial value for search text field (optional)
   /// [initialValue] not in use when [searchController] is not null.
   final Prediction? initialValue;
@@ -266,6 +269,7 @@ class CustomPlaceAutoComplete extends StatefulWidget {
   final bool retainOnLoading;
   final bool showOnFocus;
   final SuggestionsController<Prediction>? suggestionsController;
+  final Function(String?)? onTextChange;
 
   const CustomPlaceAutoComplete({
     super.key,
@@ -300,6 +304,7 @@ class CustomPlaceAutoComplete extends StatefulWidget {
     this.showClearButton = true,
     this.suffixIcon,
     this.prefixIcon,
+    this.trailingIcon,
     this.initialValue,
     this.validator,
     this.itemBuilder,
@@ -346,6 +351,7 @@ class CustomPlaceAutoComplete extends StatefulWidget {
     this.showOnFocus = true,
     this.suggestionsController,
     this.offsetParameter,
+    this.onTextChange,
   });
 
   @override
@@ -400,6 +406,8 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
           shape: widget.topCardShape,
           minVerticalPadding: 0,
           contentPadding: EdgeInsets.zero,
+          horizontalTitleGap: 0,
+
           leading: widget.hideBackButton
               ? null
               : widget.backButton ?? const BackButton(),
@@ -410,7 +418,7 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
                 fillColor: AppTheme.themeColors.base,
                 hintText: widget.searchHintText,
                 filled: true,
-                border: customBorder(borderColor: AppTheme.themeColors.primary),
+                border: customBorder(borderColor: AppTheme.themeColors.red),
                 suffixIcon: widget.suffixIcon,
               ),
               name: "address".tr,
@@ -430,6 +438,9 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
                 if (query.length < widget.minCharsForSuggestions) {
                   return [];
                 }
+
+                widget.onTextChange?.call(query);
+
                 final completer = Completer<List<Prediction>>();
                 _debounce.run(() async {
                   List<Prediction> predictions =
@@ -494,7 +505,7 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
               suggestionsController: widget.suggestionsController,
             ),
           ),
-          trailing: _controller.text.trim().isNotEmpty ? UFUIconButton(
+          trailing: widget.showClearButton && _controller.text.trim().isNotEmpty ? widget.trailingIcon ?? UFUIconButton(
             backgroundColor: AppTheme.themeColors.transparent,
             icon: Icons.close,
             iconColor: AppTheme.themeColors.primary,
@@ -510,7 +521,7 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
 
   customBorder({Color? borderColor}) => OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: borderColor ?? AppTheme.themeColors.lightestGray, width: 0));
+      borderSide: BorderSide(color: borderColor ?? AppTheme.themeColors.red, width: 0));
 
   /// Get address details from place id
   void _getDetailsByPlaceId(Prediction place, String placeId, BuildContext context) async {
