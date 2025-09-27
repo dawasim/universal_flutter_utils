@@ -5,6 +5,7 @@ import 'dart:math' show Random;
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,26 +15,13 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'platform_interface.dart';
 
 class UFUSocialLogin {
-  // Future<void> iniFirebase() async {
-  //   await Firebase.initializeApp();
-  // }
-
-  Future<String?> getPlatformVersion() {
-    return UFUSocialLoginPlatform.instance.getPlatformVersion();
-  }
-
-  static const _successConst = "success";
-  static const _failureConst = "failure";
-
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleSignInAccount;
       try {
-        googleSignInAccount = await googleSignIn
-            .signIn()
-            .catchError((onError) {
+        googleSignInAccount = await googleSignIn.signIn().catchError((onError) {
           onError.printError();
           throw Exception(onError.toString());
         });
@@ -43,8 +31,7 @@ class UFUSocialLogin {
 
       if (googleSignInAccount != null) {
         // Obtain the auth details from the request
-        final GoogleSignInAuthentication googleAuth = await googleSignInAccount
-            .authentication;
+        final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
         // Create a new credential
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
@@ -60,7 +47,6 @@ class UFUSocialLogin {
     }
     return null;
   }
-
 
   Future<Map<String, dynamic>?> signInWithApple(String clientId) async {
     try {
