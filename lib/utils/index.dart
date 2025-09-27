@@ -12,6 +12,7 @@ import 'package:map_location_picker/map_location_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:universal_flutter_utils/models/address.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:universal_flutter_utils/utils/app_config/index.dart';
 import 'package:universal_flutter_utils/utils/file_picker/file_helper.dart';
@@ -25,6 +26,7 @@ import 'date_time/index.dart';
 import 'direction_helper.dart';
 import 'file_picker/index.dart';
 import 'form_validator/index.dart';
+import 'map_launcher/index.dart';
 import 'permissions/index.dart';
 import 'shared_preferences/index.dart';
 
@@ -341,6 +343,11 @@ class UFUtils {
 
   static launchShareIntent(String message) async =>
       await SharePlus.instance.share(ShareParams(text: message));
+
+  static Future<void> launchMapIntent(UFUAddressModel? address) async {
+    MapLauncher mapLauncher = MapLauncher();
+    return await mapLauncher.openMap(address);
+  }
 
   // static launchEmail(String email, {String subject = ''}) async {
   //   final Uri emailUri = Uri(
