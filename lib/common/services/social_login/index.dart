@@ -5,6 +5,7 @@ import 'dart:math' show Random;
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
@@ -53,61 +54,113 @@ class UFUSocialLogin {
       final rawNonce = generateNonce();
       final nonce = sha256ofString(rawNonce);
 
-      // Request credential for the currently signed in Apple account.
+      // Request Apple credentials
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName
+          AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: GetPlatform.isIOS
-            ? null
-            : WebAuthenticationOptions(
-            clientId: clientId,
-            redirectUri: Uri.parse(
-                'https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple')),
+            ? null : WebAuthenticationOptions(
+          clientId: clientId,
+          redirectUri: Uri.parse('https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple'),
+        ),
         nonce: GetPlatform.isIOS ? nonce : null,
-      ).catchError((error) {
-        error.toString().printError();
-        throw Exception(error.toString());
-      });
+      );
 
-      // Create an `OAuthCredential` from the credential returned by Apple.
+      // Create OAuth credential
       final oauthCredential = OAuthProvider("apple.com").credential(
         idToken: appleCredential.identityToken,
         rawNonce: rawNonce,
         accessToken: appleCredential.authorizationCode,
       );
 
-      String displayName = "";
+      // Firebase sign-in
+      final mUser = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
 
-      if (appleCredential.givenName?.isNotEmpty ?? false) {
-        displayName = appleCredential.givenName ?? "";
+      // Extract display name only if provided (first login)
+      String? displayName;
+      if ((appleCredential.givenName?.isNotEmpty ?? false) ||
+          (appleCredential.familyName?.isNotEmpty ?? false)) {
+        displayName =
+            "${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}".trim();
       }
 
-      if (appleCredential.familyName?.isNotEmpty ?? false) {
-        displayName = displayName.isNotEmpty
-            ? " ${appleCredential.familyName}"
-            : appleCredential.familyName ?? "";
-      }
-
-      // Sign in the user with Firebase. If the nonce we generated earlier does
-      // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-      final mUser = await FirebaseAuth.instance.signInWithCredential(
-          oauthCredential);
-
-      return {
-        "displayName": displayName,
-        "user": mUser
+      Map<String, dynamic> result = {
+        "displayName": displayName ?? mUser.user?.displayName,
+        "email": appleCredential.email ?? mUser.user?.email,
+        "user": mUser,
       };
+
+      print("Apple Login Result: ${result}");
+
+      return result;
     } catch (e) {
       if (UFUtils.isLoaderVisible()) Get.back();
-      // showSnackBar(e.toString());
-      // try {
-      //   UserCredential await FirebaseAuth.instance.signInWithPopup(AppleAuthProvider());
-      // }
       rethrow;
     }
   }
+
+  // Future<Map<String, dynamic>?> signInWithApple(String clientId) async {
+  //   try {
+  //     final rawNonce = generateNonce();
+  //     final nonce = sha256ofString(rawNonce);
+  //
+  //     // Request credential for the currently signed in Apple account.
+  //     final appleCredential = await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName
+  //       ],
+  //       webAuthenticationOptions: GetPlatform.isIOS
+  //           ? null
+  //           : WebAuthenticationOptions(
+  //           clientId: clientId,
+  //           redirectUri: Uri.parse(
+  //               'https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple')),
+  //       nonce: GetPlatform.isIOS ? nonce : null,
+  //     ).catchError((error) {
+  //       error.toString().printError();
+  //       throw Exception(error.toString());
+  //     });
+  //
+  //     // Create an `OAuthCredential` from the credential returned by Apple.
+  //     final oauthCredential = OAuthProvider("apple.com").credential(
+  //       idToken: appleCredential.identityToken,
+  //       rawNonce: rawNonce,
+  //       accessToken: appleCredential.authorizationCode,
+  //     );
+  //
+  //     String displayName = "";
+  //
+  //     if (appleCredential.givenName?.isNotEmpty ?? false) {
+  //       displayName = appleCredential.givenName ?? "";
+  //     }
+  //
+  //     if (appleCredential.familyName?.isNotEmpty ?? false) {
+  //       displayName = displayName.isNotEmpty
+  //           ? " ${appleCredential.familyName}"
+  //           : appleCredential.familyName ?? "";
+  //     }
+  //
+  //     // Sign in the user with Firebase. If the nonce we generated earlier does
+  //     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+  //     final mUser = await FirebaseAuth.instance.signInWithCredential(
+  //         oauthCredential);
+  //
+  //     return {
+  //       "displayName": displayName,
+  //       "user": mUser
+  //     };
+  //   } catch (e) {
+  //     if (UFUtils.isLoaderVisible()) Get.back();
+  //     // showSnackBar(e.toString());
+  //     // try {
+  //     //   UserCredential await FirebaseAuth.instance.signInWithPopup(AppleAuthProvider());
+  //     // }
+  //     rethrow;
+  //   }
+  // }
 
   String generateNonce([int length = 32]) {
     const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
