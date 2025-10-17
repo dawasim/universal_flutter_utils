@@ -76,6 +76,7 @@ class UFUText extends StatelessWidget {
         maxLines: maxLine,
         selectionControls: MaterialTextSelectionControls(),
         showCursor: false,
+        textDirection: UFUtils.isRtl ? TextDirection.rtl : TextDirection.ltr,
         style: TextHelper.getTextStyle(
             textColor,
             fontWeight,
@@ -93,6 +94,7 @@ class UFUText extends StatelessWidget {
         getText(text),
         textAlign: textAlign,
         maxLines: maxLine,
+        textDirection: UFUtils.isRtl ? TextDirection.rtl : TextDirection.ltr,
         style: TextHelper.getTextStyle(
             textColor,
             fontWeight,
