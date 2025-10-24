@@ -14,6 +14,7 @@ class UFUCheckbox extends StatelessWidget {
     this.fontWeight = UFUFontWeight.regular,
     this.borderColor,
     this.color,
+    this.uncheckColor,
     this.position = UFUPosition.start,
     this.checkColor,
     this.height = 17.0,
@@ -52,6 +53,9 @@ class UFUCheckbox extends StatelessWidget {
 
   /// Defines checkBoxColor [AppTheme.themeColors.primary] of a checkbox.
   final Color? color;
+
+  /// Defines uncheckColor [AppTheme.themeColors.base] of a checkbox.
+  final Color? uncheckColor;
 
   /// Defines checkbox position [UFUPosition.start] with related to text of a checkbox.
   final UFUPosition? position;
@@ -113,7 +117,7 @@ class UFUCheckbox extends StatelessWidget {
       getColor() {
         return selected!
             ? (disabled ? colors!.withValues(alpha:0.5) : colors)
-            : Colors.white;
+            : uncheckColor ?? Colors.white;
       }
 
       return InkWell(
@@ -135,11 +139,12 @@ class UFUCheckbox extends StatelessWidget {
               ),
               duration: const Duration(milliseconds: 1),
               child: Center(
-                  child: UFUIcon(
-                    Icons.check,
-                    color: checkColor ?? AppTheme.themeColors.base,
-                    size: 14,
-                  )),
+                 child: UFUIcon(
+                  Icons.check,
+                  color: checkColor ?? AppTheme.themeColors.base,
+                  size: 14,
+                )
+              ),
             ),
           ),
         ),

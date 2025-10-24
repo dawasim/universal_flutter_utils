@@ -5,7 +5,7 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subTitleColor,
   String? prefixBtnText = 'Cancel', String? suffixBtnText = '', VoidCallback? onTapPrefix,
   VoidCallback? onTapSuffix, IconData? icon, double? iconSize,  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
-  bool disableButtons = false, Widget? suffixBtnIcon, Widget? content,
+  bool disableButtons = false, Widget? suffixBtnIcon, Widget? content, UFUButtonRadius? buttonRadius,
   UFUButtonColorType? prefixBtnColorType, VoidCallback? onTapIcon,}) async {
   return await Get.bottomSheet(
     UFUConfirmationDialog(
@@ -23,7 +23,8 @@ ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subT
       suffixBtnIcon: suffixBtnIcon,
       content: content,
       prefixBtnColorType: prefixBtnColorType,
-      onTapIcon: onTapIcon
+      onTapIcon: onTapIcon,
+      buttonRadius: buttonRadius
     ),
     // _buildErrorBottomSheet(title, message, showRetry, retryCallback),
     backgroundColor: AppTheme.themeColors.base,
@@ -53,6 +54,7 @@ class UFUConfirmationDialog extends StatefulWidget {
     this.content,
     this.prefixBtnColorType,
     this.onTapIcon,
+    this.buttonRadius,
     });
 
   /// It can be used to set title of the dialog, this is required
@@ -95,6 +97,8 @@ class UFUConfirmationDialog extends StatefulWidget {
   final UFUButtonColorType? prefixBtnColorType;
 
   final bool disableButtons;
+
+  final UFUButtonRadius? buttonRadius;
 
   final Widget? content;
 
@@ -219,6 +223,7 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
             textColor: AppTheme.themeColors.primary,
             size: UFUButtonSize.small,
             disabled: widget.disableButtons,
+            buttonRadius: widget.buttonRadius,
             colorType: UFUButtonColorType.lightGray,
             onPressed: widget.onTapPrefix ??
                 () {
@@ -238,6 +243,7 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
             textColor: AppTheme.themeColors.base,
             size: UFUButtonSize.small,
             colorType: UFUButtonColorType.primary,
+            buttonRadius: widget.buttonRadius,
             onPressed: widget.onTapSuffix,
             iconWidget: widget.suffixBtnIcon,
             disabled: widget.disableButtons,
@@ -257,6 +263,7 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
           textColor: AppTheme.themeColors.text,
           size: UFUButtonSize.small,
           disabled: widget.disableButtons,
+          buttonRadius: widget.buttonRadius,
           colorType: widget.prefixBtnColorType ?? UFUButtonColorType.lightGray,
           onPressed: widget.onTapPrefix ?? () {
             Navigator.pop(context);
