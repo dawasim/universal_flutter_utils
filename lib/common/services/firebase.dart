@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import '../../universal_flutter_utils.dart';
 
 class UFFirebaseUtils {
-  Future<void> initFirebase({Function(Map<String, dynamic>)? notificationTap}) async {
+  Future<void> initFirebase({Function(Map<String, dynamic>)? notificationTap, FirebaseOptions? options}) async {
     ///   Initialize firebase
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(options: options);
     /// Initialize Notification Service
     await UFNotificationUtils.initialize(notificationTap: notificationTap);
   }
