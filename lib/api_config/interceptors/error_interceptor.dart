@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
+import 'retry.dart';
+
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -91,23 +93,18 @@ class ErrorInterceptor extends Interceptor {
 
     if (UFUtils.isLoaderVisible()) Get.back();
     if (error.response?.statusCode == 401) {
-      if (UFUtils.appName.isCaseInsensitiveContains("awn")) {
-        if (isManageTokenAPI(error.requestOptions.path)) {
-          await showSessionTimeoutError(
-              message: message,
-              title: title,
-              error: error,
-              retryCallback: retryCallback);
-        } else {
-          if (UFUtils.refreshToken != null) await UFUtils.refreshToken!();
-        }
-      } else {
-        await showSessionTimeoutError(
-            message: message,
-            title: title,
-            error: error,
-            retryCallback: retryCallback);
-      }
+
+      // if (UFUtils.refreshToken != null) {
+      //   Retry.execute(() => UFUtils.refreshToken?.call(), delay: const Duration(seconds: 4));
+      //   // await UFUtils.refreshToken?.call();
+      //   Get.offAndToNamed(UFUtils.refreshDestination);
+      // } else {
+      //   await showSessionTimeoutError(
+      //     message: message,
+      //     title: title,
+      //     error: error,
+      //     retryCallback: retryCallback);
+      // }
       handler.reject(error);
     } else {
       UFUToast.showToast(message);

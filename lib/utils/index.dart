@@ -33,6 +33,7 @@ class UFUtils {
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
   static String startDestination = "";
+  static String refreshDestination = "";
   static Function()? refreshToken;
   
   static String fontFamily = "";
@@ -344,14 +345,31 @@ class UFUtils {
   static Future<void> handleError(Object e) async {
 
     if (e is DioException) {
-      debugPrint('🔴 🔴 🔴 🔴 DioException caught! 🔴 🔴 🔴 🔴 ');
-      debugPrint('Request Path: ${e.requestOptions.path}');
-      debugPrint('Type: ${e.type}');
-      debugPrint('Status Code: ${e.response?.statusCode}');
-      debugPrint('Data: ${e.response?.data}');
-      debugPrint('Message: ${e.message}');
-      debugPrint('🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 ');
-      return;
+
+      if(e.response?.statusCode == 401) {
+        if (UFUtils.refreshToken != null) {
+          // Retry.execute(() => UFUtils.refreshToken?.call(), delay: const Duration(seconds: 4));
+          await UFUtils.refreshToken?.call();
+          // Get.offAndToNamed(UFUtils.refreshDestination);
+        } else {
+          // await showSessionTimeoutError(
+          //   message: message,
+          //   title: title,
+          //   error: error,
+          //   retryCallback: retryCallback);
+        }
+        // refreshToken?.call();
+        return;
+      } else {
+        debugPrint('🔴 🔴 🔴 🔴 DioException caught! 🔴 🔴 🔴 🔴 ');
+        debugPrint('Request Path: ${e.requestOptions.path}');
+        debugPrint('Type: ${e.type}');
+        debugPrint('Status Code: ${e.response?.statusCode}');
+        debugPrint('Data: ${e.response?.data}');
+        debugPrint('Message: ${e.message}');
+        debugPrint('🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 ');
+        return;
+      }
     } else {
       String? user = await UFUtils.preferences.readObject(UFUtils.preferences.userData);
       Map<String, dynamic>? userJson = user != null ? jsonDecode(user) : null;
