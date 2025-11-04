@@ -8,10 +8,7 @@ import 'package:http/http.dart';
 import 'package:location/location.dart' as loc;
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:universal_flutter_utils/theme/app_theme.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-
-import '../../auto_complete/widget/auto_complete.dart';
 
 class UFUPlacePicker extends StatefulWidget {
   /// Padding around the map
