@@ -31,6 +31,7 @@ dependencies:
   permission_handler: ^11.3.1
   image_picker: ^1.1.2
   image: ^4.5.2
+  custom_image_crop: ^0.1.1
   audio_waveforms: ^1.2.0
   flutter_native_contact_picker: ^0.0.10
   open_filex: ^4.6.0

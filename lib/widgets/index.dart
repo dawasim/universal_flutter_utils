@@ -74,3 +74,4 @@ export 'maps/place_picker/index.dart';
 export 'maps/place_picker/widget/custom_place_picker.dart';
 export 'maps/auto_complete/index.dart';
 export 'maps/auto_complete/widget/auto_complete.dart';
+export 'image_cropper/index.dart';
