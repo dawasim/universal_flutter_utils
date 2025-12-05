@@ -4,6 +4,7 @@ import 'dart:math' show Random;
 
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,10 +30,9 @@ class UFUSocialLogin {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleSignInAccount;
       try {
-        googleSignInAccount = await googleSignIn
-            .signIn()
-            .catchError((onError) {
-          onError.printError();
+        googleSignInAccount = await googleSignIn.signIn().catchError((onError) {
+          debugPrint("Google Sign-In Error: $onError");
+          // onError.printError();
           throw Exception(onError.toString());
         });
       } catch (e) {
