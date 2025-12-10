@@ -51,6 +51,8 @@ class ThemeColors {
   Color themeBlue;
   Color red;
   Color transparent;
+  Color backgroundColor;
+  Color selectedItemColor;
 
   ThemeColors.light({
     this.base = UFUColor.white,
@@ -101,6 +103,8 @@ class ThemeColors {
     this.themeBlue = UFUColor.themeBlue,
     this.red = UFUColor.red,
     this.transparent = UFUColor.transparent,
+    this.backgroundColor = UFUColor.white,
+    this.selectedItemColor = UFUColor.uranianBlue,
   });
 
   ThemeColors.dark({
@@ -152,5 +156,7 @@ class ThemeColors {
     this.themeBlue = UFUColor.themeBlue,
     this.red = UFUColor.red,
     this.transparent = UFUColor.transparent,
+    this.backgroundColor = UFUColor.white,
+    this.selectedItemColor = UFUColor.uranianBlue,
   });
 }

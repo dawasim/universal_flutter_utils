@@ -134,7 +134,7 @@ class UFUSingleSelectView extends StatelessWidget {
               borderRadius: getBorderRadius(),
               child: Material(
                 borderRadius: getBorderRadius(),
-                color: AppTheme.themeColors.themeBlue,
+                color: AppTheme.themeColors.backgroundColor,
                 child: SafeArea(
                   top: false,
                   bottom: !isFilterSheet,

@@ -76,6 +76,8 @@ class AppTheme {
     Color? themeGreen,
     Color? themeBlue,
     Color? red,
+    Color? backgroundColor,
+    Color? selectedItemColor,
   }) {
     if (primary != null) themeData.colors.primary = primary;
     if (secondary != null) themeData.colors.secondary = secondary;
@@ -120,5 +122,7 @@ class AppTheme {
     if (themeGreen != null) themeData.colors.themeGreen = themeGreen;
     if (themeBlue != null) themeData.colors.themeBlue = themeBlue;
     if (red != null) themeData.colors.red = red;
+    if (backgroundColor != null) themeData.colors.backgroundColor = backgroundColor;
+    if (selectedItemColor != null) themeData.colors.selectedItemColor = selectedItemColor;
   }
 }
