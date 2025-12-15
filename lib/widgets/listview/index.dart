@@ -28,6 +28,14 @@ class UFUListView extends StatefulWidget {
 
   final SliverGridDelegate? gridDelegate;
 
+  final bool? isLoading;
+
+  final Widget Function(BuildContext, int)? shimmerBuilder;
+
+  final String? noDataText;
+
+  final Widget? noDataWidget;
+
   const UFUListView({
     super.key,
     required this.listCount,
@@ -43,6 +51,10 @@ class UFUListView extends StatefulWidget {
     this.doAddFloatingButtonMargin = false,
     this.isGridView = false,
     this.gridDelegate,
+    this.isLoading,
+    this.shimmerBuilder,
+    this.noDataText,
+    this.noDataWidget,
   });
 
   @override
@@ -85,22 +97,29 @@ class UFUListViewState extends State<UFUListView> {
 
   @override
   Widget build(BuildContext context) {
-    return /*Flexible(
+
+    if(widget.isLoading ?? false) {
+      return widget.isGridView ? getGridShimmer() : getListShimmer();
+    } else if (widget.listCount == 0) {
+      return widget.noDataWidget ?? UFUNoDataFound(title: widget.noDataText ?? "No Data Found");
+    } else {
+      return /*Flexible(
       child: */widget.onRefresh != null ?  RefreshIndicator(
-        onRefresh: () async {
-          if(isLoadingMore) return;
-          toggleIsRefreshing();
-          await widget.onRefresh!();
-          toggleIsRefreshing();
-        },
-        notificationPredicate: (scroll){
-          return isLoadingMore
-              ? false
-              : !(widget.disableOnRefresh ?? false);
-        },
-        child: widget.isGridView ? getGridView() : getListView()
+          onRefresh: () async {
+            if(isLoadingMore) return;
+            toggleIsRefreshing();
+            await widget.onRefresh!();
+            toggleIsRefreshing();
+          },
+          notificationPredicate: (scroll){
+            return isLoadingMore
+                ? false
+                : !(widget.disableOnRefresh ?? false);
+          },
+          child: widget.isGridView ? getGridView() : getListView()
       ) : widget.isGridView ? getGridView() : getListView();
-    // );
+      // );
+    }
   }
 
   Widget getListView() {
@@ -161,4 +180,46 @@ class UFUListViewState extends State<UFUListView> {
   void toggleIsLoadingMore() {
     isLoadingMore = !isLoadingMore;
   }
+
+  Widget getListShimmer() => ListView.builder(
+    physics: widget.physics,
+    shrinkWrap: widget.shrinkWrap,
+    scrollDirection: widget.scrollDirection,
+    itemCount: 10,
+    padding: getListPadding(),
+    itemBuilder: (context, index) => Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: AppTheme.themeColors.base,
+        borderRadius: BorderRadius.circular(10)
+      ),
+      child: widget.shimmerBuilder?.call(context, index)
+        ?? const UFUShimmer(
+          height: 150, width: double.maxFinite,
+        ),
+    )
+  );
+
+  Widget getGridShimmer() => GridView.builder(
+    physics: widget.physics,
+    shrinkWrap: widget.shrinkWrap,
+    scrollDirection: widget.scrollDirection,
+    padding: getListPadding(),
+    gridDelegate: widget.gridDelegate ?? const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2, // Number of columns
+      crossAxisSpacing: 10, // Spacing between columns
+      mainAxisSpacing: 10, // Spacing between rows
+    ),
+    itemCount: 10,
+    itemBuilder: (context, index) => Container(
+      decoration: BoxDecoration(
+        color: AppTheme.themeColors.base,
+        borderRadius: BorderRadius.circular(10)
+      ),
+      child: widget.shimmerBuilder?.call(context, index)
+        ?? const UFUShimmer(
+          height: 150, width: double.maxFinite,
+        ),
+    )
+  );
 }
