@@ -876,7 +876,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
       color: Colors.white,
       border: Border.all(color: AppTheme.themeColors.tertiary, width: 1),
     ),
-    child: Column(
+    child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: UFUText(text: "No Address Found!"))

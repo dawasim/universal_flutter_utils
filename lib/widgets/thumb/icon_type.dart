@@ -84,11 +84,11 @@ enum UFUThumbIconType {
   ///[UFUThumbIconType.sfz] is used to set ThumbIcon type of a thumb widget
   sfz,
 
-  ///[UFUThumbIconType.UFUg] is used to set ThumbIcon type of a thumb widget
-  UFUg,
+  ///[UFUThumbIconType.jpg] is used to set ThumbIcon type of a thumb widget
+  jpg,
 
-  ///[UFUThumbIconType.UFUeg] is used to set ThumbIcon type of a thumb widget
-  UFUeg,
+  ///[UFUThumbIconType.jpeg] is used to set ThumbIcon type of a thumb widget
+  jpeg,
 
   ///[UFUThumbIconType.png] is used to set ThumbIcon type of a thumb widget
   png,

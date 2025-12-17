@@ -6,7 +6,6 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 import '../../../models/address.dart';
 import 'controller.dart';
-import 'widget/custom_place_picker.dart';
 
 
 class UFULocationPicker extends StatelessWidget {
@@ -127,7 +126,7 @@ class UFULocationPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if(controller.selectedAddress.value?.addressComponents.firstOrNull?.longName?.isNotEmpty ?? false) ...[
+              if(controller.selectedAddress.value?.addressComponents.firstOrNull?.longName.isNotEmpty ?? false) ...[
                 UFUText(
                   text: controller.selectedAddress.value?.addressComponents.firstOrNull?.longName ?? "",
                   textAlign: TextAlign.start,

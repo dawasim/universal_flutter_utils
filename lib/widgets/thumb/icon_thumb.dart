@@ -80,10 +80,10 @@ class UFUThumbIcon extends StatelessWidget {
         return 'SFZ';
       case UFUThumbIconType.png:
         return 'PNG';
-      case UFUThumbIconType.UFUeg:
-        return 'UFUEG';
-      case UFUThumbIconType.UFUg:
-        return 'UFUG';
+      case UFUThumbIconType.jpeg:
+        return 'JPEG';
+      case UFUThumbIconType.jpg:
+        return 'JPG';
       case UFUThumbIconType.xml:
         return 'XML';
       case UFUThumbIconType.url:
@@ -177,8 +177,8 @@ class UFUThumbIcon extends StatelessWidget {
       case UFUThumbIconType.url:
         return const Color(0xff2A3C50);
 
-      case UFUThumbIconType.UFUeg:
-      case UFUThumbIconType.UFUg:
+      case UFUThumbIconType.jpeg:
+      case UFUThumbIconType.jpg:
         return const Color(0xff155994);
         
       case UFUThumbIconType.html:

@@ -540,7 +540,7 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
         language: widget.language,
         fields: widget.fields,
       );
-      print("===> ${place.description}");
+      debugPrint("===> ${place.description ?? ""}");
 
       /// When get any error from the API, show the error in the console.
       if (response.hasNoResults ||
@@ -549,9 +549,9 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
           response.isNotFound ||
           response.unknownError ||
           response.isOverQueryLimit) {
-        print(response.errorMessage);
+        debugPrint(response.errorMessage ?? "");
         if (widget.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
             SnackBar(
               content: Text(response.errorMessage ??
                   "Address not found, something went wrong!"),

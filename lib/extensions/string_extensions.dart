@@ -4,7 +4,7 @@ extension StringExtension on String {
   }
 
   double formatUpTo({int maxDecimalPoints = 2}) {
-    double value = double.tryParse(this ?? '') ?? 0.0;
+    double value = double.tryParse(this) ?? 0.0;
     String formattedValue = value.toStringAsFixed(maxDecimalPoints);
     return double.parse(formattedValue);
   }

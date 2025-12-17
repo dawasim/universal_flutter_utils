@@ -304,10 +304,10 @@ class UFUtils {
         return UFUThumbIconType.sfz;
       case 'url':
         return UFUThumbIconType.url;
-      case 'UFUg':
-        return UFUThumbIconType.UFUg;
-      case 'UFUeg':
-        return UFUThumbIconType.UFUeg;
+      case 'jpg':
+        return UFUThumbIconType.jpg;
+      case 'jpeg':
+        return UFUThumbIconType.jpeg;
       case 'hover':
         return UFUThumbIconType.hover;
       case 'eagle_view':
