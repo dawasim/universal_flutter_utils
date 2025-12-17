@@ -33,9 +33,6 @@ dependencies:
 
   universal_flutter_utils:
     path: ../
-#    git:
-#      url: https://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@github.com/Danish-Git/universal_flutter_utils.git
-#      ref: main
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
