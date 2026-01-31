@@ -71,7 +71,7 @@ dependencies:
   crypto: ^3.0.6
   path: ^1.9.1
   html: ^0.15.6
-  flutter_html: ^3.0.0-beta.2 # The 3.0.0 series is still largely in beta/RC for this package
+  flutter_html: ^3.0.0
 
   # Biometric Recognition
   local_auth: ^3.0.0
