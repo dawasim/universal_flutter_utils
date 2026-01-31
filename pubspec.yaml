@@ -1,14 +1,22 @@
 name: universal_flutter_utils
 
 description: "A powerful, all-in-one Flutter utilities and widgets package to speed up development and keep your code clean."
-version: 0.0.5
+version: 0.0.6
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
 
 homepage: https://github.com/dawasim/universal_flutter_utils/blob/main/README.md
 
 license: MIT
 
 environment:
-  sdk: ^3.5.3
+  sdk: ^3.6.0
   flutter: ">=1.17.0"
 
 dependencies:
@@ -23,39 +31,38 @@ dependencies:
   scroll_to_index: ^3.0.1
 
   intl: ^0.20.2
-  get: ^4.6.6
-  shared_preferences: ^2.5.1
+  get: ^4.7.3
+  shared_preferences: ^2.5.2
 
   path_provider: ^2.1.5
-  file_picker: ^10.3.2
-  permission_handler: ^11.3.1
+  file_picker: ^10.3.3
+  permission_handler: ^11.4.0
   image_picker: ^1.1.2
-  image: ^4.5.2
+  image: ^4.5.3
   custom_image_crop: ^0.1.1
   audio_waveforms: ^1.2.0
   flutter_native_contact_picker: ^0.0.10
   open_filex: ^4.6.0
 
   # Location
-#  map_location_picker: ^2.0.3
   map_location_picker: ^1.3.3
   location: ^8.0.1
   form_builder_extra_fields: ^12.0.0
 
-  #  Display share prompt
+  # Display share prompt
   share_plus: ^12.0.1
 
   ## Server communication
   http: ^1.5.0
   dio: ^5.7.0
-  socket_io_client: ^3.1.1
+  socket_io_client: ^3.1.2
   cached_network_image: ^3.4.1
   url_launcher: ^6.3.1
-  flutter_widget_from_html_core: ^0.16.0
+  flutter_widget_from_html_core: ^0.16.1
   geolocator: ^13.0.2
   flutter_typeahead: ^5.2.0
 
-  #   Video Player
+  # Video Player
   chewie: ^1.10.0
   video_player: ^2.9.3
 
@@ -64,26 +71,27 @@ dependencies:
   crypto: ^3.0.6
   path: ^1.9.1
   html: ^0.15.6
+  flutter_html: ^3.0.0-beta.2 # The 3.0.0 series is still largely in beta/RC for this package
 
-  #   Biometric Recognition
-  local_auth: ^2.3.0
+  # Biometric Recognition
+  local_auth: ^3.0.0
 
-  #   Firebase
-  firebase_core: ^4.3.0
-  firebase_auth: ^6.1.3
-  firebase_crashlytics: ^5.0.6
+  # Firebase
+  firebase_core: ^4.3.1
+  firebase_auth: ^6.1.4
+  firebase_crashlytics: ^5.0.7
 
-  #   Push Notifications
-  firebase_messaging: ^16.1.0
-  flutter_local_notifications: ^19.5.0
+  # Push Notifications
+  firebase_messaging: ^16.1.1
+  flutter_local_notifications: ^20.0.0
   flutter_app_badge_control: ^0.0.2
 
-  #   Social login
-  google_sign_in: ^6.2.1
+  # Social login
+  google_sign_in: ^6.2.2
   sign_in_with_apple: ^7.0.1
   flutter_login_facebook: ^2.0.1
 
-  plugin_platform_interface: ^2.0.2
+  plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
   flutter_test:

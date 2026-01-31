@@ -3,7 +3,7 @@
 A **powerful, all-in-one Flutter utility package** to boost productivity, maintain consistency, and speed up your app development.\
 Includes beautifully crafted widgets, utilities, themes, extensions, API helpers, file pickers, and much more.
 
-> ✅ Version: `0.0.5` 
+> ✅ Version: `0.0.6` 
 
 ---
 

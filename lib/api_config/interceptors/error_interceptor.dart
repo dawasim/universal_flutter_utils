@@ -130,7 +130,7 @@ class ErrorInterceptor extends Interceptor {
       );
       handler.reject(error);
     } else {
-      UFUToast.showToast(message);
+      UFUToast.showToast(message, isError: true);
       handler.reject(error);
     }
   }

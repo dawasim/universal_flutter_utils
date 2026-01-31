@@ -28,11 +28,8 @@ class UFUBiometricRecognition {
 
       bool didAuthenticate = await _auth.authenticate(
         localizedReason: 'Please authenticate to proceed',
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          stickyAuth: true,
-          useErrorDialogs: true,
-        ),
+        persistAcrossBackgrounding: true,
+        biometricOnly: true,
       );
 
       return didAuthenticate;

@@ -20,7 +20,6 @@ class UFNotificationUtils {
       iOS: DarwinInitializationSettings());
 
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
         debugPrint('Foreground notification tapped: ${response.payload}');
 
@@ -33,6 +32,7 @@ class UFNotificationUtils {
         handleNotificationTap?.call(jsonDecode(makeValidJson(response.payload ?? "")));
       },
       onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
+      settings: initializationSettings,
     );
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -96,8 +96,10 @@ class UFNotificationUtils {
     await UFUtils.preferences.writeString(UFUtils.preferences.notificationPayload, jsonEncode(data));
 
     await flutterLocalNotificationsPlugin.show(
-      0, // Notification ID
-      title, body, platformChannelSpecifics,
+      id: 0, // Notification ID
+      title: title,
+      body: body,
+      notificationDetails: platformChannelSpecifics,
       payload: data.toString(), // Add payload for notification tap handling
     );
   }
