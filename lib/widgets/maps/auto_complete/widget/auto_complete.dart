@@ -360,13 +360,16 @@ class CustomPlaceAutoComplete extends StatefulWidget {
 
 class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
   /// Get [AutoCompleteState] for [AutoCompleteTextField]
-  AutoCompleteState autoCompleteState() {
-    return AutoCompleteState(
-      apiHeaders: widget.placesApiHeaders,
-      baseUrl: widget.placesBaseUrl,
-      httpClient: widget.placesHttpClient,
-    );
-  }
+
+  late GoogleMapsPlaces _places;
+
+  // AutoCompleteState autoCompleteState() {
+  //   return AutoCompleteState(
+  //     apiHeaders: widget.placesApiHeaders,
+  //     baseUrl: widget.placesBaseUrl,
+  //     httpClient: widget.placesHttpClient,
+  //   );
+  // }
 
   late TextEditingController _controller;
 
@@ -378,6 +381,13 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
     _controller = widget.searchController ?? TextEditingController();
 
     _debounce = Debouncer(duration: widget.debounceDuration);
+
+    _places = GoogleMapsPlaces(
+      apiKey: widget.apiKey,
+      httpClient: widget.placesHttpClient,
+      apiHeaders: widget.placesApiHeaders,
+      baseUrl: widget.placesBaseUrl,
+    );
     super.initState();
   }
 
@@ -443,10 +453,9 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
 
                 final completer = Completer<List<Prediction>>();
                 _debounce.run(() async {
-                  List<Prediction> predictions =
-                      await autoCompleteState().search(
+
+                  final response = await _places.autocomplete(
                     query,
-                    widget.apiKey,
                     language: widget.language,
                     sessionToken: widget.sessionToken,
                     region: widget.region,
@@ -458,7 +467,29 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
                     strictbounds: widget.strictbounds,
                     types: widget.types,
                   );
-                  completer.complete(predictions);
+
+                  // List<Prediction> predictions = await autoCompleteState().search(
+                  //   query,
+                  //   widget.apiKey,
+                  //   language: widget.language,
+                  //   sessionToken: widget.sessionToken,
+                  //   region: widget.region,
+                  //   components: widget.components,
+                  //   location: widget.location,
+                  //   offset: widget.offsetParameter,
+                  //   origin: widget.origin,
+                  //   radius: widget.radius,
+                  //   strictbounds: widget.strictbounds,
+                  //   types: widget.types,
+                  // );
+
+                  if (response.isOkay) {
+                    completer.complete(response.predictions);
+                  } else {
+                    completer.complete([]);
+                    // Handle error or 'zero_results' if necessary
+                  }
+                  // completer.complete(predictions);
                 });
                 return completer.future;
               },

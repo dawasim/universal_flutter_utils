@@ -60,8 +60,8 @@ class UFUPlaceAutoCompleteController extends GetxController {
     if(searchedItem != null) {
 
       Map<String, dynamic> addressComponent = {"address_components": []};
-      if(searchedItem.terms.isNotEmpty) {
-        for (var element in selectedPlace!.addressComponents) {
+      if(searchedItem.terms?.isNotEmpty ?? false) {
+        for (var element in selectedPlace?.addressComponents ?? []) {
           addressComponent["address_components"].add(element.toJson());
         }
       }
@@ -85,19 +85,19 @@ class UFUPlaceAutoCompleteController extends GetxController {
       String? country;
       String? postcode;
 
-      for (var component in _geocodingResult!.addressComponents) {
-        if (component.types.contains('locality')) {
+      for (var component in _geocodingResult?.addressComponents ?? []) {
+        if (component.types?.contains('locality') ?? false) {
           city = component.longName;
-        } else if (component.types.contains('administrative_area_level_1')) {
+        } else if (component.types?.contains('administrative_area_level_1') ?? false) {
           state = component.longName;
-        } else if (component.types.contains('country')) {
+        } else if (component.types?.contains('country') ?? false) {
           country = component.longName;
-        } else if (component.types.contains('postal_code')) {
+        } else if (component.types?.contains('postal_code') ?? false) {
           postcode = component.longName;
         }
       }
 
-      debugPrint("selectedLocLatLng----> ${_geocodingResult?.geometry.location.lat}----${_geocodingResult?.geometry.location.lng}");
+      debugPrint("selectedLocLatLng----> ${_geocodingResult?.geometry?.location.lat}----${_geocodingResult?.geometry?.location.lng}");
 
       UFUAddressModel address = UFUAddressModel();
 
@@ -107,8 +107,8 @@ class UFUPlaceAutoCompleteController extends GetxController {
         ..completeAddress = _geocodingResult?.formattedAddress
         ..address1 = _geocodingResult?.formattedAddress
         ..address2 = null
-        ..latitude = _geocodingResult?.geometry.location.lat
-        ..longitude = _geocodingResult?.geometry.location.lng
+        ..latitude = _geocodingResult?.geometry?.location.lat
+        ..longitude = _geocodingResult?.geometry?.location.lng
         ..city = city
         ..state = state
         ..country = country

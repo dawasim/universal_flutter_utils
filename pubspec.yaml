@@ -45,7 +45,7 @@ dependencies:
   open_filex: ^4.6.0
 
   # Location
-  map_location_picker: ^3.1.0
+  map_location_picker: ^2.0.3
   location: ^8.0.1
   form_builder_extra_fields: ^12.0.0
 
@@ -87,7 +87,7 @@ dependencies:
   flutter_app_badge_control: ^0.0.2
 
   # Social login
-  google_sign_in: ^7.2.0
+  google_sign_in: ^6.3.0
   sign_in_with_apple: ^7.0.1
   flutter_login_facebook: ^2.0.1
 
