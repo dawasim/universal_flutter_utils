@@ -27,7 +27,7 @@ class SearchedResultTile extends StatelessWidget {
               Image.asset("assets/images/ic_location_pin.png", color: Colors.black, height: 18, width: 18),
               const SizedBox(width: 12),
               Expanded(child: UFUText(
-                text: content.terms!.first.value,
+                text: content.terms.first.value,
                 textAlign: TextAlign.start,
               ))
             ],
