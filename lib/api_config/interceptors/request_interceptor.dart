@@ -35,7 +35,7 @@ class RequestInterceptor extends Interceptor {
     } else {
       String? token = await UFUtils.preferences.readAuthToken();
       String? selectedLanguage = await UFUtils.preferences.readSelectedLanguage();
-      if(selectedLanguage?.isNotEmpty ?? false) {
+      if(selectedLanguage.isNotEmpty) {
         options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token, jsonDecode(selectedLanguage));
       } else {
         options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token, null);
