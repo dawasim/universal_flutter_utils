@@ -43,6 +43,7 @@ dependencies:
   audio_waveforms: ^2.0.2
   flutter_native_contact_picker: ^0.0.10
   open_filex: ^4.6.0
+  package_info_plus: ^9.0.0
 
   # Location
   map_location_picker: ^2.0.3
