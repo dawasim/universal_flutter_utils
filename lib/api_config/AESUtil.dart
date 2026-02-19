@@ -33,13 +33,18 @@ class AESUtil {
     }
   }
 
-  static Map<String, String>? secKeyEncryptWithHeaderAppKey(String auth) {
+  static Map<String, String>? secKeyEncryptWithHeaderAppKey(String auth, Map<String, dynamic>? jsonDecode) {
     try {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       final key = Key.fromSecureRandom(32).bytes;
       final appKeyData = DateTime.now().toUtc().toString();
       final jsonMap = {DATE_KEY: appKeyData, ACCOUNT_TYPE: UFUtils.xPortal};
       if (auth.isNotEmpty) jsonMap['authorization'] = "Bearer $auth";
+      if (jsonDecode != null) {
+        jsonDecode.forEach((key, value) {
+          jsonMap[key] = "$value";
+        });
+      }
       debugPrint("Headers ----------- $jsonMap");
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(jsonMap);

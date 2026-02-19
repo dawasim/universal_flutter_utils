@@ -81,7 +81,7 @@ class UFPrefUtils {
     return mStorage.getString(authToken) ?? '';
   }
 
-  Future<String> readRefereshToken() async {
+  Future<String> readRefreshToken() async {
     SharedPreferences mStorage = await getStorage();
     return mStorage.getString(refreshToken) ?? '';
   }

@@ -1,23 +1,35 @@
 import 'dart:convert';
-
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:universal_flutter_utils/utils/index.dart';
-
+import 'package:package_info_plus/package_info_plus.dart';
 
 class UFNotificationUtils {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   static Function(Map<String, dynamic>)? handleNotificationTap;
 
+  static bool get _supportsFirebaseMessaging => kIsWeb || Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
+
   static Future<void> initialize({Function(Map<String, dynamic>)? notificationTap}) async {
     handleNotificationTap = notificationTap;
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: DarwinInitializationSettings());
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: const DarwinInitializationSettings(),
+        macOS: const DarwinInitializationSettings(),
+        linux: const LinuxInitializationSettings(defaultActionName: 'Open notification'),
+        windows: WindowsInitializationSettings(
+          appName: packageInfo.appName,
+          appUserModelId: packageInfo.packageName,
+          guid: 'a766a91c-e6ee-470f-88f9-cd21d7408541',
+        )
+    );
 
     await flutterLocalNotificationsPlugin.initialize(
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
@@ -35,35 +47,36 @@ class UFNotificationUtils {
       settings: initializationSettings,
     );
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('Received message: ${message.notification}');
-      RemoteNotification? notification = message.notification;
+    if (_supportsFirebaseMessaging) {
+      try {
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+          debugPrint('Received message: ${message.notification}');
+          RemoteNotification? notification = message.notification;
 
-      if (notification != null) {
-        _showNotification(
-          notification.title ?? "No Title",
-          notification.body ?? "No Body",
-          message.data,
-        );
+          if (notification != null) {
+            _showNotification(
+              notification.title ?? "No Title",
+              notification.body ?? "No Body",
+              message.data,
+            );
+          }
+
+          // handleNotificationTap?.call(jsonDecode(makeValidJson(message.data.toString())));
+
+        });
+
+        FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+        await requestNotificationPermission();
+      } catch (e) {
+        debugPrint('Firebase Messaging not supported on this platform: $e');
       }
-
-      // handleNotificationTap?.call(jsonDecode(makeValidJson(message.data.toString())));
-
-    });
-
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    await requestNotificationPermission();
+    }
   }
 
   @pragma('vm:entry-point')
   static void onDidReceiveBackgroundNotificationResponse(NotificationResponse response) {
     debugPrint('Background notification tapped: ${response.payload}');
-
-    if (response.payload == null || (response.payload?.isEmpty ?? true)) {
-      return;
-    }
-
+    if (response.payload == null || (response.payload?.isEmpty ?? true)) return;
     handleNotificationTap?.call(jsonDecode(makeValidJson(response.payload ?? "")));
   }
 
@@ -91,7 +104,11 @@ class UFNotificationUtils {
       channelShowBadge: true,
     );
 
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: DarwinNotificationDetails(),
+      macOS: DarwinNotificationDetails(),
+    );
 
     await UFUtils.preferences.writeString(UFUtils.preferences.notificationPayload, jsonEncode(data));
 
@@ -148,13 +165,13 @@ class UFNotificationUtils {
     // Add double quotes around keys, ignoring URLs (http: or https:)
     input = input.replaceAllMapped(
       RegExp(r'(\b(?!http|https)[a-zA-Z0-9_]+)(?=:)', multiLine: true),
-      (match) => '"${match.group(0)}"',
+          (match) => '"${match.group(0)}"',
     );
 
     // Add double quotes around string values while ignoring URLs
     input = input.replaceAllMapped(
       RegExp(r':\s*([^"{\[\],\s][^,}\]]*)'),
-      (match) {
+          (match) {
         final value = match.group(1);
         // If value starts with http or https, don't wrap it in quotes
         if (value != null &&
@@ -178,22 +195,29 @@ class UFNotificationUtils {
   }
 
   static Future<void> requestNotificationPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    if (!_supportsFirebaseMessaging) return;
 
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+    try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    } else {
-      debugPrint('User declined or has not accepted permission');
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      } else if(settings.authorizationStatus == AuthorizationStatus.denied) {
+        debugPrint('User declined or has not accepted permission [requestNotificationPermission]');
+      } else {
+        debugPrint('AuthorizationStatus - ${settings.authorizationStatus} [requestNotificationPermission]');
+      }
+    } catch (e) {
+      debugPrint('Error requesting permission: $e [requestNotificationPermission]');
     }
   }
 }

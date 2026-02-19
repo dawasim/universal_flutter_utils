@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -33,7 +34,12 @@ class RequestInterceptor extends Interceptor {
       return handler.next(options); // Skip interceptor
     } else {
       String? token = await UFUtils.preferences.readAuthToken();
-      options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token);
+      String? selectedLanguage = await UFUtils.preferences.readSelectedLanguage();
+      if(selectedLanguage?.isNotEmpty ?? false) {
+        options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token, jsonDecode(selectedLanguage));
+      } else {
+        options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token, null);
+      }
       debugPrint('Request: ${options.method} ${options.path}');
       return handler.next(options);
     }

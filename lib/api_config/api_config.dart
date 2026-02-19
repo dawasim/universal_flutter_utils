@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
+import 'package:path/path.dart' as pathPackage;
 
 import 'AESUtil.dart';
 import 'interceptors/error_interceptor.dart';
@@ -27,7 +28,7 @@ class UFApiConfig {
 
   // Unified GET request
   Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters,
-    bool infiniteTimeout = false, Map<String, dynamic>? header,}) async {
+    bool infiniteTimeout = false, Map<String, dynamic>? header}) async {
     try {
       // Backup current timeout settings
       final originalConnectTimeout = _dio.options.connectTimeout;
@@ -69,7 +70,8 @@ class UFApiConfig {
 
   // Unified POST request
   Future<dynamic> post(String path, {Map<String, dynamic>? data,
-    bool infiniteTimeout = false, bool overrideBody = false, Map<String, dynamic>? header,}) async {
+    bool infiniteTimeout = false, bool overrideBody = false,
+    Map<String, dynamic>? header,  Map<String, dynamic>? queryParameters,}) async {
     try {
       // Backup current timeout settings
       final originalConnectTimeout = _dio.options.connectTimeout;
@@ -100,7 +102,109 @@ class UFApiConfig {
         body = jsonEncode(data ?? {});
       }
       
-      final response = await _dio.post(UFUtils.baseUrl + path, data: body, options: requestOptions);
+      final response = await _dio.post(UFUtils.baseUrl + path, data: body,
+          options: requestOptions, queryParameters: queryParameters
+      );
+
+      // Restore original timeout settings
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = originalConnectTimeout;
+        _dio.options.receiveTimeout = originalReceiveTimeout;
+      }
+
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  // Unified PUT request
+  Future<dynamic> put(String path, {Map<String, dynamic>? data,
+    bool infiniteTimeout = false, bool overrideBody = false,
+    Map<String, dynamic>? header, Map<String, dynamic>? queryParameters}) async {
+    try {
+      // Backup current timeout settings
+      final originalConnectTimeout = _dio.options.connectTimeout;
+      final originalReceiveTimeout = _dio.options.receiveTimeout;
+
+      // Apply infinite timeout if requested
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = Duration.zero; // 0 = infinite
+        _dio.options.receiveTimeout = Duration.zero;
+      }
+
+      Options? requestOptions;
+
+      if(header != null) {
+        requestOptions = Options(
+          extra: {
+            "header": header,
+          },
+        );
+      }
+
+      dynamic body;
+      if (overrideBody) {
+        body = jsonEncode(data ?? {});
+      } else if (UFUtils.applyEncryption) {
+        body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+      } else {
+        body = jsonEncode(data ?? {});
+      }
+
+      final response = await _dio.put(UFUtils.baseUrl + path, data: body,
+          options: requestOptions, queryParameters: queryParameters);
+
+      // Restore original timeout settings
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = originalConnectTimeout;
+        _dio.options.receiveTimeout = originalReceiveTimeout;
+      }
+
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  // Unified PATCH request
+  Future<dynamic> patch(String path, {Map<String, dynamic>? data,
+    bool infiniteTimeout = false, bool overrideBody = false,
+    Map<String, dynamic>? header, Map<String, dynamic>? queryParameters,}) async {
+    try {
+      // Backup current timeout settings
+      final originalConnectTimeout = _dio.options.connectTimeout;
+      final originalReceiveTimeout = _dio.options.receiveTimeout;
+
+      // Apply infinite timeout if requested
+      if (infiniteTimeout) {
+        _dio.options.connectTimeout = Duration.zero; // 0 = infinite
+        _dio.options.receiveTimeout = Duration.zero;
+      }
+
+      Options? requestOptions;
+
+      if(header != null) {
+        requestOptions = Options(
+          extra: {
+            "header": header,
+          },
+        );
+      }
+
+      dynamic body;
+      if (overrideBody) {
+        body = jsonEncode(data ?? {});
+      } else if (UFUtils.applyEncryption) {
+        body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+      } else {
+        body = jsonEncode(data ?? {});
+      }
+
+      final response = await _dio.patch(UFUtils.baseUrl + path, data: body,
+        options: requestOptions, queryParameters: queryParameters);
 
       // Restore original timeout settings
       if (infiniteTimeout) {
@@ -125,24 +229,9 @@ class UFApiConfig {
     }
   }
 
-  // Unified Put request
-  Future<dynamic> put(String path, {Map<String, dynamic>? data}) async {
-    try {
-      final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
-      final response = await _dio.put(UFUtils.baseUrl + path, data: body);
-      return response.data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   // Upload file method
-  Future<Map<String, dynamic>?> uploadFile({
-    required String path,
-    required File file,
-    required String fileParam,
-    Map<String, dynamic>? data,
-  }) async {
+  Future<Map<String, dynamic>?> uploadFile({required String path, required File file,
+    required String fileParam, Map<String, dynamic>? data,}) async {
     try {
       String fileName = file.path.split('/').last;
 
@@ -173,10 +262,46 @@ class UFApiConfig {
     }
   }
 
-  Future<dynamic> downloadFile({
-    required String url,
-    Function(double progress)? onProgress,
-  }) async {
+  // Upload multiple file method
+  Future<Map<String, dynamic>?> uploadMultiFile({required String path,
+    required List<File> files, required String fileParam,
+    Map<String, dynamic>? data,}) async {
+    try {
+      // Build multipart files list
+      final multipartFiles = await Future.wait(
+        files.map((file) async {
+          final fileName = pathPackage.basename(file.path);
+          return MultipartFile.fromFile(file.path, filename: fileName);
+        }),
+      );
+
+      // Create FormData with the file
+      FormData formData = FormData.fromMap({
+        fileParam: multipartFiles,
+        if (data != null) ...data, // Add any additional data if needed
+      });
+
+      String? token = await UFUtils.preferences.readAuthToken();
+
+      // Send POST request with FormData
+      Response response = await _dio.post(
+        path,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token',
+            "Content-Type": "multipart/form-data",
+            "x-portal": "user"},
+          extra: {"skipInterceptor": true},
+        ),
+      );
+
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> downloadFile({required String url, Function(double progress)? onProgress}) async {
     try {
       // Determine the download directory based on the platform
       final Directory? downloadsDir;
@@ -197,11 +322,7 @@ class UFApiConfig {
       final String filePath = "${appDir.path}/$fileName";
 
       // Download file using Dio
-      await _dio.download(
-        url,
-        filePath,
-        options: Options(
-          headers: {
+      await _dio.download(url, filePath, options: Options(headers: {
             "Content-Type": "*/*",
             "Accept": "*/*",
           },

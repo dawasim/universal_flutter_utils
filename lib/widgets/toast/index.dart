@@ -11,7 +11,7 @@ class UFUToast {
 
   static void showToast(String message, {String? title, bool isError = false}) {
     if(!(Platform.isAndroid && Platform.isIOS)) {
-      WindowsToast.show(message, isError: isError);
+      WindowsToast.show(message, isError: isError, icon: isError ? Icons.cancel : Icons.check_circle_rounded);
       return;
     }
 
@@ -77,7 +77,10 @@ class WindowsToast extends StatefulWidget {
     late OverlayEntry entry;
 
     entry = OverlayEntry(
-      builder: (_) => WindowsToast(message: message, icon: icon, iconColor: iconColor, isError: isError, duration: duration, onDismissed: () => entry.remove()),
+      builder: (_) => WindowsToast(message: message, icon: icon,
+        iconColor: iconColor, isError: isError, duration: duration,
+        onDismissed: () => entry.remove()
+      ),
     );
 
     overlay.insert(entry);
