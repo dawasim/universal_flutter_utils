@@ -1,7 +1,7 @@
 name: universal_flutter_utils
 
 description: "A powerful, all-in-one Flutter utilities and widgets package to speed up development and keep your code clean."
-version: 0.0.7
+version: 0.0.8
 
 platforms:
   android:
