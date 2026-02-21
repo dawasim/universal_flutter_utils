@@ -103,7 +103,7 @@ class UFULocationPicker extends StatelessWidget {
     );
   }
 
-  markerInfo(UFULocationPickerController controller) => Container(
+  Container markerInfo(UFULocationPickerController controller) => Container(
     constraints: const BoxConstraints(maxWidth: 300),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     decoration: BoxDecoration(
@@ -126,9 +126,9 @@ class UFULocationPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if(controller.selectedAddress.value?.addressComponents.firstOrNull?.longName.isNotEmpty ?? false) ...[
+              if(controller.selectedAddress.value?.addressComponents?.firstOrNull?.longName?.isNotEmpty ?? false) ...[
                 UFUText(
-                  text: controller.selectedAddress.value?.addressComponents.firstOrNull?.longName ?? "",
+                  text: controller.selectedAddress.value?.addressComponents?.firstOrNull?.longName ?? "",
                   textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: 4),
@@ -148,7 +148,7 @@ class UFULocationPicker extends StatelessWidget {
   );
 
 
-  temp() => Column(
+  Column temp() => Column(
     children: [
       Positioned(
         left: coordinateY.toDouble() - 28, // Adjust for widget width/height

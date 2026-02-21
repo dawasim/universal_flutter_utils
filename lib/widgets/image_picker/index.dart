@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUImagePicker {
-  static Future<String?> show({primary, Color? bgColor}) async {
+  static Future<String?> show({Color? bgColor}) async {
     return await ShowUFUBottomSheet(
     child: (controller) => Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),

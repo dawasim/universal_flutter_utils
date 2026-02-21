@@ -94,7 +94,7 @@ class UFUDashedBorder extends Border {
 
   /// This method will work and draw for borders whose corner is not radius.
   /// It will draw centered by calculating the corner points.
-  _drawPath(Canvas canvas, Path source, Rect rect) {
+  void _drawPath(Canvas canvas, Path source, Rect rect) {
     var metric = source.computeMetrics().first;
 
     var leftHeight = rect.height;
@@ -231,7 +231,7 @@ class UFUDashedBorder extends Border {
 
   /// This method will work and draw for borders whose corner is radius.
   /// It will draw centered by calculating the corner points.
-  _drawRadiusPath(
+  void _drawRadiusPath(
       Canvas canvas, Path source, Rect rect, BorderRadius? borderRadius) {
     var metric = source.computeMetrics().first;
     var leftHeight = rect.height;

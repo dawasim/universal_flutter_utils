@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-import '../AESUtil.dart';
+import '../encryption_util.dart';
 
 class RequestInterceptor extends Interceptor {
   @override
@@ -36,9 +36,9 @@ class RequestInterceptor extends Interceptor {
       String? token = await UFUtils.preferences.readAuthToken();
       String? selectedLanguage = await UFUtils.preferences.readSelectedLanguage();
       if(selectedLanguage.isNotEmpty) {
-        options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token, jsonDecode(selectedLanguage));
+        options.headers = EncryptionUtil.secKeyEncryptWithHeaderAppKey(token, jsonDecode(selectedLanguage));
       } else {
-        options.headers = AESUtil.secKeyEncryptWithHeaderAppKey(token, null);
+        options.headers = EncryptionUtil.secKeyEncryptWithHeaderAppKey(token, null);
       }
       debugPrint('Request: ${options.method} ${options.path}');
       return handler.next(options);

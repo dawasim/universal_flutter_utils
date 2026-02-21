@@ -14,7 +14,7 @@ class UFUInputBoxController {
 
   String get text => controller.text.trim().toString();
 
-  clear() {
+  void clear() {
     controller.clear();
   }
 

@@ -101,7 +101,7 @@ class UFPrefUtils {
     return mStorage.getBool(isFirstRun) ?? true;
   }
 
-  getStorage() async {
+  Future<SharedPreferences> getStorage() async {
     return await SharedPreferences.getInstance();
   }
 }

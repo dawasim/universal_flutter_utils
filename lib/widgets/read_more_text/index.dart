@@ -42,6 +42,7 @@ class UFUReadMoreText extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.dialogTitle,
     this.dialogSubTitle,
+    this.dialogDescriptionColor,
     this.textDirection,
     this.semanticsLabel,
     this.delimiter = '$ellipsisChar ',
@@ -72,6 +73,7 @@ class UFUReadMoreText extends StatefulWidget {
   final String text;
   final String? dialogTitle;
   final String? dialogSubTitle;
+  final Color? dialogDescriptionColor;
   final String trimExpandedText;
   final String trimCollapsedText;
   final TextAlign textAlign;

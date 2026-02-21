@@ -14,7 +14,7 @@ class FileHelper {
   static String iosUFUFileStoragePath = '';
 
   //For open device file
-  static openLocalFile(String path, {
+  static Future<void> openLocalFile(String path, {
     String? type
   }) async {
     OpenResult result = await OpenFilex.open(path, type: type);

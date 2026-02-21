@@ -318,30 +318,30 @@ class UFUtils {
     }
   }
 
-  static hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
+  static void hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
-  static showKeyboard() => FocusManager.instance.primaryFocus?.requestFocus();
+  static void showKeyboard() => FocusManager.instance.primaryFocus?.requestFocus();
 
   static void hideLoaderDialog() {
     if (UFUtils.isLoaderVisible()) Get.back();
   }
 
-  static launchUrl(String url, {bool isInExternalMode = true}) async =>
+  static Future<bool> launchUrl(String url, {bool isInExternalMode = true}) async =>
       await ul.launchUrl(Uri.parse(url),
           mode: isInExternalMode
               ? LaunchMode.externalApplication
               : LaunchMode.platformDefault);
 
-  static launchCall(String phoneNumber) async =>
+  static Future<bool> launchCall(String phoneNumber) async =>
       await ul.launchUrl(Uri.parse("tel://$phoneNumber"));
 
-  static launchSms(String phoneNumber) async =>
+  static Future<bool> launchSms(String phoneNumber) async =>
       await ul.launchUrl(Uri.parse("sms:$phoneNumber"));
 
-  static launchEmail(String email, {String subject = ''}) async =>
+  static Future<bool> launchEmail(String email, {String subject = ''}) async =>
       await launchUrl("mailto:$email?subject=$subject");
 
-  static launchShareIntent(String message) async =>
+  static Future<ShareResult> launchShareIntent(String message) async =>
       await SharePlus.instance.share(ShareParams(text: message));
 
   static Future<void> launchMapIntent(UFUAddressModel? address) async {
@@ -400,7 +400,7 @@ class UFUtils {
 
   static Future<bool> openAppSetting() async => await Geolocator.openAppSettings();
 
-  static openLocationSetting() => Geolocator.openLocationSettings();
+  static Future<bool> openLocationSetting() => Geolocator.openLocationSettings();
 
   static bool isValueNullOrEmpty(dynamic value) {
     bool canCheckEmptiness = (value is String || value is List);

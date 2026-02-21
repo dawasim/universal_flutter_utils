@@ -9,12 +9,7 @@ class UFUToast {
   static DateTime? _lastShownTime;
   static const Duration _cooldown = Duration(seconds: 1);
 
-  static void showToast(String message, {String? title, bool isError = false}) {
-    if(!(Platform.isAndroid && Platform.isIOS)) {
-      WindowsToast.show(message, isError: isError, icon: isError ? Icons.cancel : Icons.check_circle_rounded);
-      return;
-    }
-
+  static void showToast(String message, {String? title, ToastType type = ToastType.success}) {
     final now = DateTime.now();
 
     // Prevent showing toasts if another was just shown recently
@@ -24,6 +19,11 @@ class UFUToast {
     }
 
     _lastShownTime = now;
+
+    if(!(Platform.isAndroid && Platform.isIOS)) {
+      WindowsToast.show(message, type: type);
+      return;
+    }
 
     // Cancel existing toast before showing a new one
     if (!kIsWeb) {
@@ -49,7 +49,7 @@ class WindowsToast extends StatefulWidget {
   final VoidCallback onDismissed;
   final IconData? icon;
   final Color? iconColor;
-  final bool isError;
+  final ToastType type;
 
   const WindowsToast({
     super.key,
@@ -58,7 +58,7 @@ class WindowsToast extends StatefulWidget {
     required this.onDismissed,
     this.icon,
     this.iconColor,
-    this.isError = false
+    this.type = ToastType.success,
   });
 
   @override
@@ -69,7 +69,7 @@ class WindowsToast extends StatefulWidget {
         Duration duration = const Duration(seconds: 2),
         IconData? icon,
         Color? iconColor,
-        bool isError = false
+        ToastType type = ToastType.success,
       }) {
     final overlay = Get.key.currentState?.overlay;
     if (overlay == null) return;
@@ -77,9 +77,13 @@ class WindowsToast extends StatefulWidget {
     late OverlayEntry entry;
 
     entry = OverlayEntry(
-      builder: (_) => WindowsToast(message: message, icon: icon,
-        iconColor: iconColor, isError: isError, duration: duration,
-        onDismissed: () => entry.remove()
+      builder: (_) => WindowsToast(
+        message: message,
+        icon: icon,
+        iconColor: iconColor,
+        type: type,
+        duration: duration,
+        onDismissed: () => entry.remove(),
       ),
     );
 
@@ -120,8 +124,8 @@ class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final icon = widget.icon ?? (widget.isError ? Icons.cancel : Icons.check_circle_rounded);
-    final iconColor = widget.iconColor ?? (widget.isError ? AppTheme.themeColors.red : AppTheme.themeColors.primary);
+    final icon = widget.icon ?? widget.type.icon;
+    final iconColor = widget.iconColor ?? widget.type.iconColor;
 
     return Positioned(
       bottom: 20,
@@ -141,7 +145,17 @@ class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderSt
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, color: iconColor, size: 22),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    widget.type.isWarning ? Container(
+                        width: 1, height: 12,
+                        color: AppTheme.themeColors.base,
+                      )
+                    : Icon(Icons.circle, color: AppTheme.themeColors.base, size: 20),
+                    Icon(icon, color: iconColor, size: 22),
+                  ],
+                ),
                 const SizedBox(width: 12),
                 Flexible(
                   child: UFUText(
@@ -158,4 +172,42 @@ class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderSt
       ),
     );
   }
+}
+
+enum ToastType {
+  success,
+  error,
+  info,
+  warning;
+
+  IconData get icon {
+    switch (this) {
+      case ToastType.success:
+        return Icons.check_circle_rounded;
+      case ToastType.error:
+        return Icons.cancel_rounded;
+      case ToastType.info:
+        return Icons.info_rounded;
+      case ToastType.warning:
+        return Icons.warning_rounded;
+    }
+  }
+
+  Color get iconColor {
+    switch (this) {
+      case ToastType.success:
+        return AppTheme.themeColors.primary;
+      case ToastType.error:
+        return AppTheme.themeColors.red;
+      case ToastType.info:
+        return AppTheme.themeColors.royalBlue;
+      case ToastType.warning:
+        return AppTheme.themeColors.warning;
+    }
+  }
+
+  bool get isSuccess => this == ToastType.success;
+  bool get isError => this == ToastType.error;
+  bool get isInfo => this == ToastType.info;
+  bool get isWarning => this == ToastType.warning;
 }

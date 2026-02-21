@@ -28,7 +28,7 @@ class UFUSvgImage extends StatelessWidget {
 
     return Transform(
       alignment: Alignment.center,
-      transform: Matrix4.identity()..scale(isWithRtl ? -1.0 : 1.0, 1.0),
+      transform: Matrix4.diagonal3Values(isWithRtl ? -1.0 : 1.0, 1.0, 1.0),
       child: SvgPicture.asset(
         assetPath,
         height: height,

@@ -63,8 +63,20 @@ class UFUText extends StatelessWidget {
   final FontStyle fontStyle;
 
   String getText(String text) {
+    // 1. Clean up HTML entities
     text = text.replaceAll('&amp;', '&');
-    return overflow != null ? text.replaceAll('', '\u200B') : text;
+
+    // 2. Check if the text contains Arabic characters (Unicode range 0600-06FF)
+    bool containsArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(text);
+
+    // 3. ONLY apply the \u200B hack if it's NOT Arabic.
+    // This hack was likely added to help English text wrap better,
+    // but it is "poison" for cursive scripts like Arabic.
+    if (overflow != null && !containsArabic) {
+      return text.replaceAll('', '\u200B');
+    }
+
+    return text;
   }
 
   @override

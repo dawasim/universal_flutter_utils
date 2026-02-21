@@ -264,7 +264,7 @@ class UFUThumbIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: (isSelect)
             ? AppTheme.themeColors.primary
-            : getIconColor(iconType).withOpacity(0.18),
+            : getIconColor(iconType).withAlpha(180),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(

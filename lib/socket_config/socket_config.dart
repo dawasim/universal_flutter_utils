@@ -11,7 +11,7 @@ class UFSocketConfig {
 
   static Socket? getSocket() => _socket;
 
-  static initializeSocket({Function({required Socket socket, required void Function(String event, Function(dynamic data)) on,})? initListeners}) async {
+  static Future<void> initializeSocket({Function({required Socket socket, required void Function(String event, Function(dynamic data)) on,})? initListeners}) async {
     if (_socket?.connected == true) {
       _socket?.disconnect();
     }

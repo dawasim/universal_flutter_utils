@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subTitleColor,
+Future<dynamic> ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subTitleColor,
   String? prefixBtnText = 'Cancel', String? suffixBtnText = '', VoidCallback? onTapPrefix,
   VoidCallback? onTapSuffix, IconData? icon, double? iconSize,  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
   bool disableButtons = false, Widget? suffixBtnIcon, Widget? content, UFUButtonRadius? buttonRadius,

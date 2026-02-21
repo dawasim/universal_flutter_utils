@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-import 'package:path/path.dart' as pathPackage;
+import 'package:path/path.dart' as path_package;
 
-import 'AESUtil.dart';
+import 'encryption_util.dart';
 import 'interceptors/error_interceptor.dart';
 import 'interceptors/request_interceptor.dart';
 import 'interceptors/response_interceptor.dart';
@@ -97,7 +97,7 @@ class UFApiConfig {
       if (overrideBody) {
         body = jsonEncode(data ?? {});
       } else if (UFUtils.applyEncryption) {
-        body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+        body = EncryptionUtil.secKeyEncryptWithBodyAppKey(data ?? {});
       } else {
         body = jsonEncode(data ?? {});
       }
@@ -148,7 +148,7 @@ class UFApiConfig {
       if (overrideBody) {
         body = jsonEncode(data ?? {});
       } else if (UFUtils.applyEncryption) {
-        body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+        body = EncryptionUtil.secKeyEncryptWithBodyAppKey(data ?? {});
       } else {
         body = jsonEncode(data ?? {});
       }
@@ -198,7 +198,7 @@ class UFApiConfig {
       if (overrideBody) {
         body = jsonEncode(data ?? {});
       } else if (UFUtils.applyEncryption) {
-        body = AESUtil.secKeyEncryptWithBodyAppKey(data ?? {});
+        body = EncryptionUtil.secKeyEncryptWithBodyAppKey(data ?? {});
       } else {
         body = jsonEncode(data ?? {});
       }
@@ -221,7 +221,7 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {
     try {
-      final body = UFUtils.applyEncryption ? AESUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
+      final body = UFUtils.applyEncryption ? EncryptionUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
       final response = await _dio.delete(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
@@ -270,7 +270,7 @@ class UFApiConfig {
       // Build multipart files list
       final multipartFiles = await Future.wait(
         files.map((file) async {
-          final fileName = pathPackage.basename(file.path);
+          final fileName = path_package.basename(file.path);
           return MultipartFile.fromFile(file.path, filename: fileName);
         }),
       );

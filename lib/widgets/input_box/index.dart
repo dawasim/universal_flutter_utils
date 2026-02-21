@@ -404,7 +404,7 @@ class UFUInputBoxState extends State<UFUInputBox> {
 
   @override
   Widget build(BuildContext context) {
-    scale = MediaQuery.of(context).textScaleFactor;
+    scale = View.of(context).platformDispatcher.textScaleFactor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

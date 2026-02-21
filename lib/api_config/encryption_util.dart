@@ -6,12 +6,12 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/cupertino.dart' show debugPrint;
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-class AESUtil {
-  static const SEK = "sek";
-  static const HASH = "hash";
-  static const DATE_KEY = "date";
-  static const DEVICE_TYPE_KEY = "devicetype";
-  static const ACCOUNT_TYPE = "x-portal";
+class EncryptionUtil {
+  static const sek = "sek";
+  static const hash = "hash";
+  static const dataKey = "date";
+  static const deviceTypeKey = "deviceType";
+  static const accountType = "x-portal";
 
   // static var ENCRYPTION_IV = UFUtils.encryptionIV;
   // static final iv = IV.fromUtf8(ENCRYPTION_IV);
@@ -24,8 +24,8 @@ class AESUtil {
       final randomString = jsonEncode(mParams);
       final encrypted = encrypter.encrypt(randomString, iv: iv);
       final result = {
-        SEK: hex.encode(encrypted.bytes),
-        HASH: hex.encode(key)
+        sek: hex.encode(encrypted.bytes),
+        hash: hex.encode(key)
       };
       return result;
     } catch (e) {
@@ -38,7 +38,7 @@ class AESUtil {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       final key = Key.fromSecureRandom(32).bytes;
       final appKeyData = DateTime.now().toUtc().toString();
-      final jsonMap = {DATE_KEY: appKeyData, ACCOUNT_TYPE: UFUtils.xPortal};
+      final jsonMap = {dataKey: appKeyData, accountType: UFUtils.xPortal};
       if (auth.isNotEmpty) jsonMap['authorization'] = "Bearer $auth";
       if (jsonDecode != null) {
         jsonDecode.forEach((key, value) {
@@ -52,9 +52,9 @@ class AESUtil {
 
       final result = UFUtils.applyEncryption
         ? {
-            SEK: hex.encode(encrypted.bytes),
-            HASH: hex.encode(key),
-            DEVICE_TYPE_KEY: 'android',
+            sek: hex.encode(encrypted.bytes),
+            hash: hex.encode(key),
+            deviceTypeKey: 'android',
           } : jsonMap;
       return result;
     } catch (e) {
@@ -65,8 +65,8 @@ class AESUtil {
   static String? secKeyDecryptedWithSek(Map<String, dynamic> hashMap) {
     try {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
-      final key = hexStringToByteArray(hashMap[HASH] as String);
-      final toDecode = hexStringToByteArray(hashMap[SEK] as String);
+      final key = hexStringToByteArray(hashMap[hash] as String);
+      final toDecode = hexStringToByteArray(hashMap[sek] as String);
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final decrypted = encrypter.decryptBytes(Encrypted(toDecode), iv: iv);
       return utf8.decode(decrypted);

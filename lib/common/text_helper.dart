@@ -55,7 +55,7 @@ class TextHelper {
     }
   }
 
-  static getMontserratFontFamily(UFUFontWeight fontWeight) {
+  static String getMontserratFontFamily(UFUFontWeight fontWeight) {
     switch (fontWeight) {
       case UFUFontWeight.regular:
         return 'MontserratRegular';

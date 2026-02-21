@@ -25,38 +25,73 @@ class UFUSocialLogin {
   // static const _failureConst = "failure";
 
 
+  // Future<UserCredential?> signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignIn googleSignIn = GoogleSignIn();
+  //     GoogleSignInAccount? googleSignInAccount;
+  //     try {
+  //       googleSignInAccount = await googleSignIn.signIn().catchError((onError) {
+  //         debugPrint("Google Sign-In Error: $onError");
+  //         // onError.printError();
+  //         throw Exception(onError.toString());
+  //       });
+  //     } catch (e) {
+  //       rethrow;
+  //     }
+  //
+  //     if (googleSignInAccount != null) {
+  //       // Obtain the auth details from the request
+  //       final GoogleSignInAuthentication googleAuth = await googleSignInAccount
+  //           .authentication;
+  //       // Create a new credential
+  //       final credential = GoogleAuthProvider.credential(
+  //         accessToken: googleAuth.accessToken,
+  //         idToken: googleAuth.idToken,
+  //       );
+  //       await GoogleSignIn().signOut();
+  //       return await FirebaseAuth.instance.signInWithCredential(credential);
+  //     }
+  //   } catch (e) {
+  //     if (UFUtils.isLoaderVisible()) Get.back();
+  //     e.printError();
+  //     rethrow;
+  //   }
+  //   return null;
+  // }
+
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      GoogleSignInAccount? googleSignInAccount;
-      try {
-        googleSignInAccount = await googleSignIn.signIn().catchError((onError) {
-          debugPrint("Google Sign-In Error: $onError");
-          // onError.printError();
-          throw Exception(onError.toString());
-        });
-      } catch (e) {
-        rethrow;
-      }
+      // 1. Get the singleton instance (No longer use the unnamed constructor)
+      final GoogleSignIn googleSignIn = GoogleSignIn.instance;
 
-      if (googleSignInAccount != null) {
-        // Obtain the auth details from the request
-        final GoogleSignInAuthentication googleAuth = await googleSignInAccount
-            .authentication;
-        // Create a new credential
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        await GoogleSignIn().signOut();
-        return await FirebaseAuth.instance.signInWithCredential(credential);
-      }
+      // 2. Initialize the instance (MUST be called before authenticate)
+      // Note: For Web, you must pass your clientId here.
+      await googleSignIn.initialize();
+
+      // 3. Trigger the authentication flow (signIn() is now authenticate())
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate(); // User canceled the sign-in
+
+      // 4. Access authentication data
+      // In v7.x, .authentication is a synchronous property, not a Future.
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      // 5. Create a Firebase credential
+      // If you need the accessToken, you may need to request it via
+      // googleUser.authorizationClient.authorizeScopes() if it's null here.
+      GoogleSignInClientAuthorization authorization = await googleUser.authorizationClient.authorizeScopes(["email"]);
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: authorization.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // 6. Sign in to Firebase
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+
     } catch (e) {
-      if (UFUtils.isLoaderVisible()) Get.back();
-      e.printError();
-      rethrow;
+      debugPrint("Google Sign-In Error: $e");
+      return null;
     }
-    return null;
   }
 
 

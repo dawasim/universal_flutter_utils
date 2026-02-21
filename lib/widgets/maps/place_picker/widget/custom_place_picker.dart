@@ -768,7 +768,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
           response.unknownError ||
           response.isOverQueryLimit) {
         debugPrint(response.errorMessage);
-        _address = response.status;
+        _address = response.status.name;
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -779,11 +779,11 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
         }
         return;
       }
-      _address = response.results.first.formattedAddress ?? "";
-      _geocodingResult = response.results.first;
+      _address = response.results?.firstOrNull?.formattedAddress ?? "";
+      _geocodingResult = response.results?.firstOrNull;
       widget.onDecodeAddress?.call(_geocodingResult);
-      if (response.results.length > 1) {
-        _geocodingResultList = response.results;
+      if ((response.results?.length ?? 0) > 1) {
+        _geocodingResultList = response.results ?? [];
       }
       if(_searchController.text.trim().isNotEmpty) {
         _searchController.text = "";
@@ -795,12 +795,12 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
   }
 
 
-  saveCurrentLocation(PlaceDetails? selectedPlace, {Prediction? searchedItem}) async {
+  Future<void> saveCurrentLocation(PlaceDetails? selectedPlace, {Prediction? searchedItem}) async {
     UFUtils.hideKeyboard();
     if (selectedPlace == null && searchedItem == null) return;
 
     Location sLocation = selectedPlace?.geometry?.location
-        ?? _geocodingResult?.geometry.location
+        ?? _geocodingResult?.geometry?.location
         ?? widget.location
         ?? Location(
           lat: _initialPosition.latitude,
@@ -810,8 +810,8 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     if(searchedItem != null) {
 
       Map<String, dynamic> addressComponent = {"address_components": []};
-      if(searchedItem.terms.isNotEmpty) {
-        for (var element in selectedPlace!.addressComponents) {
+      if(searchedItem.terms?.isNotEmpty ?? false) {
+        for (var element in selectedPlace!.addressComponents ?? []) {
           addressComponent["address_components"].add(element.toJson());
         }
       }
@@ -855,7 +855,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
             Image.asset("assets/images/ic_location_pin.png", color: Colors.black, height: 18, width: 18),
             const SizedBox(width: 12),
             Expanded(child: UFUText(
-              text: content.terms.first.value,
+              text: content.terms?.firstOrNull?.value ?? "",
               textAlign: TextAlign.start,
             ))
           ],

@@ -7,12 +7,12 @@ class UFUBottomSheetController extends GetxController{
 
   bool switchValue = false;
 
-  toggleIsLoading(){
+  void toggleIsLoading(){
     isLoading = !isLoading;
     update();
   }
 
-  toggleSwitchValue(bool val){
+  void toggleSwitchValue(bool val){
     switchValue = val;
     update();
   }

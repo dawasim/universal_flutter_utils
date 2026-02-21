@@ -483,7 +483,7 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
                   //   types: widget.types,
                   // );
 
-                  if (response.isOkay) {
+                  if (response.isOk) {
                     completer.complete(response.predictions);
                   } else {
                     completer.complete([]);
@@ -550,7 +550,7 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
     );
   }
 
-  customBorder({Color? borderColor}) => OutlineInputBorder(
+  InputBorder customBorder({Color? borderColor}) => OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(color: borderColor ?? AppTheme.themeColors.red, width: 0));
 

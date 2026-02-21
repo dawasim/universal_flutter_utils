@@ -94,7 +94,7 @@ class UFPermissionUtils {
     return status.isGranted;
   }
 
-  getContactPermissions() async {
+  Future<bool> getContactPermissions() async {
     // Check and request READ_CONTACTS permission
     PermissionStatus readStatus = await Permission.contacts.status;
     if (!readStatus.isGranted) {

@@ -54,7 +54,7 @@ class CustomDialog extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 0),
           child: Material(
-            color: Theme.of(context).dialogBackgroundColor, // Picks dialog color as per theme
+            color: Theme.of(context).dialogTheme.backgroundColor, // Picks dialog color as per theme
             elevation: elevation,
             shape: shape,
             type: MaterialType.card,

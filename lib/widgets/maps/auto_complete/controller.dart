@@ -60,7 +60,7 @@ class UFUPlaceAutoCompleteController extends GetxController {
     if(searchedItem != null) {
 
       Map<String, dynamic> addressComponent = {"address_components": []};
-      if(searchedItem.terms.isNotEmpty) {
+      if(searchedItem.terms?.isNotEmpty ?? false) {
         for (var element in selectedPlace?.addressComponents ?? []) {
           addressComponent["address_components"].add(element.toJson());
         }
@@ -97,7 +97,7 @@ class UFUPlaceAutoCompleteController extends GetxController {
         }
       }
 
-      debugPrint("selectedLocLatLng----> ${_geocodingResult?.geometry.location.lat}----${_geocodingResult?.geometry.location.lng}");
+      debugPrint("selectedLocLatLng----> ${_geocodingResult?.geometry?.location.lat}----${_geocodingResult?.geometry?.location.lng}");
 
       UFUAddressModel address = UFUAddressModel();
 
@@ -107,8 +107,8 @@ class UFUPlaceAutoCompleteController extends GetxController {
         ..completeAddress = _geocodingResult?.formattedAddress
         ..address1 = _geocodingResult?.formattedAddress
         ..address2 = null
-        ..latitude = _geocodingResult?.geometry.location.lat
-        ..longitude = _geocodingResult?.geometry.location.lng
+        ..latitude = _geocodingResult?.geometry?.location.lat
+        ..longitude = _geocodingResult?.geometry?.location.lng
         ..city = city
         ..state = state
         ..country = country

@@ -30,7 +30,7 @@ class UFULocationPickerController extends GetxController {
     loadFormData();
   }
 
-  loadFormData() {
+  void loadFormData() {
     if(address?.latitude != null && address?.longitude != null) {
       currentLocation = LatLng(address!.latitude!, address!.longitude!);
       selectedAddress.value = GeocodingResult.fromJson({
@@ -48,7 +48,7 @@ class UFULocationPickerController extends GetxController {
     update();
   }
 
-  saveCurrentLocation() async {
+  Future<void> saveCurrentLocation() async {
     final selectedPlace = selectedAddress.value;
     if (selectedPlace == null) return;
     try {
@@ -57,19 +57,19 @@ class UFULocationPickerController extends GetxController {
       String? country;
       String? postcode;
 
-      for (var component in selectedPlace.addressComponents) {
-        if (component.types.contains('locality')) {
+      for (var component in selectedPlace.addressComponents ?? []) {
+        if (component.types?.contains('locality') ?? false) {
           city = component.longName;
-        } else if (component.types.contains('administrative_area_level_1')) {
+        } else if (component.types?.contains('administrative_area_level_1') ?? false) {
           state = component.longName;
-        } else if (component.types.contains('country')) {
+        } else if (component.types?.contains('country') ?? false) {
           country = component.longName;
-        } else if (component.types.contains('postal_code')) {
+        } else if (component.types?.contains('postal_code') ?? false) {
           postcode = component.longName;
         }
       }
 
-      debugPrint("selectedLocLatLng----> ${selectedPlace.geometry.location.lat}----${selectedPlace.geometry.location.lng}");
+      debugPrint("selectedLocLatLng----> ${selectedPlace.geometry?.location.lat}----${selectedPlace.geometry?.location.lng}");
 
       address = address ?? UFUAddressModel();
 
@@ -79,8 +79,8 @@ class UFULocationPickerController extends GetxController {
         ..completeAddress = selectedPlace.formattedAddress
         ..address1 = selectedPlace.formattedAddress
         ..address2 = null
-        ..latitude = selectedPlace.geometry.location.lat
-        ..longitude = selectedPlace.geometry.location.lng
+        ..latitude = selectedPlace.geometry?.location.lat
+        ..longitude = selectedPlace.geometry?.location.lng
         ..city = city
         ..state = state
         ..country = country
@@ -103,15 +103,15 @@ class UFULocationPickerController extends GetxController {
     }
   }
 
-  setSearchedAddress(PlacesDetailsResponse? result) {
+  void setSearchedAddress(PlacesDetailsResponse? result) {
     if (result != null) {
       autocompletePlace.value = result.result;
       selectedAddress.value = GeocodingResult(
-        geometry: result.result.geometry ??
+        geometry: result.result?.geometry ??
             Geometry(location: Location(lat: 0, lng: 0)),
-        placeId: result.result.placeId,
-        addressComponents: result.result.addressComponents,
-        formattedAddress: result.result.formattedAddress,
+        placeId: result.result?.placeId,
+        addressComponents: result.result?.addressComponents,
+        formattedAddress: result.result?.formattedAddress,
       );
       isEdit = true;
     }

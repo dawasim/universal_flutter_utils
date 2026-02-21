@@ -49,7 +49,7 @@ class UFUAvatar extends StatelessWidget {
   final Widget? child;
 
   /// Defines size [UFUAvatarSize.medium] of a avatar
-  getSize() {
+  double getSize() {
     switch (size) {
       case UFUAvatarSize.extraLarge:
         return 128.0;
@@ -69,7 +69,7 @@ class UFUAvatar extends StatelessWidget {
   }
 
   /// Defines default size of default icon of a avatar
-  getDefaultIconSize() {
+  double getDefaultIconSize() {
     switch (size) {
       case UFUAvatarSize.extraLarge:
         return 100.0;

@@ -3,12 +3,17 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUReadDialog extends StatelessWidget {
   const UFUReadDialog({
-    super.key, required this.text, required this.title, this.subtitle,
+    super.key,
+    required this.text,
+    required this.title,
+    this.subtitle,
+    this.dialogDescriptionColor,
   });
 
   final String text;
   final String title;
   final String? subtitle;
+  final Color? dialogDescriptionColor;
 
 
   @override
@@ -76,8 +81,12 @@ class UFUReadDialog extends StatelessWidget {
                     children:[
                        UFUText(
                          textAlign: TextAlign.left,
-                         text:text,
-                         textColor: AppTheme.themeColors.tertiary),]),
+                         text: text,
+                         textColor: dialogDescriptionColor
+                             ?? AppTheme.themeColors.text
+                       ),
+                    ]
+                  ),
                 ),
 
 
