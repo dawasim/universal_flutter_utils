@@ -20,7 +20,7 @@ class UFUToast {
 
     _lastShownTime = now;
 
-    if(!(Platform.isAndroid && Platform.isIOS)) {
+    if(UFUScreen.isDesktop) {
       WindowsToast.show(message, type: type);
       return;
     }

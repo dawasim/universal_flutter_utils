@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
@@ -47,6 +48,7 @@ class RequestInterceptor extends Interceptor {
 
   Future<bool> _checkInternetConnection() async {
     try {
+      if(kIsWeb) return true;
       final result = await InternetAddress.lookup('google.com');
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException catch (_) {

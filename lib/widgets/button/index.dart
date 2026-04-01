@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUButton extends StatelessWidget {
@@ -21,8 +22,10 @@ class UFUButton extends StatelessWidget {
     this.width,
     this.isFlat = true,
     this.buttonRadius = UFUButtonRadius.roundSquare,
+    this.borderColor,
     this.radius,
     this.bgColor,
+    this.isLoading = false,
     super.key,
   });
 
@@ -77,12 +80,18 @@ class UFUButton extends StatelessWidget {
 
   final UFUButtonRadius? buttonRadius;
 
+  final Color? borderColor;
+
   final double? radius;
 
   final Color? bgColor;
 
+  final bool isLoading;
+
   /// Return textSize by using button size and default size is [UFUTextSize.heading3].
   UFUTextSize getTextSize(UFUButtonSize size) {
+    if(textSize != null) return textSize!;
+
     switch (size) {
       case UFUButtonSize.flat:
       case UFUButtonSize.large:
@@ -205,6 +214,8 @@ class UFUButton extends StatelessWidget {
 
   /// Return Color by using colorType and default color is [AppTheme.themeColors.primary].
   Color getBorderColor(UFUButtonColorType colorType) {
+    if(borderColor != null) return borderColor!;
+
     switch (colorType) {
       case UFUButtonColorType.primary:
         return AppTheme.themeColors.themeBlue;
@@ -405,7 +416,7 @@ class UFUButton extends StatelessWidget {
       );
     }
 
-    final result = Material(
+    Widget result = Material(
       shape: shapeBorderType,
       type: MaterialType.button,
       color: Colors.transparent, //getButtonColor(colorType),
@@ -423,7 +434,7 @@ class UFUButton extends StatelessWidget {
           onLongPress: onLongPress,
           highlightColor: getHighlightColor(colorType),
           customBorder: borderShape ?? shapeBorderType,
-          onTap: disabled ? null : onPressed,
+          onTap: (isLoading || disabled) ? null : onPressed,
           child: Container(
               width: width,
               constraints:
@@ -439,6 +450,23 @@ class UFUButton extends StatelessWidget {
         ),
       ),
     );
+
+    if(isLoading) {
+      result = Stack(
+          children: [
+            result,
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Center(
+                  child: CupertinoActivityIndicator(
+                    color: textColor ?? AppTheme.themeColors.base,
+                  ),
+                ),
+              ),
+            ),
+          ]
+      );
+    }
 
     return Semantics(
       container: true,
@@ -461,6 +489,8 @@ class UFUButton extends StatelessWidget {
 
   /// Defines text widget
   Widget getText() {
+    if(isLoading) return const SizedBox.shrink();
+
     if (text == null && iconWidget != null) {
       return const SizedBox.shrink();
     }

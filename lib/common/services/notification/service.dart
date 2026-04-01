@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:universal_flutter_utils/utils/index.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -84,14 +83,14 @@ class UFNotificationUtils {
   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     debugPrint('Handling a background message: ${message.messageId}');
     await UFUtils.preferences.writeString(UFUtils.preferences.notificationPayload, jsonEncode(message.data));
-    FlutterAppBadgeControl.isAppBadgeSupported().then((value) async {
-      if(value) {
-        UFUtils.preferences.readString("unreadNotification").then((response) {
-          int count = int.parse(response ?? "0");
-          FlutterAppBadgeControl.updateBadgeCount(count + 1);
-        });
-      }
-    });
+    // FlutterAppBadgeControl.isAppBadgeSupported().then((value) async {
+    //   if(value) {
+    //     UFUtils.preferences.readString("unreadNotification").then((response) {
+    //       int count = int.parse(response ?? "0");
+    //       FlutterAppBadgeControl.updateBadgeCount(count + 1);
+    //     });
+    //   }
+    // });
   }
 
   // Show Notification

@@ -314,7 +314,7 @@ class UFUInputBoxState extends State<UFUInputBox> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: (widget.isRequired! ? 10 : 8) * scale,
+                  // height: (widget.isRequired! ? 10 : 8) * scale,
                   color: widget.labelBgColor ?? AppTheme.themeColors.base,
                 ),
               ),
