@@ -16,32 +16,32 @@ homepage: https://github.com/dawasim/universal_flutter_utils/blob/main/README.md
 license: MIT
 
 environment:
-  sdk: ^3.6.0
-  flutter: ">=1.17.0"
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_svg: ^2.2.3
+  flutter_svg: ^2.3.0
   pinput: ^6.0.2
-  fluttertoast: ^9.0.0
+  fluttertoast: ^9.1.0
 
   shimmer_animation: ^2.2.2+1
   scroll_to_index: ^3.0.1
 
   intl: ^0.20.2
   get: ^4.7.3
-  shared_preferences: ^2.5.4
+  shared_preferences: ^2.5.5
 
   path_provider: ^2.1.5
-  file_picker: ^10.3.10
-  permission_handler: ^12.0.1
-  image_picker: ^1.1.2
-  image: ^4.8.0
+  file_picker: ^11.0.1
+  permission_handler: ^12.0.3
+  image_picker: ^1.2.2
+  image: ^4.9.1
   custom_image_crop: ^0.1.1
   audio_waveforms: ^2.0.2
-  flutter_native_contact_picker: ^0.0.11
+  flutter_native_contact_picker: ^0.0.12
   open_filex: ^4.7.0
   package_info_plus: ^9.0.0
 
@@ -55,17 +55,17 @@ dependencies:
 
   ## Server communication
   http: ^1.6.0
-  dio: ^5.9.1
-  socket_io_client: ^3.1.4
+  dio: ^5.9.2
+  socket_io_client: ^3.1.5
   cached_network_image: ^3.4.1
   url_launcher: ^6.3.2
-  flutter_widget_from_html_core: ^0.17.0
+  flutter_widget_from_html_core: ^0.17.2
   geolocator: ^14.0.2
   flutter_typeahead: ^5.2.0
 
   # Video Player
   chewie: ^1.13.0
-  video_player: ^2.11.0
+  video_player: ^2.11.1
 
   encrypt: ^5.0.3
   convert: ^3.1.2
@@ -75,21 +75,21 @@ dependencies:
   flutter_html: ^3.0.0
 
   # Biometric Recognition
-  local_auth: ^3.0.0
+  local_auth: ^3.0.1
 
   # Firebase
-  firebase_core: ^4.4.0
-  firebase_auth: ^6.1.4
-  firebase_crashlytics: ^5.0.7
+  firebase_core: ^4.10.0
+  firebase_auth: ^6.5.2
+  firebase_crashlytics: ^5.2.3
 
   # Push Notifications
-  firebase_messaging: ^16.1.1
-  flutter_local_notifications: ^20.1.0
+  firebase_messaging: ^16.3.0
+  flutter_local_notifications: ^22.0.0
 
   # Social login
   google_sign_in: ^7.2.0
-  sign_in_with_apple: ^7.0.1
-  flutter_login_facebook: ^2.0.1
+  sign_in_with_apple: ^8.1.0
+  flutter_login_facebook: ^4.0.0
 
   plugin_platform_interface: ^2.1.8
 
@@ -97,6 +97,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+
+dependency_overrides:
+  retrofit: 4.8.0
 
 
 # For information on the generic Dart part of this file, see the

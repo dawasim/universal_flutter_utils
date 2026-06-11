@@ -26,7 +26,7 @@ class UFFilePickerUtil {
     // }
 
     // Pick a file with allowed extensions
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: allowedExtensions ?? [
         'pdf',

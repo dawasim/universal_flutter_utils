@@ -86,6 +86,8 @@ class UFPrefUtils {
     return mStorage.getString(refreshToken) ?? '';
   }
 
+  Future<String> readRefereshToken() => readRefreshToken();
+
   Future<String> readSelectedLanguage() async {
     SharedPreferences mStorage = await getStorage();
     return mStorage.getString(selectedLanguage) ?? '';

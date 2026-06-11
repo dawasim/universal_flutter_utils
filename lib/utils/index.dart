@@ -40,6 +40,7 @@ class UFUtils {
   static String encryptionIV = UFUAppConfig.encryptionIV;
   static String xPortal = "";
   static String startDestination = "";
+  static String refreshDestination = "";
   static Function()? refreshToken;
   
   static String fontFamily = "";
@@ -371,6 +372,17 @@ class UFUtils {
   static Future<void> handleError(Object e) async {
 
     if (e is DioException) {
+
+      if (e.response?.statusCode == 401) {
+        if (UFUtils.refreshToken != null) {
+          await UFUtils.refreshToken?.call();
+          if (UFUtils.refreshDestination.isNotEmpty) {
+            Get.offAndToNamed(UFUtils.refreshDestination);
+          }
+        }
+        return;
+      }
+
       debugPrint('🔴 🔴 🔴 🔴 DioException caught! 🔴 🔴 🔴 🔴 ');
       debugPrint('Request Path: ${e.requestOptions.path}');
       debugPrint('Type: ${e.type}');

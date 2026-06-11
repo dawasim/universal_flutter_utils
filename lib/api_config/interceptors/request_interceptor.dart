@@ -34,7 +34,10 @@ class RequestInterceptor extends Interceptor {
       debugPrint('header: ${options.headers}');
       return handler.next(options); // Skip interceptor
     } else {
-      String? token = await UFUtils.preferences.readAuthToken();
+      String token = await UFUtils.preferences.readAuthToken();
+      if (token.isEmpty) {
+        token = await UFUtils.preferences.readRefreshToken();
+      }
       String? selectedLanguage = await UFUtils.preferences.readSelectedLanguage();
       if(selectedLanguage.isNotEmpty) {
         options.headers = EncryptionUtil.secKeyEncryptWithHeaderAppKey(token, jsonDecode(selectedLanguage));
