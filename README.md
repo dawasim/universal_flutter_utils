@@ -5,7 +5,7 @@
 
 A **production-ready Flutter UI toolkit and utilities package** for building mobile, web, and desktop apps faster. Includes reusable **widgets**, **Dio API helpers**, **Firebase authentication**, **file pickers**, **form validators**, **themes**, **socket.io**, **maps**, and more — all in one import.
 
-> Version: `0.0.9` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils)
+> Version: `0.0.10` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils)
 
 ---
 
@@ -32,7 +32,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  universal_flutter_utils: ^0.0.9
+  universal_flutter_utils: ^0.0.10
 ```
 
 Then run:

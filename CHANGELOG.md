@@ -1,4 +1,4 @@
-## 0.0.9
+## 0.0.10
 
 - Flutter UI widgets: buttons, inputs, OTP, bottom sheets, loaders, shimmer, multi-select, maps, and more
 - Dio API networking with AES encryption and interceptors
