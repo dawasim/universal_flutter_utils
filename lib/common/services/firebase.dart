@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart' show kIsWeb; // Add this
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import '../../universal_flutter_utils.dart';
 
 class UFFirebaseUtils {
-  // Helper to check support
-  bool get _supportsFirebaseMessaging => kIsWeb || Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
+  bool get _supportsFirebaseMessaging =>
+      kIsWeb || Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
 
-  Future<void> initFirebase({Function(Map<String, dynamic>)? notificationTap, FirebaseOptions? options}) async {
+  Future<void> initFirebase({
+    Function(Map<String, dynamic>)? notificationTap,
+    FirebaseOptions? options,
+  }) async {
     ///   Initialize firebase
     await Firebase.initializeApp(options: options);
+
     /// Initialize Notification Service
     await UFNotificationUtils.initialize(notificationTap: notificationTap);
   }
-
 
   void initFCMToken() async {
     // Check support before accessing instance

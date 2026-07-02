@@ -52,10 +52,10 @@ class ErrorInterceptor extends Interceptor {
                   : null;
               message = decodedData != null
                   ? getFirstErrorMessage(
-                        decodedData,
-                        () => fetchError(error.response?.data, statusCode),
-                      ) ??
-                      "something_went_wrong".tr
+                          decodedData,
+                          () => fetchError(error.response?.data, statusCode),
+                        ) ??
+                        "something_went_wrong".tr
                   : "something_went_wrong".tr;
             } catch (e) {
               message = fetchError(error.response?.data, statusCode);
@@ -107,11 +107,14 @@ class ErrorInterceptor extends Interceptor {
   String fetchError(dynamic data, int statusCode) {
     try {
       final errors = data?["errors"];
-      final message = (errors is List && errors.isNotEmpty && errors.first is Map)
+      final message =
+          (errors is List && errors.isNotEmpty && errors.first is Map)
           ? errors.first["message"]
           : data?["message"];
 
-      return message is String ? message : '${"server_error".tr} HTTP $statusCode';
+      return message is String
+          ? message
+          : '${"server_error".tr} HTTP $statusCode';
     } catch (_) {
       return "something_went_wrong".tr;
     }
@@ -161,8 +164,14 @@ class ErrorInterceptor extends Interceptor {
     required VoidCallback retryCallback,
   }) async {
     await UFUtils.preferences.clearPref();
-    await UFUtils.preferences.writeBoolean(UFUtils.preferences.isLoggedOut, true);
-    await UFUtils.preferences.writeBoolean(UFUtils.preferences.isFirstRun, false);
+    await UFUtils.preferences.writeBoolean(
+      UFUtils.preferences.isLoggedOut,
+      true,
+    );
+    await UFUtils.preferences.writeBoolean(
+      UFUtils.preferences.isFirstRun,
+      false,
+    );
 
     final String mTitle;
     final String errorMessage;

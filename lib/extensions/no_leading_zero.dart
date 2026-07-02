@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 class NoLeadingZeroFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final text = newValue.text;
 
     // Allow empty string
@@ -18,9 +18,6 @@ class NoLeadingZeroFormatter extends TextInputFormatter {
 
     // Only allow digits
     final filteredText = text.replaceAll(RegExp(r'[^\d]'), '');
-    return newValue.copyWith(
-      text: filteredText,
-      selection: newValue.selection,
-    );
+    return newValue.copyWith(text: filteredText, selection: newValue.selection);
   }
 }

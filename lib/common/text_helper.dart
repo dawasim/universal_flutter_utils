@@ -33,7 +33,10 @@ class TextHelper {
   }
 
   /// Return  fontFamily of a text and default textSize is [UFUFontFamily.roboto]
-  static String getFontFamily(UFUFontFamily fontFamily, UFUFontWeight fontWeight) {
+  static String getFontFamily(
+    UFUFontFamily fontFamily,
+    UFUFontWeight fontWeight,
+  ) {
     switch (fontFamily) {
       case UFUFontFamily.productSans:
         return getRobotoFontFamily(fontWeight);
@@ -77,14 +80,28 @@ class TextHelper {
         return FontWeight.w600;
       case UFUFontWeight.bold:
         return FontWeight.w700;
-      }
+    }
   }
 
-  static TextStyle getTextStyle(Color? textColor, UFUFontWeight? fontWeight, UFUTextSize? textSize, double?  dynamicFontSize, UFUFontFamily? fontFamily,TextOverflow? overflow, double? height, double? letterSpacing,TextDecoration? textDecoration, FontStyle? fontStyle, Color? decorationColor) {
+  static TextStyle getTextStyle(
+    Color? textColor,
+    UFUFontWeight? fontWeight,
+    UFUTextSize? textSize,
+    double? dynamicFontSize,
+    UFUFontFamily? fontFamily,
+    TextOverflow? overflow,
+    double? height,
+    double? letterSpacing,
+    TextDecoration? textDecoration,
+    FontStyle? fontStyle,
+    Color? decorationColor,
+  ) {
     return TextStyle(
       color: textColor ?? AppTheme.themeColors.text,
-      fontSize: dynamicFontSize ?? getTextSize(textSize ?? UFUTextSize.heading4),
-      fontFamily: UFUtils.fontFamily, // TODO - getFontFamily(fontFamily ?? UFUFontFamily.productSans, fontWeight ?? UFUFontWeight.regular),
+      fontSize:
+          dynamicFontSize ?? getTextSize(textSize ?? UFUTextSize.heading4),
+      fontFamily: UFUtils
+          .fontFamily, // TODO - getFontFamily(fontFamily ?? UFUFontFamily.productSans, fontWeight ?? UFUFontWeight.regular),
       // package: 'UFU_mobile_flutter_ui',
       overflow: overflow,
       fontWeight: getFontWeight(fontWeight ?? UFUFontWeight.regular),
@@ -95,5 +112,4 @@ class TextHelper {
       fontStyle: fontStyle ?? FontStyle.normal,
     );
   }
-
 }

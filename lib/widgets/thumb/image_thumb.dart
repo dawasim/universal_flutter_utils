@@ -6,7 +6,7 @@ class UFUThumbImage extends StatelessWidget {
     this.thumbImage,
     this.size,
     this.borderRadius,
-    super.key
+    super.key,
   });
 
   /// It is used to set size of image thumb as [ThumbSize.large]
@@ -43,23 +43,23 @@ class UFUThumbImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: getWidth(),
-        maxHeight: getHeight(),
-      ),
+      constraints: BoxConstraints(maxWidth: getWidth(), maxHeight: getHeight()),
       child: ClipRRect(
-          borderRadius: borderRadius ?? const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-          child: thumbImage ??
-              Image.asset(
-                'assets/images/default_image.png',
-                package: 'UFU_mobile_flutter_ui',
-                width: getWidth(),
-                height: getHeight(),
-                fit: BoxFit.contain,
-              ),
+        borderRadius:
+            borderRadius ??
+            const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+        child:
+            thumbImage ??
+            Image.asset(
+              'assets/images/default_image.png',
+              package: 'UFU_mobile_flutter_ui',
+              width: getWidth(),
+              height: getHeight(),
+              fit: BoxFit.contain,
+            ),
       ),
     );
   }

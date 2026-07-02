@@ -14,7 +14,8 @@ class UFUSingleSelectList extends StatelessWidget {
     this.listLoader,
     this.canShowLoadMore = false,
     this.showInActiveUserLabel = false,
-      super.key});
+    super.key,
+  });
 
   //List which renders
   final List<UFUSingleSelectModel> list;
@@ -47,25 +48,24 @@ class UFUSingleSelectList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    if(type == UFUSingleSelectType.network && isLoading) {
+    if (type == UFUSingleSelectType.network && isLoading) {
       return SizedBox(
-        child: listLoader ?? SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
-          child: Center(
-            child: FadingCircle(
-                color: AppTheme.themeColors.primary,
-                size: 25),
-          ),
-        ),
+        child:
+            listLoader ??
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Center(
+                child: FadingCircle(
+                  color: AppTheme.themeColors.primary,
+                  size: 25,
+                ),
+              ),
+            ),
       );
     } else if (list.isEmpty) {
       return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 40),
-          child: UFUText(
-            text: 'No record found',
-            textSize: UFUTextSize.heading4,
-          ),
+        padding: EdgeInsets.symmetric(vertical: 40),
+        child: UFUText(text: 'No record found', textSize: UFUTextSize.heading4),
       );
     } else {
       return ListView.separated(
@@ -73,111 +73,109 @@ class UFUSingleSelectList extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 10),
         controller: scrollController,
         itemCount: getItemCount(),
-        separatorBuilder: (_, index) => const SizedBox(height: 5,),
-        itemBuilder: (_, index) => getItem(index)
+        separatorBuilder: (_, index) => const SizedBox(height: 5),
+        itemBuilder: (_, index) => getItem(index),
       );
     }
   }
 
   Widget subTitle(int index) => Container(
-        height: 36,
-        margin: const EdgeInsets.only(top: 10),
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        color: UFUColor.transparent,
-        alignment: Alignment.centerLeft,
-        child: UFUText(
-            text: list[index].label,
-            textColor: AppTheme.themeColors.secondaryText,
-            textSize: UFUTextSize.heading5),
-      );
+    height: 36,
+    margin: const EdgeInsets.only(top: 10),
+    padding: const EdgeInsets.only(left: 20, right: 20),
+    color: UFUColor.transparent,
+    alignment: Alignment.centerLeft,
+    child: UFUText(
+      text: list[index].label,
+      textColor: AppTheme.themeColors.secondaryText,
+      textSize: UFUTextSize.heading5,
+    ),
+  );
 
   Widget items(int index) => InkWell(
-        onTap: (list[index].onTapItem) ??
-            (onSelect != null
-                ? () {
-                    onSelect!(list[index].id);
-                  }
-                : null),
-        child: Container(
-          height: 36,
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          color: list[index].id == selectedItemId
-              ? AppTheme.themeColors.lightWildBlue
-              : UFUColor.transparent,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    list[index].child != null || list[index].color != null
-                      ? Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          child: UFUAvatar(
-                            borderColor: list[index].borderColor ?? UFUColor.transparent,
-                            backgroundColor: list[index].color,
-                            borderWidth: list[index].borderWidth,
-                            size: UFUAvatarSize.small,
-                            child: list[index].child ?? const SizedBox(),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                    Flexible(
-                      child: UFUText(
-                        text: list[index].label,
-                        overflow: TextOverflow.ellipsis
+    onTap:
+        (list[index].onTapItem) ??
+        (onSelect != null
+            ? () {
+                onSelect!(list[index].id);
+              }
+            : null),
+    child: Container(
+      height: 36,
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      color: list[index].id == selectedItemId
+          ? AppTheme.themeColors.lightWildBlue
+          : UFUColor.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                list[index].child != null || list[index].color != null
+                    ? Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        child: UFUAvatar(
+                          borderColor:
+                              list[index].borderColor ?? UFUColor.transparent,
+                          backgroundColor: list[index].color,
+                          borderWidth: list[index].borderWidth,
+                          size: UFUAvatarSize.small,
+                          child: list[index].child ?? const SizedBox(),
+                        ),
                       )
-                    ),
-                    if((!(list[index].active ?? true) && showInActiveUserLabel))
-                    UFUText(
-                    text: ' (Inactive)', 
-                    textColor: AppTheme.themeColors.red, 
+                    : const SizedBox.shrink(),
+                Flexible(
+                  child: UFUText(
+                    text: list[index].label,
                     overflow: TextOverflow.ellipsis,
-                  ), 
-
-                  ],
+                  ),
                 ),
-              ),
-              if (list[index].suffix != null)
-                list[index].suffix ?? const SizedBox(),
-              if (list[index].id == selectedItemId)
-                UFUIcon(Icons.done, color: AppTheme.themeColors.primary)
-            ],
+                if ((!(list[index].active ?? true) && showInActiveUserLabel))
+                  UFUText(
+                    text: ' (Inactive)',
+                    textColor: AppTheme.themeColors.red,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
           ),
-        ),
-      );
+          if (list[index].suffix != null)
+            list[index].suffix ?? const SizedBox(),
+          if (list[index].id == selectedItemId)
+            UFUIcon(Icons.done, color: AppTheme.themeColors.primary),
+        ],
+      ),
+    ),
+  );
 
   int getItemCount() {
-    if(type == UFUSingleSelectType.network) {
+    if (type == UFUSingleSelectType.network) {
       return list.length + 1;
     }
     return list.length;
   }
 
   Widget getItem(int index) {
-
-    if(index < list.length) {
+    if (index < list.length) {
       return AutoScrollTag(
         index: index,
         key: Key(index.toString()),
         controller: scrollController!,
         child: Material(
           color: UFUColor.transparent,
-          child: list[index].id == "sub_title"
-              ? subTitle(index)
-              : items(index),
+          child: list[index].id == "sub_title" ? subTitle(index) : items(index),
         ),
       );
-    } else if(index >= list.length && canShowLoadMore && type == UFUSingleSelectType.network) {
+    } else if (index >= list.length &&
+        canShowLoadMore &&
+        type == UFUSingleSelectType.network) {
       return Center(
-        child: FadingCircle(
-            color: AppTheme.themeColors.primary,
-            size: 25),
+        child: FadingCircle(color: AppTheme.themeColors.primary, size: 25),
       );
     } else {
       return const SizedBox();
     }
   }
-
 }

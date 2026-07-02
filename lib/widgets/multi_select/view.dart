@@ -41,7 +41,8 @@ class UFUMultiSelectView extends StatelessWidget {
     this.showIncludeInactiveButton = false,
     this.onTapIncludeInactiveButton,
     this.includeInactive = false,
-    super.key});
+    super.key,
+  });
 
   /// Defines modified list which is copy from mailList using modal class UFUMultiSelectModal of a multiselect.
   final List<UFUMultiSelectModel> list;
@@ -148,7 +149,6 @@ class UFUMultiSelectView extends StatelessWidget {
 
   final VoidCallback? onTapIncludeInactiveButton;
 
-
   double getHeight(BuildContext context, {double? ratio}) {
     return MediaQuery.of(context).size.height * (ratio ?? 0.85);
   }
@@ -160,22 +160,28 @@ class UFUMultiSelectView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        constraints: BoxConstraints(
-          maxHeight: list.isEmpty && subList.isEmpty? getHeight(context, ratio: 0.65) : getHeight(context),
-        ),
-        child: getView(context));
+      duration: const Duration(milliseconds: 300),
+      constraints: BoxConstraints(
+        maxHeight: list.isEmpty && subList.isEmpty
+            ? getHeight(context, ratio: 0.65)
+            : getHeight(context),
+      ),
+      child: getView(context),
+    );
   }
 
   Widget getView(BuildContext context) {
     int getSelectedItemCount() {
-      if(showIncludeInactiveButton && !includeInactive) {
-       return mainList.where((element) => element.isSelect && (element.active ?? true)).length;
+      if (showIncludeInactiveButton && !includeInactive) {
+        return mainList
+            .where((element) => element.isSelect && (element.active ?? true))
+            .length;
       }
       return mainList.where((element) => element.isSelect).length;
     }
-    int mainListLength () {
-      if(showIncludeInactiveButton && !includeInactive) {
+
+    int mainListLength() {
+      if (showIncludeInactiveButton && !includeInactive) {
         return mainList.where((element) => element.active ?? true).length;
       }
       return totalNetworkListCount ?? mainList.length;
@@ -201,13 +207,14 @@ class UFUMultiSelectView extends StatelessWidget {
           left: 10,
           right: 10,
           top: type == UFUMultiSelectType.network || UFUScreen.isTablet
-              ? 0 :
-          MediaQuery.of(context).size.height * 0.05,
+              ? 0
+              : MediaQuery.of(context).size.height * 0.05,
           bottom: isFilterSheet && !UFUScreen.hasBottomPadding ? 20 : 0,
         ),
         decoration: BoxDecoration(
-            borderRadius: getBorderRadius(),
-            color: AppTheme.themeColors.themeBlue),
+          borderRadius: getBorderRadius(),
+          color: AppTheme.themeColors.themeBlue,
+        ),
         child: SafeArea(
           top: true,
           bottom: !isFilterSheet,
@@ -217,7 +224,11 @@ class UFUMultiSelectView extends StatelessWidget {
               UFUMultiSelectHeader(
                 totalAmount: totalAmount,
                 inputHintText: inputHintText,
-                canShowSearchBar: type == UFUMultiSelectType.network || (searchInputCtrl?.text.isNotEmpty ?? false) ? true : !isFilterSheet && mainList.length > 8,
+                canShowSearchBar:
+                    type == UFUMultiSelectType.network ||
+                        (searchInputCtrl?.text.isNotEmpty ?? false)
+                    ? true
+                    : !isFilterSheet && mainList.length > 8,
                 title: title!,
                 searchInputCtrl: searchInputCtrl,
                 onSearch: onSearch,
@@ -229,12 +240,17 @@ class UFUMultiSelectView extends StatelessWidget {
                 isSelectedSubListItems: isSelectedSubListItems ?? false,
               ),
               UFUMultiSelectSubHeader(
-                mainListLength:  mainListLength(),
+                mainListLength: mainListLength(),
                 listLength: list.length,
-                canShowClearAll: !(hideSelectAll || searchInputCtrl!.text.isNotEmpty),
+                canShowClearAll:
+                    !(hideSelectAll || searchInputCtrl!.text.isNotEmpty),
                 selectedItemCount: getSelectedItemCount(),
                 selectAndClearAll: selectAndClearAll,
-                canShowCount: list.isNotEmpty || selectedItems.where((element) => element.isSelect).isNotEmpty,
+                canShowCount:
+                    list.isNotEmpty ||
+                    selectedItems
+                        .where((element) => element.isSelect)
+                        .isNotEmpty,
                 tempSelectedItemsCount: tempSelectedItemsCount,
                 filterListItemsCount: filterListItemsCount,
                 isViewSubList: isViewSubList,
@@ -244,14 +260,14 @@ class UFUMultiSelectView extends StatelessWidget {
                 onTapIncludeInactiveButton: onTapIncludeInactiveButton,
               ),
 
-              if(type == UFUMultiSelectType.network) ...{
-                Flexible(
-                  child: selectionList,
-                ),
+              if (type == UFUMultiSelectType.network) ...{
+                Flexible(child: selectionList),
               } else ...{
                 Flexible(
                   child: SingleChildScrollView(
-                    controller: type != UFUMultiSelectType.local ? scrollController : scrollList,
+                    controller: type != UFUMultiSelectType.local
+                        ? scrollController
+                        : scrollList,
                     child: Column(
                       children: [
                         if (isViewSubList && subList.isNotEmpty)
@@ -259,28 +275,45 @@ class UFUMultiSelectView extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: TweenAnimationBuilder<double>(
                               duration: const Duration(milliseconds: 200),
-                              tween: Tween<double>(begin: 0, end: getsubListHeight()),
-                              builder: (BuildContext context, dynamic value,Widget? child) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: AppTheme.themeColors.dimGray.withAlpha(50),
-                                        borderRadius: BorderRadius.circular(8)),
-                                    constraints: BoxConstraints(maxHeight: value),
-                                    child: UFUMultiSelectSubList(
-                                      controller: scrollController,
-                                      subList: subList,
-                                      onSubItemTap: onSubItemTap,
-                                      canShowMore: canShowMore,
-                                      isLoading: isLoading,
-                                      type: type,
-                                      listLoader: listLoader,
-                                      subTitleHeader: subTitleHeader ?? 'user groups',
-                                    ),
-                                  ),
-                                );
-                              },
+                              tween: Tween<double>(
+                                begin: 0,
+                                end: getsubListHeight(),
+                              ),
+                              builder:
+                                  (
+                                    BuildContext context,
+                                    dynamic value,
+                                    Widget? child,
+                                  ) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.themeColors.dimGray
+                                              .withAlpha(50),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          maxHeight: value,
+                                        ),
+                                        child: UFUMultiSelectSubList(
+                                          controller: scrollController,
+                                          subList: subList,
+                                          onSubItemTap: onSubItemTap,
+                                          canShowMore: canShowMore,
+                                          isLoading: isLoading,
+                                          type: type,
+                                          listLoader: listLoader,
+                                          subTitleHeader:
+                                              subTitleHeader ?? 'user groups',
+                                        ),
+                                      ),
+                                    );
+                                  },
                             ),
                           ),
                         selectionList,
@@ -311,11 +344,10 @@ class UFUMultiSelectView extends StatelessWidget {
   }
 
   BorderRadius getBorderRadius() {
-    if(isFilterSheet) {
+    if (isFilterSheet) {
       return BorderRadius.circular(20);
     } else {
       return UFUResponsiveDesign.bottomSheetRadius;
     }
   }
-
 }

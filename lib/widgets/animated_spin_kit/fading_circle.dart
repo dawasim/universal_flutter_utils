@@ -16,10 +16,11 @@ class FadingCircle extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(
-            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
-                !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color');
+  }) : assert(
+         !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+             !(itemBuilder == null && color == null),
+         'You should specify either a itemBuilder or a color',
+       );
 
   final Color? color;
   final double size;
@@ -45,7 +46,7 @@ class FadingCircleState extends State<FadingCircle>
     -0.4,
     -0.3,
     -0.2,
-    -0.1
+    -0.1,
   ];
   late AnimationController controller;
 
@@ -53,9 +54,10 @@ class FadingCircleState extends State<FadingCircle>
   void initState() {
     super.initState();
 
-    controller = (widget.controller ??
-        AnimationController(vsync: this, duration: widget.duration))
-      ..repeat();
+    controller =
+        (widget.controller ??
+              AnimationController(vsync: this, duration: widget.duration))
+          ..repeat();
   }
 
   @override
@@ -81,12 +83,15 @@ class FadingCircleState extends State<FadingCircle>
               child: Align(
                 alignment: Alignment.center,
                 child: ScaleTransition(
-                  scale:
-                      DelayTween(begin: 0.0, end: 1.0, delay: delays[index])
-                          .animate(controller),
+                  scale: DelayTween(
+                    begin: 0.0,
+                    end: 1.0,
+                    delay: delays[index],
+                  ).animate(controller),
                   child: SizedBox.fromSize(
-                      size: Size.square(widget.size * 0.15),
-                      child: itemBuilder(index)),
+                    size: Size.square(widget.size * 0.15),
+                    child: itemBuilder(index),
+                  ),
                 ),
               ),
             ),
@@ -100,7 +105,10 @@ class FadingCircleState extends State<FadingCircle>
     return widget.itemBuilder != null
         ? widget.itemBuilder!(context, index)
         : DecoratedBox(
-            decoration:
-                BoxDecoration(color: widget.color, shape: BoxShape.circle));
+            decoration: BoxDecoration(
+              color: widget.color,
+              shape: BoxShape.circle,
+            ),
+          );
   }
 }

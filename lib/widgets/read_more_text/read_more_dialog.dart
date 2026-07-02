@@ -15,29 +15,27 @@ class UFUReadDialog extends StatelessWidget {
   final String? subtitle;
   final Color? dialogDescriptionColor;
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: AlertDialog(
-          insetPadding: const EdgeInsets.only(
-            left: 10,
-            right: 10,
+        insetPadding: const EdgeInsets.only(left: 10, right: 10),
+        contentPadding: EdgeInsets.zero,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        content: Container(
+          padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+          width: UFUResponsiveDesign.maxPopOverWidth,
+          constraints: BoxConstraints(
+            maxHeight: UFUResponsiveDesign.maxPopOverHeight,
           ),
-          contentPadding: EdgeInsets.zero,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-          content: Container(
-            padding: const EdgeInsets.only(top: 12,left:20,right: 20),
-            width: UFUResponsiveDesign.maxPopOverWidth,
-            constraints: BoxConstraints(
-              maxHeight: UFUResponsiveDesign.maxPopOverHeight
-            ),
-            child: Column(
-               mainAxisSize: MainAxisSize.min,
-               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                Padding(padding: const EdgeInsets.only(bottom:5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -50,7 +48,7 @@ class UFUReadDialog extends StatelessWidget {
                         maxLine: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ), 
+                    ),
                     Transform.translate(
                       offset: const Offset(8, 0),
                       child: UFUTextButton(
@@ -64,8 +62,8 @@ class UFUReadDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-                ),
-                if(subtitle != null)
+              ),
+              if (subtitle != null)
                 UFUText(
                   text: subtitle!,
                   textSize: UFUTextSize.heading3,
@@ -73,25 +71,27 @@ class UFUReadDialog extends StatelessWidget {
                   maxLine: 7,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Container(
-                  constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.60),
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children:[
-                       UFUText(
-                         textAlign: TextAlign.left,
-                         text: text,
-                         textColor: dialogDescriptionColor
-                             ?? AppTheme.themeColors.text
-                       ),
-                    ]
-                  ),
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.60,
                 ),
-
-
-              ],)
-          )),
+                padding: const EdgeInsets.only(bottom: 20),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    UFUText(
+                      textAlign: TextAlign.left,
+                      text: text,
+                      textColor:
+                          dialogDescriptionColor ?? AppTheme.themeColors.text,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

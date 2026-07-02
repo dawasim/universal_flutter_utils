@@ -45,7 +45,6 @@ class UFUPlaceAutoComplete extends StatelessWidget {
   final bool showClearButton;
   final Function(String?)? onTextChange;
 
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UFUPlaceAutoCompleteController>(
@@ -53,20 +52,21 @@ class UFUPlaceAutoComplete extends StatelessWidget {
       init: UFUPlaceAutoCompleteController(
         searchController: textController,
         textSize: textSize,
-        fontWeight: fontWeight
+        fontWeight: fontWeight,
       ),
       builder: (controller) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if(backButton != null)
-            backButton!,
+          ?backButton,
           Expanded(
             child: Padding(
-              padding: backButton != null ? EdgeInsets.only(
-                  left: UFUtils.isRtl ? 15 : 0,
-                  right: UFUtils.isRtl ? 0 : 15,
-              ) : EdgeInsets.zero,
+              padding: backButton != null
+                  ? EdgeInsets.only(
+                      left: UFUtils.isRtl ? 15 : 0,
+                      right: UFUtils.isRtl ? 0 : 15,
+                    )
+                  : EdgeInsets.zero,
               child: CustomPlaceAutoComplete(
                 topCardMargin: EdgeInsets.zero,
                 topCardColor: AppTheme.themeColors.transparent,
@@ -78,9 +78,7 @@ class UFUPlaceAutoComplete extends StatelessWidget {
                   hintStyle: controller.getHintStyle(),
                   labelStyle: controller.getHintStyle(),
                   errorStyle: controller.getErrorStyle(),
-                  counterStyle: const TextStyle(
-                    height: 0,
-                  ),
+                  counterStyle: const TextStyle(height: 0),
                   focusedBorder: customBorder(borderColor: borderColor),
                   enabledBorder: customBorder(borderColor: borderColor),
                   disabledBorder: customBorder(borderColor: borderColor),
@@ -88,7 +86,11 @@ class UFUPlaceAutoComplete extends StatelessWidget {
                   focusedErrorBorder: errorBorder(),
                   border: customBorder(borderColor: borderColor),
                 ),
-                validator: (val) => UFUtils.textValidator(val?.description, isRequired: true, minCount: 3),
+                validator: (val) => UFUtils.textValidator(
+                  val?.description,
+                  isRequired: true,
+                  minCount: 3,
+                ),
                 apiKey: apiKey,
                 searchHintText: searchHintText ?? "Search here",
                 placesApiHeaders: placesAPIHeader,
@@ -105,13 +107,17 @@ class UFUPlaceAutoComplete extends StatelessWidget {
                 trailingIcon: trailing,
                 onTextChange: onTextChange,
                 onGetDetailsByPlaceId: (p0, {Prediction? searchedPlace}) =>
-                    controller.saveCurrentLocation(p0?.result,
-                        searchedItem: searchedPlace,
-                        onDecodeAddress: onDecodeAddress
+                    controller.saveCurrentLocation(
+                      p0?.result,
+                      searchedItem: searchedPlace,
+                      onDecodeAddress: onDecodeAddress,
                     ),
-                emptyBuilder: (_) => (controller.searchController?.text.trim().isEmpty ?? true)
-                    ? const SizedBox.shrink() : const EmptySearchResult(),
-                itemBuilder: (_, content) => SearchedResultTile(content: content),
+                emptyBuilder: (_) =>
+                    (controller.searchController?.text.trim().isEmpty ?? true)
+                    ? const SizedBox.shrink()
+                    : const EmptySearchResult(),
+                itemBuilder: (_, content) =>
+                    SearchedResultTile(content: content),
               ),
             ),
           ),
@@ -121,10 +127,15 @@ class UFUPlaceAutoComplete extends StatelessWidget {
   }
 
   OutlineInputBorder customBorder({Color? borderColor}) => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: BorderSide(color: borderColor ?? AppTheme.themeColors.lightestGray, width: 0.8));
+    borderRadius: BorderRadius.circular(14),
+    borderSide: BorderSide(
+      color: borderColor ?? AppTheme.themeColors.lightestGray,
+      width: 0.8,
+    ),
+  );
 
   OutlineInputBorder errorBorder() => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: BorderSide(color: AppTheme.themeColors.red, width: 0.8));
+    borderRadius: BorderRadius.circular(14),
+    borderSide: BorderSide(color: AppTheme.themeColors.red, width: 0.8),
+  );
 }

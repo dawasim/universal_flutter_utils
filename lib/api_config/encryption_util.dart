@@ -16,24 +16,26 @@ class EncryptionUtil {
   // static var ENCRYPTION_IV = UFUtils.encryptionIV;
   // static final iv = IV.fromUtf8(ENCRYPTION_IV);
 
-  static Map<String, dynamic>? secKeyEncryptWithBodyAppKey(Map<String, dynamic> mParams) {
+  static Map<String, dynamic>? secKeyEncryptWithBodyAppKey(
+    Map<String, dynamic> mParams,
+  ) {
     try {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       final key = Key.fromSecureRandom(32).bytes;
       final encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
       final randomString = jsonEncode(mParams);
       final encrypted = encrypter.encrypt(randomString, iv: iv);
-      final result = {
-        sek: hex.encode(encrypted.bytes),
-        hash: hex.encode(key)
-      };
+      final result = {sek: hex.encode(encrypted.bytes), hash: hex.encode(key)};
       return result;
     } catch (e) {
       return null;
     }
   }
 
-  static Map<String, String>? secKeyEncryptWithHeaderAppKey(String auth, Map<String, dynamic>? jsonDecode) {
+  static Map<String, String>? secKeyEncryptWithHeaderAppKey(
+    String auth,
+    Map<String, dynamic>? jsonDecode,
+  ) {
     try {
       final iv = IV.fromUtf8(UFUtils.encryptionIV);
       final key = Key.fromSecureRandom(32).bytes;
@@ -51,11 +53,12 @@ class EncryptionUtil {
       final encrypted = encrypter.encrypt(randomString, iv: iv);
 
       final result = UFUtils.applyEncryption
-        ? {
-            sek: hex.encode(encrypted.bytes),
-            hash: hex.encode(key),
-            deviceTypeKey: 'android',
-          } : jsonMap;
+          ? {
+              sek: hex.encode(encrypted.bytes),
+              hash: hex.encode(key),
+              deviceTypeKey: 'android',
+            }
+          : jsonMap;
       return result;
     } catch (e) {
       return null;
@@ -79,7 +82,8 @@ class EncryptionUtil {
     final len = hex.length;
     final data = Uint8List(len ~/ 2);
     for (int i = 0; i < len; i += 2) {
-      data[i ~/ 2] = ((int.parse(hex[i], radix: 16) << 4) +
+      data[i ~/ 2] =
+          ((int.parse(hex[i], radix: 16) << 4) +
           int.parse(hex[i + 1], radix: 16));
     }
     return data;

@@ -11,8 +11,7 @@ class Retry {
     final now = DateTime.now();
 
     // Throttle multiple rapid calls
-    if (_lastShownTime != null &&
-        now.difference(_lastShownTime!) < _cooldown) {
+    if (_lastShownTime != null && now.difference(_lastShownTime!) < _cooldown) {
       return;
     }
 

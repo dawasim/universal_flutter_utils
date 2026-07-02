@@ -1,5 +1,1 @@
-
-enum UFUSingleSelectType {
-  network,
-  local
-}
+enum UFUSingleSelectType { network, local }

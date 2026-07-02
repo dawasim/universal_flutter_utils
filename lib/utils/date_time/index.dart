@@ -12,7 +12,10 @@ class DateTimeUtils {
   }
 
   // Format complete DateTime to a readable string
-  static String formatCompleteDateTime(DateTime dateTime, {String format = 'yyyy-MM-dd hh:mm a'}) {
+  static String formatCompleteDateTime(
+    DateTime dateTime, {
+    String format = 'yyyy-MM-dd hh:mm a',
+  }) {
     return DateFormat(format).format(dateTime);
   }
 
@@ -53,7 +56,10 @@ class DateTimeUtils {
   }
 
   // Parse string to DateTime
-  static DateTime? parseDate(String dateString, {String format = 'yyyy-MM-dd'}) {
+  static DateTime? parseDate(
+    String dateString, {
+    String format = 'yyyy-MM-dd',
+  }) {
     try {
       return DateFormat(format).parse(dateString);
     } catch (e) {
@@ -67,14 +73,23 @@ class DateTimeUtils {
       // Parse as if the date is today
       final now = DateTime.now();
       final parsedTime = DateFormat(format).parse(timeString);
-      return DateTime(now.year, now.month, now.day, parsedTime.hour, parsedTime.minute);
+      return DateTime(
+        now.year,
+        now.month,
+        now.day,
+        parsedTime.hour,
+        parsedTime.minute,
+      );
     } catch (e) {
       return null; // Return null if parsing fails
     }
   }
 
   // Parse string to complete DateTime (includes date and time)
-  static DateTime? parseCompleteDateTime(String completeDateTimeString, {String format = 'yyyy-MM-dd hh:mm a'}) {
+  static DateTime? parseCompleteDateTime(
+    String completeDateTimeString, {
+    String format = 'yyyy-MM-dd hh:mm a',
+  }) {
     try {
       return DateFormat(format).parse(completeDateTimeString);
     } catch (e) {

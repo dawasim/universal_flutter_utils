@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUMultiListMultiSelect extends StatefulWidget {
-
   const UFUMultiListMultiSelect({
     super.key,
     required this.data,
     required this.onDone,
     this.title = 'Select option',
-    this.searchHint = 'Search here'
+    this.searchHint = 'Search here',
   });
 
   final List<UFUMultiSelectMultiListModel> data;
@@ -17,11 +16,11 @@ class UFUMultiListMultiSelect extends StatefulWidget {
   final String searchHint;
 
   @override
-  State<UFUMultiListMultiSelect> createState() => _UFUMultiListMultiSelectState();
+  State<UFUMultiListMultiSelect> createState() =>
+      _UFUMultiListMultiSelectState();
 }
 
 class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
-
   final ScrollController scrollController = ScrollController();
   final TextEditingController searchInputCtrl = TextEditingController();
 
@@ -51,7 +50,7 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
       padding: EdgeInsets.only(
         right: 10,
         left: 10,
-        top: UFUScreen.height * 0.05
+        top: UFUScreen.height * 0.05,
       ),
       child: ClipRRect(
         borderRadius: UFUResponsiveDesign.bottomSheetRadius,
@@ -61,7 +60,9 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             constraints: BoxConstraints(
-                maxHeight: UFUScreen.height * 0.85, minHeight: 100),
+              maxHeight: UFUScreen.height * 0.85,
+              minHeight: 100,
+            ),
             child: SafeArea(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -81,15 +82,16 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
                   Flexible(
                     child: isAnyItemVisible
                         ? SingleChildScrollView(
-                          controller: scrollController,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(
-                              multiListData.length,
-                                  (index) {
+                            controller: scrollController,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(multiListData.length, (
+                                index,
+                              ) {
                                 return Visibility(
-                                  visible: multiListData[index].displayCount > 0,
+                                  visible:
+                                      multiListData[index].displayCount > 0,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -97,32 +99,32 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
                                       UFUMultiSelectList(
                                         controller: scrollController,
                                         list: multiListData[index].list,
-                                        onItemTap: (optionId) => onTapItem(index, optionId),
+                                        onItemTap: (optionId) =>
+                                            onTapItem(index, optionId),
                                         searchKeyWord: searchInputCtrl.text,
-                                      )
+                                      ),
                                     ],
                                   ),
                                 );
-                              },
+                              }),
+                            ),
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: UFUText(
+                              text: 'No record found',
+                              textSize: UFUTextSize.heading4,
                             ),
                           ),
-                        )
-                        : const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: UFUText(
-                            text: 'No record found',
-                            textSize: UFUTextSize.heading4,
-                        ),
-                      ),
                   ),
                   UFUMultiSelectFooter(
-                      callBack: (val) {
-                        if(val == 'done') {
-                          onDone();
-                        }
-                        Navigator.pop(context);
-                      },
-                  )
+                    callBack: (val) {
+                      if (val == 'done') {
+                        onDone();
+                      }
+                      Navigator.pop(context);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -139,7 +141,8 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: UFUText(
-              text: "${multiListData[index].label} (${multiListData[index].displayCount})",
+              text:
+                  "${multiListData[index].label} (${multiListData[index].displayCount})",
               fontWeight: UFUFontWeight.medium,
             ),
           ),
@@ -155,20 +158,26 @@ class _UFUMultiListMultiSelectState extends State<UFUMultiListMultiSelect> {
   }
 
   void onTapItem(int index, String optionId) {
-    final item = multiListData[index].list.firstWhere((option) => option.id == optionId);
+    final item = multiListData[index].list.firstWhere(
+      (option) => option.id == optionId,
+    );
     item.isSelect = !item.isSelect;
     updateCount(item.isSelect);
   }
 
   void onSearch() {
-
     int tempCount = 0;
 
     for (var data in multiListData) {
-     final count = data.list.where((option) =>
-         option.label.toLowerCase().contains(searchInputCtrl.text.toLowerCase())).length;
-     data.displayCount = count;
-     tempCount += count;
+      final count = data.list
+          .where(
+            (option) => option.label.toLowerCase().contains(
+              searchInputCtrl.text.toLowerCase(),
+            ),
+          )
+          .length;
+      data.displayCount = count;
+      tempCount += count;
     }
 
     isAnyItemVisible = tempCount > 0;

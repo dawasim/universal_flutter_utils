@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUResponsiveDesign {
-
   static const double minimumTabletWidth = 600;
   static const double minimumDesktopWidth = 900;
   static const double maxSmallMobileWidth = 400;
@@ -23,9 +22,8 @@ class UFUResponsiveDesign {
 
   static int get popOverButtonFlex => getPopOverButtonFlex();
 
-  static EdgeInsets get floatingButtonPadding => const EdgeInsets.only(
-      bottom: UFUResponsiveDesign.floatingButtonSize
-  );
+  static EdgeInsets get floatingButtonPadding =>
+      const EdgeInsets.only(bottom: UFUResponsiveDesign.floatingButtonSize);
 
   static BorderRadius getBottomSheetBorderRadius() {
     switch (UFUScreen.type) {
@@ -59,13 +57,12 @@ class UFUResponsiveDesign {
 
       case DeviceType.desktop:
       case DeviceType.tablet:
-        final bottom = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first)
-                .viewInsets
-                .bottom -
+        final bottom =
+            MediaQueryData.fromView(
+              WidgetsBinding.instance.platformDispatcher.views.first,
+            ).viewInsets.bottom -
             50;
-        return EdgeInsets.only(
-          bottom: bottom >= 0 ? bottom : 0,
-        );
+        return EdgeInsets.only(bottom: bottom >= 0 ? bottom : 0);
     }
   }
 }

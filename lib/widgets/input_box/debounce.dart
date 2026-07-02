@@ -7,9 +7,7 @@ class Debounce {
   /// Defines timer to debounce after delay time.
   Timer? timer;
 
-  Debounce(
-    this.delay,
-  );
+  Debounce(this.delay);
 
   void call(void Function() callback) {
     timer?.cancel();

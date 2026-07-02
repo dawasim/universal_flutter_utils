@@ -9,7 +9,7 @@ class UFUSvgImage extends StatelessWidget {
     this.width,
     this.fit = BoxFit.none,
     this.colorFilter,
-    this.isRtl
+    this.isRtl,
   });
 
   final String assetPath;
@@ -21,10 +21,11 @@ class UFUSvgImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     bool isWithRtl = isRtl ?? Directionality.of(context) == TextDirection.rtl;
 
-    if(Directionality.of(context) == TextDirection.rtl && isRtl == true) isWithRtl = false;
+    if (Directionality.of(context) == TextDirection.rtl && isRtl == true) {
+      isWithRtl = false;
+    }
 
     return Transform(
       alignment: Alignment.center,

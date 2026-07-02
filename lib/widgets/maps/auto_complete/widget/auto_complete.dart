@@ -83,7 +83,8 @@ class CustomPlaceAutoComplete extends StatefulWidget {
   final List<String> fields;
 
   /// On get details callback
-  final void Function(PlacesDetailsResponse?, {Prediction? searchedPlace})? onGetDetailsByPlaceId;
+  final void Function(PlacesDetailsResponse?, {Prediction? searchedPlace})?
+  onGetDetailsByPlaceId;
 
   /// On suggestion selected callback
   final void Function(Prediction)? onSelected;
@@ -181,7 +182,7 @@ class CustomPlaceAutoComplete extends StatefulWidget {
   final VerticalDirection direction;
 
   final Widget Function(BuildContext, Animation<double>, Widget)?
-      transitionBuilder;
+  transitionBuilder;
 
   /// If set to true, no loading box will be shown while suggestions are
   /// being fetched. [loadingBuilder] will also be ignored.
@@ -355,7 +356,8 @@ class CustomPlaceAutoComplete extends StatefulWidget {
   });
 
   @override
-  State<CustomPlaceAutoComplete> createState() => _CustomPlaceAutoCompleteState();
+  State<CustomPlaceAutoComplete> createState() =>
+      _CustomPlaceAutoCompleteState();
 }
 
 class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
@@ -424,19 +426,22 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
           title: ClipRRect(
             borderRadius: widget.borderRadius,
             child: FormBuilderTypeAhead<Prediction>(
-              decoration: widget.decoration ?? InputDecoration(
-                fillColor: AppTheme.themeColors.base,
-                hintText: widget.searchHintText,
-                filled: true,
-                border: customBorder(borderColor: AppTheme.themeColors.red),
-                suffixIcon: widget.suffixIcon,
-              ),
+              decoration:
+                  widget.decoration ??
+                  InputDecoration(
+                    fillColor: AppTheme.themeColors.base,
+                    hintText: widget.searchHintText,
+                    filled: true,
+                    border: customBorder(borderColor: AppTheme.themeColors.red),
+                    suffixIcon: widget.suffixIcon,
+                  ),
               name: "address".tr,
               controller: widget.initialValue == null ? _controller : null,
               selectionToTextTransformer: (result) {
                 return result.description ?? "";
               },
-              itemBuilder: widget.itemBuilder ??
+              itemBuilder:
+                  widget.itemBuilder ??
                   (context, content) {
                     return ListTile(
                       title: Text(content.description ?? ""),
@@ -453,7 +458,6 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
 
                 final completer = Completer<List<Prediction>>();
                 _debounce.run(() async {
-
                   final response = await _places.autocomplete(
                     query,
                     language: widget.language,
@@ -494,7 +498,9 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
                 return completer.future;
               },
               onSelected: (value) async {
-                _controller.selection = TextSelection.collapsed(offset: _controller.text.length);
+                _controller.selection = TextSelection.collapsed(
+                  offset: _controller.text.length,
+                );
                 _getDetailsByPlaceId(value, value.placeId ?? "", context);
                 widget.onSelected?.call(value);
               },
@@ -536,26 +542,37 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
               suggestionsController: widget.suggestionsController,
             ),
           ),
-          trailing: widget.showClearButton && _controller.text.trim().isNotEmpty ? widget.trailingIcon ?? UFUIconButton(
-            backgroundColor: AppTheme.themeColors.transparent,
-            icon: Icons.close,
-            iconColor: AppTheme.themeColors.primary,
-            onTap: () {
-              _controller.clear();
-              UFUtils.hideKeyboard();
-            },
-          ) : null,
+          trailing: widget.showClearButton && _controller.text.trim().isNotEmpty
+              ? widget.trailingIcon ??
+                    UFUIconButton(
+                      backgroundColor: AppTheme.themeColors.transparent,
+                      icon: Icons.close,
+                      iconColor: AppTheme.themeColors.primary,
+                      onTap: () {
+                        _controller.clear();
+                        UFUtils.hideKeyboard();
+                      },
+                    )
+              : null,
         ),
       ),
     );
   }
 
   InputBorder customBorder({Color? borderColor}) => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: borderColor ?? AppTheme.themeColors.red, width: 0));
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(
+      color: borderColor ?? AppTheme.themeColors.red,
+      width: 0,
+    ),
+  );
 
   /// Get address details from place id
-  void _getDetailsByPlaceId(Prediction place, String placeId, BuildContext context) async {
+  void _getDetailsByPlaceId(
+    Prediction place,
+    String placeId,
+    BuildContext context,
+  ) async {
     try {
       final GoogleMapsPlaces places = GoogleMapsPlaces(
         apiKey: widget.apiKey,
@@ -584,8 +601,10 @@ class _CustomPlaceAutoCompleteState extends State<CustomPlaceAutoComplete> {
         if (widget.mounted) {
           ScaffoldMessenger.of(Get.context!).showSnackBar(
             SnackBar(
-              content: Text(response.errorMessage ??
-                  "Address not found, something went wrong!"),
+              content: Text(
+                response.errorMessage ??
+                    "Address not found, something went wrong!",
+              ),
             ),
           );
         }

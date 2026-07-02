@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUPopUpMenuButton<T> extends StatelessWidget {
-
   const UFUPopUpMenuButton({
     super.key,
     this.popUpMenuButtonChild,
@@ -11,7 +10,7 @@ class UFUPopUpMenuButton<T> extends StatelessWidget {
     this.offset = Offset.zero,
     this.onTap,
     this.childPadding = EdgeInsets.zero,
-    this.toolTip
+    this.toolTip,
   });
 
   /// itemList will contain list of items you want to display in popUpMenu
@@ -37,8 +36,6 @@ class UFUPopUpMenuButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return PopupMenuButton(
       offset: offset,
       color: AppTheme.themeColors.base,
@@ -52,9 +49,7 @@ class UFUPopUpMenuButton<T> extends StatelessWidget {
         );
       }).toList(),
       tooltip: toolTip,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onSelected: onTap,
       child: popUpMenuButtonChild,
     );

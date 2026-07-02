@@ -13,7 +13,8 @@ class UFUAvatar extends StatelessWidget {
     this.backgroundColor = UFUColor.transparent,
     this.child,
     this.borderWidth,
-    super.key});
+    super.key,
+  });
 
   /// Defines width of avatar
   final double? width;
@@ -94,19 +95,29 @@ class UFUAvatar extends StatelessWidget {
       width: width ?? getSize(),
       height: height ?? getSize(),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(size == UFUAvatarSize.extraLarge ? 100.0 : radius),
+        borderRadius: BorderRadius.circular(
+          size == UFUAvatarSize.extraLarge ? 100.0 : radius,
+        ),
         color: backgroundColor,
         border: (isDashedBorder ?? false)
-          ? UFUDashedBorder.fromBorderSide(dashLength: dashLength ?? 0, side: BorderSide(
-              color: borderColor ?? AppTheme.themeColors.primary, width: borderWidth ?? 0))
-          : (borderColor != null)
-            ? Border.all(color: borderColor!, width: borderWidth ?? 0.0,)
-            : null),
+            ? UFUDashedBorder.fromBorderSide(
+                dashLength: dashLength ?? 0,
+                side: BorderSide(
+                  color: borderColor ?? AppTheme.themeColors.primary,
+                  width: borderWidth ?? 0,
+                ),
+              )
+            : (borderColor != null)
+            ? Border.all(color: borderColor!, width: borderWidth ?? 0.0)
+            : null,
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(
-            (size == UFUAvatarSize.extraLarge) ? 100.0 : radius),
+          (size == UFUAvatarSize.extraLarge) ? 100.0 : radius,
+        ),
         child: Center(
-          child: child ??
+          child:
+              child ??
               UFUIcon(
                 Icons.person,
                 size: getDefaultIconSize(),

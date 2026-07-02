@@ -98,7 +98,7 @@ class UFUMultiSelect extends StatefulWidget {
   /// helperText can be used to display some info as a helper to user
   final String? helperText;
 
-  /// Defines to show user filter 
+  /// Defines to show user filter
   final bool? canShowSubList;
 
   /// Function to show user filter or not.
@@ -117,7 +117,8 @@ class UFUMultiSelect extends StatefulWidget {
   final bool showIncludeInactiveButton;
 
   /// Defined to update TotalAmount
-  final void Function({int? index, bool? isSelectAll,bool? isSelect})? updateTotalAmount;
+  final void Function({int? index, bool? isSelectAll, bool? isSelect})?
+  updateTotalAmount;
 
   /// Can be used to perform actions externally on selecting an item
   final Function(List<UFUMultiSelectModel>, int)? onTapItem;
@@ -178,7 +179,10 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
     if (widget.type == UFUMultiSelectType.network) {
       // adding a listener in case of network listing
       scrollController.addListener(() {
-        if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && widget.onLoadMore != null && !widget.isLoadMore) {
+        if (scrollController.position.pixels >=
+                scrollController.position.maxScrollExtent &&
+            widget.onLoadMore != null &&
+            !widget.isLoadMore) {
           widget.onLoadMore!();
         }
       });
@@ -192,168 +196,190 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-        valueListenable: ValueNotifier(widget.isLoading),
-        builder: (_, isLoading, child) {
-          if (isLoading != doCloneLists &&
-              widget.type == UFUMultiSelectType.network) {
-            doCloneLists = !isLoading;
-            cloneList(addToLists: true);
-          }
-          return child ?? const SizedBox();
-        },
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: SafeArea(
-            top: true,
-            bottom: false,
-            child: UFUMultiSelectView(
-              totalAmount: widget.totalAmount,
-              listLoader: widget.listLoader,
-              selectedItems: selectedItems,
-              isSelectedSubListItems: isSelectedSubList,
-              helperText: widget.helperText,
-              totalNetworkListCount: widget.totalNetworkListCount,
-              scrollController: scrollController,
-              canShowMore: widget.canShowLoadMore,
-              isLoading: widget.isLoading,
-              type: widget.type,
-              inputHintText: widget.inputHintText,
-              list: getList(),
-              showIncludeInactiveButton: widget.showIncludeInactiveButton,
-              includeInactive: includeInactive,
-              onTapIncludeInactiveButton: toggleIncludeInactiveValue,
-              subList: subList,
-              canShowSearchBar: widget.mainList.length > 8,
-              title: widget.title,
-              searchInputCtrl: textEditingController,
-              disableButtons: widget.disableButtons,
-              canDisableDoneButton: widget.canDisableDoneButton,
-              doneIcon: widget.doneIcon,
-              isFilterSheet: widget.isFilterSheet,
-              selectAndClearAll: selectAndClearAll,
-              subTitleHeader: widget.subTitleHeader,
-              tempSelectedItemsCount:tempSelectedItemsCount ,
-              filterListItemsCount: filterListItemsCount,
-              hideSelectAll: widget.hideSelectAll || widget.maxSelection != null,
-              onItemTap: (String itemId) {
-                int indexOfRenderList = list.indexWhere((element) => element.id == itemId);
-                int indexOfRendertempList = listfilter.indexWhere((element) => element.id == itemId);
-                 
-                if (listfilter.isNotEmpty && isViewSubList) {
-                  if (indexOfRendertempList != -1) {
-                    if (listfilter[indexOfRendertempList].isSelect) {
-                      listfilter[indexOfRendertempList].isSelect = false;
-                      list[indexOfRenderList].isSelect = false;
+      valueListenable: ValueNotifier(widget.isLoading),
+      builder: (_, isLoading, child) {
+        if (isLoading != doCloneLists &&
+            widget.type == UFUMultiSelectType.network) {
+          doCloneLists = !isLoading;
+          cloneList(addToLists: true);
+        }
+        return child ?? const SizedBox();
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SafeArea(
+          top: true,
+          bottom: false,
+          child: UFUMultiSelectView(
+            totalAmount: widget.totalAmount,
+            listLoader: widget.listLoader,
+            selectedItems: selectedItems,
+            isSelectedSubListItems: isSelectedSubList,
+            helperText: widget.helperText,
+            totalNetworkListCount: widget.totalNetworkListCount,
+            scrollController: scrollController,
+            canShowMore: widget.canShowLoadMore,
+            isLoading: widget.isLoading,
+            type: widget.type,
+            inputHintText: widget.inputHintText,
+            list: getList(),
+            showIncludeInactiveButton: widget.showIncludeInactiveButton,
+            includeInactive: includeInactive,
+            onTapIncludeInactiveButton: toggleIncludeInactiveValue,
+            subList: subList,
+            canShowSearchBar: widget.mainList.length > 8,
+            title: widget.title,
+            searchInputCtrl: textEditingController,
+            disableButtons: widget.disableButtons,
+            canDisableDoneButton: widget.canDisableDoneButton,
+            doneIcon: widget.doneIcon,
+            isFilterSheet: widget.isFilterSheet,
+            selectAndClearAll: selectAndClearAll,
+            subTitleHeader: widget.subTitleHeader,
+            tempSelectedItemsCount: tempSelectedItemsCount,
+            filterListItemsCount: filterListItemsCount,
+            hideSelectAll: widget.hideSelectAll || widget.maxSelection != null,
+            onItemTap: (String itemId) {
+              int indexOfRenderList = list.indexWhere(
+                (element) => element.id == itemId,
+              );
+              int indexOfRendertempList = listfilter.indexWhere(
+                (element) => element.id == itemId,
+              );
 
-                      if (widget.type == UFUMultiSelectType.local) {
-                        tempSelectedItems.removeWhere((element) => element.id == listfilter[indexOfRendertempList].id);
-                        selectedItems[indexOfRenderList].isSelect = false;
-                      } 
-                    } else if (isMaxSelectionsReached()) {
-                      widget.onMaxSelectionReached?.call();
-                    } else {
-                      listfilter[indexOfRendertempList].isSelect = true;
-                      list[indexOfRenderList].isSelect = true;
+              if (listfilter.isNotEmpty && isViewSubList) {
+                if (indexOfRendertempList != -1) {
+                  if (listfilter[indexOfRendertempList].isSelect) {
+                    listfilter[indexOfRendertempList].isSelect = false;
+                    list[indexOfRenderList].isSelect = false;
 
-                      if (widget.type == UFUMultiSelectType.local) {
-                        tempSelectedItems.add(listfilter[indexOfRendertempList]);
-                        selectedItems[indexOfRenderList].isSelect = true;
-                      } 
+                    if (widget.type == UFUMultiSelectType.local) {
+                      tempSelectedItems.removeWhere(
+                        (element) =>
+                            element.id == listfilter[indexOfRendertempList].id,
+                      );
+                      selectedItems[indexOfRenderList].isSelect = false;
                     }
+                  } else if (isMaxSelectionsReached()) {
+                    widget.onMaxSelectionReached?.call();
+                  } else {
+                    listfilter[indexOfRendertempList].isSelect = true;
+                    list[indexOfRenderList].isSelect = true;
+
+                    if (widget.type == UFUMultiSelectType.local) {
+                      tempSelectedItems.add(listfilter[indexOfRendertempList]);
+                      selectedItems[indexOfRenderList].isSelect = true;
+                    }
+                  }
+                }
+              } else {
+                if (indexOfRenderList != -1) {
+                  if (list[indexOfRenderList].isSelect) {
+                    list[indexOfRenderList].isSelect = false;
+
+                    if (widget.type == UFUMultiSelectType.network) {
+                      selectedItems.removeWhere(
+                        (element) => element.id == list[indexOfRenderList].id,
+                      );
+                    } else {
+                      selectedItems[indexOfRenderList].isSelect = false;
+                      if (indexOfRendertempList != -1) {
+                        tempSelectedItems.removeWhere(
+                          (element) =>
+                              element.id ==
+                              listfilter[indexOfRendertempList].id,
+                        );
+                      }
+                    }
+                  } else if (isMaxSelectionsReached()) {
+                    widget.onMaxSelectionReached?.call();
+                  } else {
+                    list[indexOfRenderList].isSelect = true;
+
+                    if (widget.type == UFUMultiSelectType.network) {
+                      selectedItems.add(list[indexOfRenderList]);
+                    } else {
+                      selectedItems[indexOfRenderList].isSelect = true;
+                      if (indexOfRendertempList != -1) {
+                        tempSelectedItems.add(
+                          listfilter[indexOfRendertempList],
+                        );
+                      }
+                    }
+                  }
+                }
+              }
+
+              if (widget.updateTotalAmount != null) {
+                widget.updateTotalAmount!(
+                  isSelect: selectedItems[indexOfRenderList].isSelect,
+                  index: indexOfRenderList,
+                );
+              }
+
+              listCount();
+              widget.onTapItem?.call(list, indexOfRenderList);
+              setState(() {});
+            },
+            onSubItemTap: (String subListId) {
+              getList();
+              int indexOfRenderSubList = subList.indexWhere(
+                (element) => element.id == subListId,
+              );
+
+              if (indexOfRenderSubList != -1) {
+                if (subList[indexOfRenderSubList].isSelect) {
+                  subList[indexOfRenderSubList].isSelect = false;
+                  onFilterTags(subListId, 'remove');
+                  if (widget.type == UFUMultiSelectType.local) {
+                    selectedSubListItems.removeWhere(
+                      (element) =>
+                          element.id == subList[indexOfRenderSubList].id,
+                    );
+                  } else {
+                    selectedSubListItems[indexOfRenderSubList].isSelect = false;
                   }
                 } else {
-                  if (indexOfRenderList != -1) {
-                    if (list[indexOfRenderList].isSelect) {
-                      list[indexOfRenderList].isSelect = false;
-
-                      if (widget.type == UFUMultiSelectType.network) {
-                        selectedItems.removeWhere((element) => element.id == list[indexOfRenderList].id);
-                      } else {
-                        selectedItems[indexOfRenderList].isSelect = false;
-                        if (indexOfRendertempList != -1) {
-                          tempSelectedItems.removeWhere((element) =>element.id == listfilter[indexOfRendertempList].id);
-                        }
-                      }
-                    } else if (isMaxSelectionsReached()) {
-                      widget.onMaxSelectionReached?.call();
-                    } else {
-                      list[indexOfRenderList].isSelect = true;
-
-                      if (widget.type == UFUMultiSelectType.network) {
-                        selectedItems.add(list[indexOfRenderList]);
-                      } else {
-                        selectedItems[indexOfRenderList].isSelect = true;
-                        if (indexOfRendertempList != -1) {
-                          tempSelectedItems.add(listfilter[indexOfRendertempList]);
-                        }
-                      }
-                    }
-                  }
-                }
-
-                if(widget.updateTotalAmount != null){
-                  widget.updateTotalAmount!(
-                    isSelect: selectedItems[indexOfRenderList].isSelect,
-                    index: indexOfRenderList
-                  );
-                }
-                
-                listCount();
-                widget.onTapItem?.call(list, indexOfRenderList);
-                setState(() {});
-              },
-              onSubItemTap: (String subListId) {
-                getList();
-                int indexOfRenderSubList = subList.indexWhere((element) => element.id == subListId);
-
-                if (indexOfRenderSubList != -1) {
-                  if (subList[indexOfRenderSubList].isSelect) {
-                    subList[indexOfRenderSubList].isSelect = false;
-                    onFilterTags(subListId, 'remove');
-                    if (widget.type == UFUMultiSelectType.local) {
-                      selectedSubListItems.removeWhere((element) => element.id == subList[indexOfRenderSubList].id);
-                    } else {
-                      selectedSubListItems[indexOfRenderSubList].isSelect = false;
-                    }
+                  subList[indexOfRenderSubList].isSelect = true;
+                  onFilterTags(subListId, 'add');
+                  if (widget.type == UFUMultiSelectType.local) {
+                    selectedSubListItems.add(subList[indexOfRenderSubList]);
                   } else {
-                    subList[indexOfRenderSubList].isSelect = true;
-                    onFilterTags(subListId, 'add');
-                    if (widget.type == UFUMultiSelectType.local) {
-                      selectedSubListItems.add(subList[indexOfRenderSubList]);
-                    } else {
-                      selectedSubListItems[indexOfRenderSubList].isSelect = true;
-                    }
+                    selectedSubListItems[indexOfRenderSubList].isSelect = true;
                   }
                 }
-                getIsSelectedSubList();
-                listCount();
-                setState(() {});
-              },
-              onSearch: onSearch,
-              onDone: onDone,
-              headerPrefixChild: widget.headerPrefixChild,
-              mainList: list,
-              canShowSubList: widget.canShowSubList,
-              showSubList: () async {
-                isViewSubList = !isViewSubList;
-                // Delay to make sure the frames are rendered properly
-                if(isViewSubList){
-                  await Future<void>.delayed(const Duration(milliseconds: 200));
-                  SchedulerBinding.instance.addPostFrameCallback((_) {
-                    scrollList.animateTo(
+              }
+              getIsSelectedSubList();
+              listCount();
+              setState(() {});
+            },
+            onSearch: onSearch,
+            onDone: onDone,
+            headerPrefixChild: widget.headerPrefixChild,
+            mainList: list,
+            canShowSubList: widget.canShowSubList,
+            showSubList: () async {
+              isViewSubList = !isViewSubList;
+              // Delay to make sure the frames are rendered properly
+              if (isViewSubList) {
+                await Future<void>.delayed(const Duration(milliseconds: 200));
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  scrollList.animateTo(
                     scrollList.position.minScrollExtent,
                     duration: const Duration(milliseconds: 400),
-                    curve: Curves.fastOutSlowIn);
-                  });
-                }
-                listCount();
-                setState(() {});
-              },
-              scrollList: scrollList,
-              isViewSubList: isViewSubList,
-            ),
+                    curve: Curves.fastOutSlowIn,
+                  );
+                });
+              }
+              listCount();
+              setState(() {});
+            },
+            scrollList: scrollList,
+            isViewSubList: isViewSubList,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   // getSelectedItemCount() : will return selected item count
@@ -362,15 +388,16 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
   }
 
   void selectAndClearAll() {
-    if(widget.updateTotalAmount != null){
-     widget.updateTotalAmount!(isSelectAll: getSelectedItemCount() == 0);
+    if (widget.updateTotalAmount != null) {
+      widget.updateTotalAmount!(isSelectAll: getSelectedItemCount() == 0);
     }
-    if (isViewSubList && subList.where((element) => element.isSelect).isNotEmpty) {
+    if (isViewSubList &&
+        subList.where((element) => element.isSelect).isNotEmpty) {
       tempListselectAndClearAll();
     } else {
-      List <UFUMultiSelectModel>list = userListOnActiveStatus;
-      List <UFUMultiSelectModel>selectedItems = selectedUserListOnActiveStatus;
-          
+      List<UFUMultiSelectModel> list = userListOnActiveStatus;
+      List<UFUMultiSelectModel> selectedItems = selectedUserListOnActiveStatus;
+
       if (getSelectedItemCount() != 0) {
         for (var i = 0; i < list.length; i++) {
           list[i].isSelect = false;
@@ -402,7 +429,6 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
     }
     listCount();
     setState(() {});
-    
   }
 
   void getIsSelectedSubList() {
@@ -411,66 +437,73 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
 
   // getUserFilteredList() : will return user filtered list based on active or inactive user
   List<UFUMultiSelectModel> get userListOnActiveStatus {
-    if(widget.showIncludeInactiveButton && !includeInactive) {
+    if (widget.showIncludeInactiveButton && !includeInactive) {
       return list.where((element) => element.active ?? true).toList();
-    } 
+    }
     return list;
   }
 
   List<UFUMultiSelectModel> get selectedUserListOnActiveStatus {
-    if(widget.showIncludeInactiveButton && !includeInactive) {
+    if (widget.showIncludeInactiveButton && !includeInactive) {
       return selectedItems.where((element) => element.active ?? true).toList();
-    } 
+    }
     return selectedItems;
   }
 
   List<UFUMultiSelectModel> getList() {
-    if(widget.showIncludeInactiveButton && list.any((element) => !(element.active ?? true) && element.isSelect)) {
+    if (widget.showIncludeInactiveButton &&
+        list.any((element) => !(element.active ?? true) && element.isSelect)) {
       includeInactive = true;
-    } 
-    if(isViewSubList) {
-      if(widget.showIncludeInactiveButton && !includeInactive) {
-        if(subList.where((element) => element.isSelect).isNotEmpty) {
+    }
+    if (isViewSubList) {
+      if (widget.showIncludeInactiveButton && !includeInactive) {
+        if (subList.where((element) => element.isSelect).isNotEmpty) {
           return listfilter.where((element) => element.active ?? true).toList();
-        } 
+        }
         return list.where((element) => element.active ?? true).toList();
-      } 
-      if(subList.where((element) => element.isSelect).isNotEmpty) {
+      }
+      if (subList.where((element) => element.isSelect).isNotEmpty) {
         return listfilter;
       }
       return list;
     }
-    if(widget.showIncludeInactiveButton && !includeInactive) {
-      return list.where((element) => element.active ?? true).toList();   
+    if (widget.showIncludeInactiveButton && !includeInactive) {
+      return list.where((element) => element.active ?? true).toList();
     }
     return list;
   }
 
   void toggleIncludeInactiveValue() {
     List<UFUMultiSelectModel> list = userListOnActiveStatus;
-    if(includeInactive) {
+    if (includeInactive) {
       for (var i = 0; i < list.length; i++) {
-        if(list[i].active == false && list[i].isSelect) {
+        if (list[i].active == false && list[i].isSelect) {
           list[i].isSelect = false;
           if (widget.type == UFUMultiSelectType.network) {
             selectedItems.removeWhere((element) => element.id == list[i].id);
           } else {
             selectedItems[i].isSelect = false;
             if (i != -1) {
-              tempSelectedItems.removeWhere((element) =>element.id == listfilter[i].id);
+              tempSelectedItems.removeWhere(
+                (element) => element.id == listfilter[i].id,
+              );
             }
           }
         }
       }
-      for(int i = 0; i < listfilter.length; i++) {
-        if(listfilter[i].active == false && listfilter[i].isSelect) {
+      for (int i = 0; i < listfilter.length; i++) {
+        if (listfilter[i].active == false && listfilter[i].isSelect) {
           listfilter[i].isSelect = false;
           if (widget.type == UFUMultiSelectType.network) {
-            selectedItems.removeWhere((element) => element.id == listfilter[i].id);
+            selectedItems.removeWhere(
+              (element) => element.id == listfilter[i].id,
+            );
           } else {
             selectedItems[i].isSelect = false;
             if (i != -1) {
-              tempSelectedItems.removeWhere((element) =>element.id == listfilter[i].id);
+              tempSelectedItems.removeWhere(
+                (element) => element.id == listfilter[i].id,
+              );
             }
           }
         }
@@ -481,21 +514,23 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
   }
 
   List<UFUMultiSelectModel> get filterListOnActiveBase {
-    if(widget.showIncludeInactiveButton && !includeInactive) {
+    if (widget.showIncludeInactiveButton && !includeInactive) {
       return listfilter.where((element) => element.active ?? true).toList();
     }
     return listfilter;
   }
 
   void tempListselectAndClearAll() {
-    List <UFUMultiSelectModel> listfilter = filterListOnActiveBase;
-    List <UFUMultiSelectModel> list  = userListOnActiveStatus;
-    List <UFUMultiSelectModel> selectedItems = selectedUserListOnActiveStatus;
+    List<UFUMultiSelectModel> listfilter = filterListOnActiveBase;
+    List<UFUMultiSelectModel> list = userListOnActiveStatus;
+    List<UFUMultiSelectModel> selectedItems = selectedUserListOnActiveStatus;
     if (tempSelectedItems.where((element) => element.isSelect).isNotEmpty) {
       for (var i = 0; i < listfilter.length; i++) {
         listfilter[i].isSelect = false;
         if (widget.type == UFUMultiSelectType.local) {
-          tempSelectedItems.removeWhere((element) => element.id == listfilter[i].id);
+          tempSelectedItems.removeWhere(
+            (element) => element.id == listfilter[i].id,
+          );
         } else {
           tempSelectedItems[i].isSelect = false;
         }
@@ -513,13 +548,17 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
     }
     if (tempSelectedItems.isNotEmpty) {
       for (int i = 0; i < tempSelectedItems.length; i++) {
-        int index = list.indexWhere((element) => element.id == tempSelectedItems[i].id);
+        int index = list.indexWhere(
+          (element) => element.id == tempSelectedItems[i].id,
+        );
         selectedItems[index].isSelect = true;
         list[index].isSelect = true;
       }
     } else {
       for (int i = 0; i < listfilter.length; i++) {
-        int index = list.indexWhere((element) => element.id == listfilter[i].id);
+        int index = list.indexWhere(
+          (element) => element.id == listfilter[i].id,
+        );
         selectedItems[index].isSelect = false;
         list[index].isSelect = false;
       }
@@ -534,18 +573,40 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
     if (addToLists) {
       int skipCount = list.length;
       int skipSubCount = subList.length;
-      list.addAll(widget.mainList.skip(skipCount).map((e) => UFUMultiSelectModel.clone(
-              e..isSelect = selectedItems.any((element) => e.id == element.id))).toList());
+      list.addAll(
+        widget.mainList
+            .skip(skipCount)
+            .map(
+              (e) => UFUMultiSelectModel.clone(
+                e
+                  ..isSelect = selectedItems.any(
+                    (element) => e.id == element.id,
+                  ),
+              ),
+            )
+            .toList(),
+      );
 
-      if(widget.showSubList != null) {
-        subList.addAll(widget.subList!.skip(skipSubCount).map((e) =>
-            UFUMultiSelectModel.clone(e
-              ..isSelect = selectedSubListItems.any((element) =>
-              e.id == element.id))).toList());
+      if (widget.showSubList != null) {
+        subList.addAll(
+          widget.subList!
+              .skip(skipSubCount)
+              .map(
+                (e) => UFUMultiSelectModel.clone(
+                  e
+                    ..isSelect = selectedSubListItems.any(
+                      (element) => e.id == element.id,
+                    ),
+                ),
+              )
+              .toList(),
+        );
       }
     } else {
       list = widget.mainList.map((e) => UFUMultiSelectModel.clone(e)).toList();
-      subList = widget.subList?.map((e) => UFUMultiSelectModel.clone(e)).toList() ?? [];
+      subList =
+          widget.subList?.map((e) => UFUMultiSelectModel.clone(e)).toList() ??
+          [];
     }
   }
 
@@ -570,13 +631,14 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
         for (int j = 0; j < list[i].tags!.length; j++) {
           for (int k = 0; k < selectedSubListId.length; k++) {
             if (selectedSubListId[k] == list[i].tags![j].id.toString()) {
-              listfilter.add(UFUMultiSelectModel(
-                label: list[i].label,
-                id: list[i].id,
-                isSelect: list[i].isSelect,
-                child: list[i].child,
-                active: list[i].active,
-              )
+              listfilter.add(
+                UFUMultiSelectModel(
+                  label: list[i].label,
+                  id: list[i].id,
+                  isSelect: list[i].isSelect,
+                  child: list[i].child,
+                  active: list[i].active,
+                ),
               );
             }
           }
@@ -584,8 +646,12 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
       }
     }
     var seen = <String>{};
-    listfilter = listfilter.where((element) => seen.add(element.id.toString())).toList();
-    tempSelectedItems = listfilter.where((element) => element.isSelect).toList();
+    listfilter = listfilter
+        .where((element) => seen.add(element.id.toString()))
+        .toList();
+    tempSelectedItems = listfilter
+        .where((element) => element.isSelect)
+        .toList();
   }
 
   // setUpSelectedValues() : is to initialize selectedItems list with selected values
@@ -596,18 +662,19 @@ class UFUMultiSelectState extends State<UFUMultiSelect> {
       });
     } else {
       for (var element in widget.mainList) {
-          selectedItems.add(UFUMultiSelectModel.clone(element));
-        }
-      }
-      for (var element in widget.mainList) {
-        selectedSubListItems.add(UFUMultiSelectModel.clone(element));
+        selectedItems.add(UFUMultiSelectModel.clone(element));
       }
     }
-  
+    for (var element in widget.mainList) {
+      selectedSubListItems.add(UFUMultiSelectModel.clone(element));
+    }
+  }
 
-  void listCount(){
-    tempSelectedItemsCount = (listfilter.length >= tempSelectedItems.length) ? tempSelectedItems.length : listfilter.length;
-    filterListItemsCount = (isViewSubList) ? listfilter.length : 0 ;
+  void listCount() {
+    tempSelectedItemsCount = (listfilter.length >= tempSelectedItems.length)
+        ? tempSelectedItems.length
+        : listfilter.length;
+    filterListItemsCount = (isViewSubList) ? listfilter.length : 0;
     setState(() {});
   }
 

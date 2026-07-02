@@ -12,15 +12,17 @@ class PopoverActionModel {
     required this.value,
     this.isSelected = false,
     this.isDisabled = false,
-    this.icon
+    this.icon,
   });
 
-  static void selectAction(List<PopoverActionModel> filters, String selectedLabel) {
+  static void selectAction(
+    List<PopoverActionModel> filters,
+    String selectedLabel,
+  ) {
     for (var element in filters) {
       element.isSelected = false;
     }
     int index = filters.indexWhere((element) => element.value == selectedLabel);
     filters[index].isSelected = true;
   }
-
 }

@@ -2,7 +2,6 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:get/get.dart';
 
 class RecordingDialogController extends GetxController {
-
   RecorderController recorderController = RecorderController();
 
   RxBool isRecording = false.obs;
@@ -37,5 +36,4 @@ class RecordingDialogController extends GetxController {
       isRecording.value = false;
     }
   }
-
 }

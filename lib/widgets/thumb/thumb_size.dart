@@ -1,4 +1,1 @@
-enum ThumbSize {
-  small,
-  large,
-}
+enum ThumbSize { small, large }

@@ -1,5 +1,3 @@
-
-
 import 'interceptor.dart';
 
 class SocketInterceptorManager {

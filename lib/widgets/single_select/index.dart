@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-
 class UFUSingleSelect extends StatefulWidget {
   const UFUSingleSelect({
     required this.mainList,
@@ -32,7 +31,7 @@ class UFUSingleSelect extends StatefulWidget {
     this.onSearch,
     this.canShowSearchBar,
     this.showIncludeInactiveButton = false,
-    super.key
+    super.key,
   });
 
   //Main list of which will have all elements
@@ -94,7 +93,7 @@ class UFUSingleSelect extends StatefulWidget {
   /// In case of network list onSearch returns a callback with search keyword to take an action
   final Function(String keyword)? onSearch;
 
-  /// For showing include inactive button 
+  /// For showing include inactive button
   final bool showIncludeInactiveButton;
 
   @override
@@ -104,9 +103,7 @@ class UFUSingleSelect extends StatefulWidget {
 class UFUSingleSelectState extends State<UFUSingleSelect> {
   List<UFUSingleSelectModel> list = [];
   TextEditingController textEditingController = TextEditingController();
-  final scrollController = AutoScrollController(
-    initialScrollOffset: 0,
-  );
+  final scrollController = AutoScrollController(initialScrollOffset: 0);
 
   String? selectedItemId;
   bool isVisibile = false;
@@ -116,19 +113,24 @@ class UFUSingleSelectState extends State<UFUSingleSelect> {
   void scrollToIndex() async {
     int index = getList().indexWhere((element) => element.id == selectedItemId);
 
-    await scrollController.scrollToIndex(index,
-        duration: const Duration(milliseconds: 100),
-        preferPosition: AutoScrollPosition.middle);
+    await scrollController.scrollToIndex(
+      index,
+      duration: const Duration(milliseconds: 100),
+      preferPosition: AutoScrollPosition.middle,
+    );
 
     setState(() {
       isVisibile = true;
     });
   }
 
-  /// toggle include inactive value 
+  /// toggle include inactive value
   void toggleIncludeInactive() {
     includeInactive = !includeInactive;
-    if(list.any((element) => !(element.active ?? true) && widget.selectedItemId == element.id)) {
+    if (list.any(
+      (element) =>
+          !(element.active ?? true) && widget.selectedItemId == element.id,
+    )) {
       selectedItemId = list.first.id;
       widget.onItemSelect!(list.first.id);
     }
@@ -136,10 +138,14 @@ class UFUSingleSelectState extends State<UFUSingleSelect> {
   }
 
   /// get list based on inactive or active user
-  List<UFUSingleSelectModel> getList () {
-    if(widget.showIncludeInactiveButton && list.any((element) => !(element.active ?? true) && widget.selectedItemId == element.id)) {
+  List<UFUSingleSelectModel> getList() {
+    if (widget.showIncludeInactiveButton &&
+        list.any(
+          (element) =>
+              !(element.active ?? true) && widget.selectedItemId == element.id,
+        )) {
       includeInactive = true;
-    } 
+    }
     if (includeInactive) {
       return list;
     } else {
@@ -155,14 +161,18 @@ class UFUSingleSelectState extends State<UFUSingleSelect> {
     if (widget.type == UFUSingleSelectType.network) {
       // adding a listener in case of network listing
       scrollController.addListener(() {
-        if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && widget.onLoadMore != null && !widget.isLoadMore) {
+        if (scrollController.position.pixels >=
+                scrollController.position.maxScrollExtent &&
+            widget.onLoadMore != null &&
+            !widget.isLoadMore) {
           widget.onLoadMore!();
         }
       });
     }
 
-    isVisibile =
-        (!widget.isFilterSheet && widget.mainList.length > 10) ? false : true;
+    isVisibile = (!widget.isFilterSheet && widget.mainList.length > 10)
+        ? false
+        : true;
 
     if (!widget.isFilterSheet && widget.mainList.length > 10) {
       scrollToIndex();
@@ -183,12 +193,14 @@ class UFUSingleSelectState extends State<UFUSingleSelect> {
       isFilterSheet: widget.isFilterSheet,
       inputHintText: widget.inputHintText,
       onSearch: onSearch,
-      onSelect: widget.onItemSelect == null ? null : (value) {
-        setState(() {
-          selectedItemId = value;
-        });
-        widget.onItemSelect!(value);
-      },
+      onSelect: widget.onItemSelect == null
+          ? null
+          : (value) {
+              setState(() {
+                selectedItemId = value;
+              });
+              widget.onItemSelect!(value);
+            },
       canShowSearchBar: widget.canShowSearchBar,
       canShowIconButton: widget.canShowIconButton,
       iconButtonBackgroundColor: widget.iconButtonBackgroundColor,
@@ -220,10 +232,11 @@ class UFUSingleSelectState extends State<UFUSingleSelect> {
     } else {
       setState(() {
         list = widget.mainList
-            .where((element) => element.label
-            .trim()
-            .toLowerCase()
-            .contains(value.trim().toLowerCase()))
+            .where(
+              (element) => element.label.trim().toLowerCase().contains(
+                value.trim().toLowerCase(),
+              ),
+            )
             .toList();
       });
     }

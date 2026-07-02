@@ -1,26 +1,32 @@
-# 🌟 universal\_flutter\_utils
+# universal_flutter_utils
 
-A **powerful, all-in-one Flutter utility package** to boost productivity, maintain consistency, and speed up your app development.\
-Includes beautifully crafted widgets, utilities, themes, extensions, API helpers, file pickers, and much more.
+[![pub package](https://img.shields.io/pub/v/universal_flutter_utils.svg)](https://pub.dev/packages/universal_flutter_utils)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-> ✅ Version: `0.0.9` 
+A **production-ready Flutter UI toolkit and utilities package** for building mobile, web, and desktop apps faster. Includes reusable **widgets**, **Dio API helpers**, **Firebase authentication**, **file pickers**, **form validators**, **themes**, **socket.io**, **maps**, and more — all in one import.
 
----
-
-## ✨ Features at a Glance
-
-✅ Ready-to-use widgets (buttons, loaders, lists, bottom sheets, inputs, etc.)\
-✅ Advanced UI: multi-select, responsive builder, shimmer, read more text, OTP input\
-✅ Theme & typography management\
-✅ File picker & file helper utilities\
-✅ API & socket config with interceptors and AES encryption\
-✅ String extensions, text helpers, validators, permissions, shared preferences\
-✅ Cross-platform: Android, iOS, Web, macOS, Windows, Linux\
-✅ Example app included!
+> Version: `0.0.9` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils)
 
 ---
 
-## 📦 Installation
+## Why use this package?
+
+Stop rebuilding the same Flutter boilerplate in every project. `universal_flutter_utils` bundles the UI components and backend helpers most apps need:
+
+- **Flutter widgets** — buttons, inputs, loaders, bottom sheets, lists, avatars, shimmer, OTP, video player
+- **Form validation** — email, phone, password, required field, and custom validators
+- **Networking** — Dio HTTP client with interceptors, AES encryption, retry, and error handling
+- **Real-time** — Socket.io configuration with logging interceptors
+- **Firebase** — auth, crashlytics, push notifications (FCM), and messaging setup
+- **Authentication** — Google Sign-In, Apple Sign-In, Facebook login, and biometric (fingerprint / Face ID)
+- **File picker** — image, camera, audio recording, document upload, and file helpers
+- **Maps & location** — place picker, Google Maps autocomplete, geolocation utilities
+- **Theming** — light/dark themes, typography, colors, responsive layout builder
+- **Cross-platform** — Android, iOS, Web, macOS, Windows, Linux
+
+---
+
+## Installation
 
 Add to your `pubspec.yaml`:
 
@@ -37,7 +43,7 @@ flutter pub get
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 Import the package:
 
@@ -45,7 +51,7 @@ Import the package:
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 ```
 
-Use ready-made widgets:
+### Flutter UI widgets
 
 ```dart
 UFUButton(
@@ -56,36 +62,103 @@ UFUButton(
   radius: 12,
   onPressed: () => print("Button Pressed!"),
 )
+
+UFUInputBox(
+  hintText: "Email",
+  controller: emailController,
+)
+
+UFUOtpInputBox(onCompleted: (otp) => verifyOtp(otp))
+
+ShowUFULoader(msg: "Loading...")
+ShowUFUBottomSheet(child: (controller) => YourWidget())
 ```
 
-Use utilities:
+### Form validators
 
 ```dart
-List<XFile> fileList = await UFUtils.picker.selectImageFromGallery();
-List<XFile> fileList = await UFUtils.picker.captureImageFromCamera();
-UFUtils.textValidator(textInputController.text.trim(), isRequired: true, minCount: 3);
-UFUtils.emailValidator(emailInputController.text.trim(), isRequired: true);
-UFUtils.phoneValidator(phoneNoInputController.text.trim(), isRequired: true);
+UFUtils.textValidator(text, isRequired: true, minCount: 3);
+UFUtils.emailValidator(email, isRequired: true);
+UFUtils.phoneValidator(phone, isRequired: true);
 ```
 
-Use theme:
+### File picker
+
+```dart
+List<XFile> images = await UFUtils.picker.selectImageFromGallery();
+List<XFile> photos = await UFUtils.picker.captureImageFromCamera();
+```
+
+### Theme
 
 ```dart
 final theme = AppTheme.lightTheme;
+MaterialApp(theme: theme, ...);
 ```
 
 ---
 
-## 🧩 Example Usage
+## Widgets
 
-The included `example` project shows:
+| Category | Components |
+| -------- | ---------- |
+| **Buttons** | `UFUButton`, `UFUIconButton`, `UFUTextButton`, `UFUCheckbox` |
+| **Inputs** | `UFUInputBox`, `UFUOtpInputBox`, debounced search input |
+| **Selection** | `UFUMultiSelect`, `UFUSingleSelect`, `UFUPopUpMenuButton` |
+| **Layout** | `UFUScaffold`, `UFUListView`, `UFUResponsiveBuilder`, `UFUDashedBorder` |
+| **Feedback** | `ShowUFULoader`, `UFUToast`, `UFUShimmer`, `UFUNoDataFound` |
+| **Dialogs** | `ShowUFUConfirmationDialog`, `ShowUFUBottomSheet`, `ShowRecordingDialog` |
+| **Media** | `UFUNetworkImage`, `UFUVideoPlayer`, `UFUAvatar`, image cropper |
+| **Text** | `UFUText`, `UFUReadMoreText`, selectable text support |
+| **Maps** | Place picker, Google Maps autocomplete, location helpers |
+| **Pickers** | Image picker, file picker, audio recorder bottom sheet |
 
-- API calls with interceptors
-- Picking and uploading files
-- Using `UFUButton`, `UFUText`, `UFUInputBox`, etc.
-- Theme setup & responsive builder
+---
 
-Run the example:
+## Utilities
+
+| Category | What it offers |
+| -------- | -------------- |
+| **API / Dio** | `api_config/` — AES encryption, request/response/error interceptors, file upload |
+| **Socket.io** | `socket_config/` — connection config and logging interceptors |
+| **Validators** | Email, phone, password, required fields, custom rules |
+| **File helpers** | Gallery, camera, audio, multi-file upload, file preparation |
+| **Date & time** | Formatting and parsing utilities |
+| **Permissions** | Camera, storage, location, notification permission handling |
+| **Preferences** | Shared preferences wrapper for tokens, language, settings |
+| **Biometric** | Fingerprint and Face ID authentication |
+| **Social login** | Google, Apple, Facebook sign-in helpers |
+| **Firebase** | Auth, Crashlytics, FCM push notifications |
+| **Extensions** | String helpers, card number formatter, input box extensions |
+| **Theme** | `AppTheme`, `ThemeColors`, font weights, text sizes, form UI helper |
+
+---
+
+## Package Structure
+
+```plaintext
+lib/
+ ├── api_config/         → Dio HTTP client, AES encryption, interceptors
+ ├── common/             → Constants, enums, Firebase & cookie services
+ ├── extensions/         → String and input formatters
+ ├── models/             → Address, contact, shared data models
+ ├── socket_config/      → Socket.io helpers
+ ├── theme/              → Themes, colors, typography
+ ├── utils/              → Validators, file picker, permissions, preferences
+ ├── widgets/            → UI components (buttons, inputs, lists, maps, etc.)
+ └── universal_flutter_utils.dart → Single entry-point export
+```
+
+---
+
+## Example App
+
+The included `example/` project demonstrates:
+
+- API calls with Dio interceptors and encryption
+- File picking and uploading
+- `UFUButton`, `UFUText`, `UFUInputBox`, and other widgets
+- Theme setup and responsive layout
 
 ```bash
 cd example
@@ -94,85 +167,24 @@ flutter run
 
 ---
 
-## 🛠 API Docs (High-Level)
+## Search & Discoverability
 
-| Module           | What it offers                                                                  |
-| ---------------- | ------------------------------------------------------------------------------- |
-| `api_config/`    | AES encryption, request/response interceptors, API base config                  |
-| `common/`        | Constants, enums (device type, run mode), helpers, services (cookies, firebase) |
-| `extensions/`    | String extensions and method shortcuts                                          |
-| `models/`        | Shared data models                                                              |
-| `socket_config/` | Socket config and logging interceptors                                          |
-| `theme/`         | Themes, theme colors, font weights, sizes, etc.                                 |
-| `utils/`         | File helpers, validators, date/time utils, permissions, shared preferences      |
-| `widgets/`       | Buttons, loaders, input boxes, OTP, shimmer, multi-select, list views, etc.     |
+This package is tagged for pub.dev topics: **widgets**, **utilities**, **ui**, **networking**, **authentication**.
+
+Common searches this package helps with:
+
+`flutter widgets` · `flutter ui kit` · `dio interceptor` · `flutter form validation` · `flutter file picker` · `flutter bottom sheet` · `flutter otp input` · `flutter multi select` · `flutter shimmer` · `firebase auth flutter` · `socket.io flutter` · `flutter theme` · `google maps place picker` · `flutter biometric auth` · `social login flutter` · `flutter utilities`
 
 ---
 
-## 🎨 Widgets Highlights
+## License
 
-✅ `UFUButton`, `UFUIconButton`, `UFUCheckbox`\
-✅ `UFUMultiSelect`, `UFUSingleSelect`\
-✅ `UFUReadMoreText`, `UFUOtpInputBox`, `UFUInputBox`\
-✅ `UFUAvatar`, `UFUDashedBorder`, `UFUResponsiveBuilder`\
-✅ `UFUNoDataFound`, `UFUToast`, `UFUPopUpMenuButton`\
-✅ `UFUVideoPlayer`, `UFUNetworkImage`, `ShowUFULoader`, `UFUShimmer`\
-✅ `ShowUFUBottomSheets`, `UFUScaffold`, `UFUListView`, and more!
+MIT License — see [LICENSE](./LICENSE).
 
 ---
 
-## 🧰 Utilities Highlights
+## Contributing
 
-✅ AES encryption / decryption\
-✅ File pickers (image, audio, any file)\
-✅ Date & time formatting\
-✅ Validators, text helpers, direction helpers\
-✅ Shared preferences, cookie service, firebase service\
-✅ Theme & color management\
-✅ Social login helper stubs
+Issues, feature requests, and pull requests are welcome on [GitHub](https://github.com/dawasim/universal_flutter_utils/issues).
 
----
-
-## 📷 Assets & Fonts
-
-- `assets/images/default_image.png`, `alt-image.png`
-- `assets/folder.svg`
-- Fonts: Can be set through `UFUtils.fontFamily = "RethinkSans";`
-
----
-
-## 📂 Package Structure Overview
-
-```plaintext
-lib/
- ├── api_config/         → API helpers & encryption
- ├── common/             → Constants, enums, services
- ├── extensions/         → Dart & String extensions
- ├── models/             → Shared models
- ├── socket_config/      → Socket helpers
- ├── theme/              → Themes, colors, fonts
- ├── utils/              → Helpers (files, permissions, validators)
- ├── widgets/            → Buttons, lists, loaders, inputs, etc.
- └── universal_flutter_utils.dart → Entry point
-```
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License** – see the [LICENSE](./LICENSE) file.
-
----
-
-## 💡 Contributing
-
-We welcome issues, feature requests, and pull requests!\
-Feel free to help us make `universal_flutter_utils` even better.
-
----
-
-## 🚀 Made with ❤️ to save your time & keep your Flutter code clean.
-
-> 📦 Need help setting it up, or want detailed docs?\
-> 👉 Feel free to open an issue or start a discussion!
-
+Made with care to save your time and keep Flutter code clean.

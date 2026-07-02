@@ -7,25 +7,32 @@ import 'interceptors/logging_interceptor.dart';
 
 class UFSocketConfig {
   static Socket? _socket;
-  static final SocketInterceptorManager interceptors = SocketInterceptorManager();
+  static final SocketInterceptorManager interceptors =
+      SocketInterceptorManager();
 
   static Socket? getSocket() => _socket;
 
-  static Future<void> initializeSocket({Function({required Socket socket, required void Function(String event, Function(dynamic data)) on,})? initListeners}) async {
+  static Future<void> initializeSocket({
+    Function({
+      required Socket socket,
+      required void Function(String event, Function(dynamic data)) on,
+    })?
+    initListeners,
+  }) async {
     if (_socket?.connected == true) {
       _socket?.disconnect();
     }
 
     final token = await UFUtils.preferences.readAuthToken();
     _socket = io(
-        UFUtils.socketBaseUrl,
-        OptionBuilder()
-            .setTransports(['websocket'])
-            .enableReconnection()
-            .enableForceNew()
-            .setExtraHeaders({'token': token})
-            .setQuery({'EIO': '4', 'transport': 'websocket'})
-            .build()
+      UFUtils.socketBaseUrl,
+      OptionBuilder()
+          .setTransports(['websocket'])
+          .enableReconnection()
+          .enableForceNew()
+          .setExtraHeaders({'token': token})
+          .setQuery({'EIO': '4', 'transport': 'websocket'})
+          .build(),
     );
 
     // Add logging interceptor
@@ -36,7 +43,7 @@ class UFSocketConfig {
 
     debugPrint("Connecting socket...");
     _socket!.connect();
-    initListeners?.call(socket: _socket!, on: on,);
+    initListeners?.call(socket: _socket!, on: on);
   }
 
   static void send(String event, dynamic data) {
@@ -81,6 +88,4 @@ class UFSocketConfig {
       debugPrint('🔴 Socket closed: $data');
     });
   }
-
-
 }

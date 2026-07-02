@@ -7,7 +7,6 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import '../../../models/address.dart';
 import 'controller.dart';
 
-
 class UFULocationPicker extends StatelessWidget {
   UFULocationPicker({
     super.key,
@@ -32,10 +31,11 @@ class UFULocationPicker extends StatelessWidget {
       init: UFULocationPickerController(
         apiKey: apiKey ?? "",
         placesAPIHeader: placesAPIHeader,
-        address: address
+        address: address,
       ),
       global: false,
-      dispose: (GetBuilderState<UFULocationPickerController> state) => state.controller?.disposeControllers(),
+      dispose: (GetBuilderState<UFULocationPickerController> state) =>
+          state.controller?.disposeControllers(),
       builder: (controller) => Scaffold(
         // appBar: customToolbar(
         //   title: "currentLocation".tr,
@@ -67,16 +67,23 @@ class UFULocationPicker extends StatelessWidget {
                 ),
                 border: InputBorder.none,
               ),
-              bottomCardBuilder: (BuildContext context, GeocodingResult? result, String address,) {
-                return SafeArea(top: false,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 15),
-                    child: UFUButton(
-                        text: "confirm_location".tr,
-                        onPressed: () => controller.saveCurrentLocation()),
-                  ),
-                );
-              },
+              bottomCardBuilder:
+                  (
+                    BuildContext context,
+                    GeocodingResult? result,
+                    String address,
+                  ) {
+                    return SafeArea(
+                      top: false,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 15),
+                        child: UFUButton(
+                          text: "confirm_location".tr,
+                          onPressed: () => controller.saveCurrentLocation(),
+                        ),
+                      ),
+                    );
+                  },
               onDecodeAddress: controller.setSelectedAddress,
               onNext: controller.setSelectedAddress,
               onSuggestionSelected: controller.setSearchedAddress,
@@ -84,19 +91,28 @@ class UFULocationPicker extends StatelessWidget {
             ),
             Positioned.fill(
               child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 70),
-                  child: Obx(() => controller.selectedAddress.value != null ? Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.center,
-                    direction: Axis.vertical,
-                    children: [
-                      Image.asset("assets/images/ic_location_marker.png", height: 60, width: 60),
-                      const SizedBox(height: 8),
-                      markerInfo(controller)
-                    ],
-                  ) : const UFULoader())),
-            )
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(top: 70),
+                child: Obx(
+                  () => controller.selectedAddress.value != null
+                      ? Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          alignment: WrapAlignment.center,
+                          direction: Axis.vertical,
+                          children: [
+                            Image.asset(
+                              "assets/images/ic_location_marker.png",
+                              height: 60,
+                              width: 60,
+                            ),
+                            const SizedBox(height: 8),
+                            markerInfo(controller),
+                          ],
+                        )
+                      : const UFULoader(),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -126,9 +142,23 @@ class UFULocationPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if(controller.selectedAddress.value?.addressComponents?.firstOrNull?.longName?.isNotEmpty ?? false) ...[
+              if (controller
+                      .selectedAddress
+                      .value
+                      ?.addressComponents
+                      ?.firstOrNull
+                      ?.longName
+                      ?.isNotEmpty ??
+                  false) ...[
                 UFUText(
-                  text: controller.selectedAddress.value?.addressComponents?.firstOrNull?.longName ?? "",
+                  text:
+                      controller
+                          .selectedAddress
+                          .value
+                          ?.addressComponents
+                          ?.firstOrNull
+                          ?.longName ??
+                      "",
                   textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: 4),
@@ -147,13 +177,16 @@ class UFULocationPicker extends StatelessWidget {
     ),
   );
 
-
   Column temp() => Column(
     children: [
       Positioned(
         left: coordinateY.toDouble() - 28, // Adjust for widget width/height
         top: coordinateX.toDouble() - 20, // Adjust for widget width/height
-        child: Image.asset("assets/images/ic_location_marker.png", height: 60, width: 60),
+        child: Image.asset(
+          "assets/images/ic_location_marker.png",
+          height: 60,
+          width: 60,
+        ),
       ),
 
       // Positioned.fill(
@@ -164,13 +197,11 @@ class UFULocationPicker extends StatelessWidget {
       //           ? markerInfo(controller)
       //           : const LoaderWidget())),
       // ),
-
       Positioned(
         left: coordinateY.toDouble(), // Adjust for widget width/height
         top: coordinateX.toDouble(), // Adjust for widget width/height
-        child: const UFUText(text: ".",),
+        child: const UFUText(text: "."),
       ),
     ],
   );
-
 }

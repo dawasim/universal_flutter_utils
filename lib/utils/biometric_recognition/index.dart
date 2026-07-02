@@ -20,7 +20,8 @@ class UFUBiometricRecognition {
   Future<bool> validateBiometric() async {
     try {
       // Optional: You can call isBiometricSupported() here if needed
-      List<BiometricType> availableBiometrics = await _auth.getAvailableBiometrics();
+      List<BiometricType> availableBiometrics = await _auth
+          .getAvailableBiometrics();
 
       if (availableBiometrics.isEmpty) {
         return false;

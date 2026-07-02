@@ -1,4 +1,1 @@
-enum UFUMultiSelectType {
-  local,
-  network
-}
+enum UFUMultiSelectType { local, network }

@@ -12,13 +12,13 @@ class AppTheme {
   static void setTheme(bool isDark) {
     if (isDark) {
       themeData = ThemeModel(
-          colors: ThemeColors.dark(),
-          formUiHelper: FormUiHelper()
+        colors: ThemeColors.dark(),
+        formUiHelper: FormUiHelper(),
       );
     } else {
       themeData = ThemeModel(
-          colors: ThemeColors.light(),
-          formUiHelper: FormUiHelper()
+        colors: ThemeColors.light(),
+        formUiHelper: FormUiHelper(),
       );
     }
   }
@@ -92,7 +92,9 @@ class AppTheme {
     if (lightBlue != null) themeData.colors.lightBlue = lightBlue;
     if (purple != null) themeData.colors.purple = purple;
     if (dimBlack != null) themeData.colors.dimBlack = dimBlack;
-    if (lightGrassGreen != null) themeData.colors.lightGrassGreen = lightGrassGreen;
+    if (lightGrassGreen != null) {
+      themeData.colors.lightGrassGreen = lightGrassGreen;
+    }
     if (grassGreen != null) themeData.colors.grassGreen = grassGreen;
     if (lightFoam != null) themeData.colors.lightFoam = lightFoam;
     if (foam != null) themeData.colors.foam = foam;
@@ -111,7 +113,9 @@ class AppTheme {
     if (darkPurple != null) themeData.colors.darkPurple = darkPurple;
     if (lightPurple != null) themeData.colors.lightPurple = lightPurple;
     if (uranianBlue != null) themeData.colors.uranianBlue = uranianBlue;
-    if (cornFlowerBlue != null) themeData.colors.cornFlowerBlue = cornFlowerBlue;
+    if (cornFlowerBlue != null) {
+      themeData.colors.cornFlowerBlue = cornFlowerBlue;
+    }
     if (gradientBlue != null) themeData.colors.gradientBlue = gradientBlue;
     if (draft != null) themeData.colors.draft = draft;
     if (lightestGray != null) themeData.colors.lightestGray = lightestGray;
@@ -122,7 +126,11 @@ class AppTheme {
     if (themeGreen != null) themeData.colors.themeGreen = themeGreen;
     if (themeBlue != null) themeData.colors.themeBlue = themeBlue;
     if (red != null) themeData.colors.red = red;
-    if (backgroundColor != null) themeData.colors.backgroundColor = backgroundColor;
-    if (selectedItemColor != null) themeData.colors.selectedItemColor = selectedItemColor;
+    if (backgroundColor != null) {
+      themeData.colors.backgroundColor = backgroundColor;
+    }
+    if (selectedItemColor != null) {
+      themeData.colors.selectedItemColor = selectedItemColor;
+    }
   }
 }

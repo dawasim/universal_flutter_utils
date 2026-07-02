@@ -9,7 +9,7 @@ class UFUScaleInOutAnim extends StatelessWidget {
     this.forward = true,
     this.secondChild,
     this.secondChildKey,
-    });
+  });
 
   /// It can be used to set duration of animation
   /// default is [300ms]
@@ -42,14 +42,8 @@ class UFUScaleInOutAnim extends StatelessWidget {
       switchInCurve: Curves.easeIn,
       switchOutCurve: Curves.easeOut,
       child: forward!
-          ? SizedBox(
-              key: ValueKey(firstChildKey),
-              child: firstChild,
-            )
-          : SizedBox(
-        key: ValueKey(secondChildKey),
-        child: secondChild,
-      ),
+          ? SizedBox(key: ValueKey(firstChildKey), child: firstChild)
+          : SizedBox(key: ValueKey(secondChildKey), child: secondChild),
     );
   }
 }

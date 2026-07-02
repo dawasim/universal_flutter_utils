@@ -14,7 +14,7 @@ class UFUMultiSelectFooter extends StatelessWidget {
 
   /// This method is used when onDone callback it is use to return updated list.
   final ValueChanged<String> callBack;
-  
+
   final Widget? doneIcon;
 
   final bool disableButtons;
@@ -28,7 +28,12 @@ class UFUMultiSelectFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, UFUScreen.hasBottomPadding && UFUScreen.isMobile ? 10 : 20),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        20,
+        20,
+        UFUScreen.hasBottomPadding && UFUScreen.isMobile ? 10 : 20,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -45,9 +50,7 @@ class UFUMultiSelectFooter extends StatelessWidget {
               colorType: UFUButtonColorType.lightGray,
             ),
           ),
-          const SizedBox(
-            width: 15,
-          ),
+          const SizedBox(width: 15),
           Expanded(
             flex: UFUResponsiveDesign.popOverButtonFlex,
             child: UFUButton(
@@ -57,11 +60,13 @@ class UFUMultiSelectFooter extends StatelessWidget {
               },
               size: UFUButtonSize.small,
               iconWidget: doneIcon,
-              disabled: disableButtons || (selectedItemCount == 0 && canDisableDoneButton),
+              disabled:
+                  disableButtons ||
+                  (selectedItemCount == 0 && canDisableDoneButton),
               textColor: AppTheme.themeColors.base,
               colorType: UFUButtonColorType.primary,
             ),
-          )
+          ),
         ],
       ),
     );

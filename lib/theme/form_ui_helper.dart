@@ -1,6 +1,6 @@
 class FormUiHelper {
   final double verticalPadding;
-  final double horizontalPadding ;
+  final double horizontalPadding;
   final double inputVerticalSeparator;
   final double sectionSeparator;
   final double suffixPadding;

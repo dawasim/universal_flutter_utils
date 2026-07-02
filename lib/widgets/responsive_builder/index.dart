@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUResponsiveBuilder extends StatelessWidget {
-
   final Widget? mobile;
   final Widget? tablet;
   final Widget? desktop;
@@ -11,13 +10,12 @@ class UFUResponsiveBuilder extends StatelessWidget {
     super.key,
     this.mobile,
     this.tablet,
-    this.desktop
+    this.desktop,
   });
 
   @override
   Widget build(BuildContext context) {
     switch (UFUScreen.type) {
-
       case DeviceType.mobile:
         return mobile ?? const SizedBox();
 
@@ -35,11 +33,7 @@ class UFUResponsiveBuilder extends StatelessWidget {
 
 // ignore: must_be_immutable
 class UFULayoutBuilder extends StatelessWidget {
-  UFULayoutBuilder({
-    super.key,
-    required this.child,
-    this.onUpdate,
-  }) {
+  UFULayoutBuilder({super.key, required this.child, this.onUpdate}) {
     // TODO: implement
     throw UnimplementedError();
   }
@@ -55,11 +49,12 @@ class UFULayoutBuilder extends StatelessWidget {
     return LayoutBuilder(
       builder: (_, constraints) {
         updateOrientation(constraints);
-        if(constraints.maxWidth > UFUResponsiveDesign.minimumDesktopWidth) {
+        if (constraints.maxWidth > UFUResponsiveDesign.minimumDesktopWidth) {
           type = DeviceType.desktop;
           update();
           return child;
-        } else if(constraints.maxWidth > UFUResponsiveDesign.minimumTabletWidth) {
+        } else if (constraints.maxWidth >
+            UFUResponsiveDesign.minimumTabletWidth) {
           type = DeviceType.tablet;
           update();
           return child;
@@ -74,7 +69,7 @@ class UFULayoutBuilder extends StatelessWidget {
 
   void update() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if(type != UFUScreen.type) {
+      if (type != UFUScreen.type) {
         UFUScreen.type = type;
         onUpdate?.call();
       }
@@ -83,17 +78,14 @@ class UFULayoutBuilder extends StatelessWidget {
 
   void updateOrientation(BoxConstraints constraints) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-
       final tempOrientation = constraints.maxWidth > constraints.maxHeight
           ? Orientation.landscape
           : Orientation.portrait;
 
-      if(tempOrientation != UFUScreen.orientation) {
+      if (tempOrientation != UFUScreen.orientation) {
         UFUScreen.orientation = tempOrientation;
         onUpdate?.call();
       }
     });
   }
-
 }
-

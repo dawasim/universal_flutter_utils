@@ -3,10 +3,7 @@ import 'package:map_location_picker/map_location_picker.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class SearchedResultTile extends StatelessWidget {
-  const SearchedResultTile({
-    super.key,
-    required this.content
-  });
+  const SearchedResultTile({super.key, required this.content});
 
   final Prediction content;
 
@@ -24,20 +21,28 @@ class SearchedResultTile extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Image.asset("assets/images/ic_location_pin.png", color: Colors.black, height: 18, width: 18),
+              Image.asset(
+                "assets/images/ic_location_pin.png",
+                color: Colors.black,
+                height: 18,
+                width: 18,
+              ),
               const SizedBox(width: 12),
-              Expanded(child: UFUText(
-                text: content.terms?.firstOrNull?.value ?? "",
-                textAlign: TextAlign.start,
-              ))
+              Expanded(
+                child: UFUText(
+                  text: content.terms?.firstOrNull?.value ?? "",
+                  textAlign: TextAlign.start,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 5),
-          UFUText(text: content.description ?? '',
+          UFUText(
+            text: content.description ?? '',
             maxLine: 5,
             textSize: UFUTextSize.heading6,
             textAlign: TextAlign.start,
-          )
+          ),
         ],
       ),
     );

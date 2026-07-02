@@ -18,7 +18,8 @@ class UFUText extends StatelessWidget {
     this.height,
     this.isSelectable = false,
     this.fontStyle = FontStyle.normal,
-    super.key});
+    super.key,
+  });
 
   /// Defines text of a text.
   final String text;
@@ -72,7 +73,7 @@ class UFUText extends StatelessWidget {
     // 3. ONLY apply the \u200B hack if it's NOT Arabic.
     // This hack was likely added to help English text wrap better,
     // but it is "poison" for cursive scripts like Arabic.
-    if (overflow != null && !containsArabic) {
+    if (overflow != null && !containsArabic && !isSelectable) {
       return text.replaceAll('', '\u200B');
     }
 
@@ -81,45 +82,53 @@ class UFUText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isSelectable ? SelectableText(
-        getText(text),
-        enableInteractiveSelection: true,
-        textAlign: textAlign,
-        maxLines: maxLine,
-        selectionControls: MaterialTextSelectionControls(),
-        showCursor: false,
-        textDirection: UFUtils.isRtl ? TextDirection.rtl : TextDirection.ltr,
-        style: TextHelper.getTextStyle(
-            textColor,
-            fontWeight,
-            textSize,
-            dynamicFontSize,
-            null,
-            // fontFamily,
-            overflow,
-            height,
-            letterSpacing,
-            textDecoration,
-            fontStyle,
-            decorationColor)
-    ) : Text(
-        getText(text),
-        textAlign: textAlign,
-        maxLines: maxLine,
-        textDirection: UFUtils.isRtl ? TextDirection.rtl : TextDirection.ltr,
-        style: TextHelper.getTextStyle(
-            textColor,
-            fontWeight,
-            textSize,
-            dynamicFontSize,
-            null,
-            // fontFamily,
-            overflow,
-            height,
-            letterSpacing,
-            textDecoration,
-            fontStyle,
-            decorationColor)
-    );
+    return isSelectable
+        ? SelectableText(
+            getText(text),
+            enableInteractiveSelection: true,
+            textAlign: textAlign,
+            maxLines: maxLine,
+            selectionControls: MaterialTextSelectionControls(),
+            showCursor: false,
+            textDirection: UFUtils.isRtl
+                ? TextDirection.rtl
+                : TextDirection.ltr,
+            style: TextHelper.getTextStyle(
+              textColor,
+              fontWeight,
+              textSize,
+              dynamicFontSize,
+              null,
+              // fontFamily,
+              overflow,
+              height,
+              letterSpacing,
+              textDecoration,
+              fontStyle,
+              decorationColor,
+            ),
+          )
+        : Text(
+            getText(text),
+            textAlign: textAlign,
+            maxLines: maxLine,
+            textDirection: UFUtils.isRtl
+                ? TextDirection.rtl
+                : TextDirection.ltr,
+            style: TextHelper.getTextStyle(
+              textColor,
+              fontWeight,
+              textSize,
+              dynamicFontSize,
+              null,
+              // fontFamily,
+              overflow,
+              height,
+              letterSpacing,
+              textDecoration,
+              fontStyle,
+              decorationColor,
+            ),
+          );
   }
 }

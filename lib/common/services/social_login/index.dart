@@ -11,7 +11,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-
 class UFUSocialLogin {
   // Future<void> iniFirebase() async {
   //   await Firebase.initializeApp();
@@ -23,7 +22,6 @@ class UFUSocialLogin {
 
   // static const _successConst = "success";
   // static const _failureConst = "failure";
-
 
   // Future<UserCredential?> signInWithGoogle() async {
   //   try {
@@ -87,13 +85,11 @@ class UFUSocialLogin {
 
       // 6. Sign in to Firebase
       return await FirebaseAuth.instance.signInWithCredential(credential);
-
     } catch (e) {
       debugPrint("Google Sign-In Error: $e");
       return null;
     }
   }
-
 
   Future<Map<String, dynamic>?> signInWithApple(String clientId) async {
     try {
@@ -213,7 +209,6 @@ class UFUSocialLogin {
       rethrow;
     }
   }
-
 }
 
 void displayError(dynamic error) {

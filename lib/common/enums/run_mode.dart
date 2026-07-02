@@ -1,5 +1,1 @@
-enum RunMode {
-  app,
-  unitTesting,
-  integrationTesting,
-}
+enum RunMode { app, unitTesting, integrationTesting }

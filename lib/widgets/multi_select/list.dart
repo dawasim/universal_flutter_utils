@@ -12,7 +12,8 @@ class UFUMultiSelectList extends StatelessWidget {
     this.listLoader,
     this.searchKeyWord = '',
     this.showInactiveUserLabel = false,
-    super.key});
+    super.key,
+  });
 
   /// Defines the scroll controller of a draggable list.
   final ScrollController? controller;
@@ -44,50 +45,53 @@ class UFUMultiSelectList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(type == UFUMultiSelectType.network && isLoading) {
+    if (type == UFUMultiSelectType.network && isLoading) {
       return SizedBox(
-        child: listLoader ?? SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
-          child: Center(
-            child: FadingCircle(
-                color: AppTheme.themeColors.primary,
-                size: 25),
-          ),
-        ),
+        child:
+            listLoader ??
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Center(
+                child: FadingCircle(
+                  color: AppTheme.themeColors.primary,
+                  size: 25,
+                ),
+              ),
+            ),
       );
     } else if (list.isEmpty || !isAnyItemVisible()) {
       return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: UFUText(
-            text: 'No record found',
-            textSize: UFUTextSize.heading4,
-          ));
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: UFUText(text: 'No record found', textSize: UFUTextSize.heading4),
+      );
     } else {
       return ListView.builder(
-          controller: controller,
-          itemCount: getItemCount(),
-          padding: const EdgeInsets.symmetric(
-              vertical: 6
-          ),
-          shrinkWrap: true,
-          itemBuilder: (_, index) {
-            if(index < list.length) {
-              return getSelectionTile(index);
-            } else if(index >= list.length && canShowMore && type == UFUMultiSelectType.network) {
-              return Center(
-                child: FadingCircle(
-                    color: AppTheme.themeColors.primary,
-                    size: 25),
-              );
-            } else {
-              return const SizedBox();
-            }
-          });
+        controller: controller,
+        itemCount: getItemCount(),
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        shrinkWrap: true,
+        itemBuilder: (_, index) {
+          if (index < list.length) {
+            return getSelectionTile(index);
+          } else if (index >= list.length &&
+              canShowMore &&
+              type == UFUMultiSelectType.network) {
+            return Center(
+              child: FadingCircle(
+                color: AppTheme.themeColors.primary,
+                size: 25,
+              ),
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
+      );
     }
   }
 
   int getItemCount() {
-    if(type == UFUMultiSelectType.network) {
+    if (type == UFUMultiSelectType.network) {
       return list.length + 1;
     }
     return list.length;
@@ -95,18 +99,24 @@ class UFUMultiSelectList extends StatelessWidget {
 
   Widget getSelectionTile(int index) {
     return Visibility(
-      visible: searchKeyWord.isEmpty || list[index].label.toLowerCase().contains(searchKeyWord.toLowerCase()),
+      visible:
+          searchKeyWord.isEmpty ||
+          list[index].label.toLowerCase().contains(searchKeyWord.toLowerCase()),
       child: Material(
         color: AppTheme.themeColors.themeBlue,
         child: InkWell(
-          onTap: list[index].isDisabled ? null : () {
-            onItemTap!(list[index].id);
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
+          onTap: list[index].isDisabled
+              ? null
+              : () {
+                  onItemTap!(list[index].id);
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
           child: Container(
             height: list[index].isDisabled ? 45 : 41,
             padding: const EdgeInsets.only(left: 20, right: 5),
-            color: list[index].isDisabled ? UFUColor.lightGray : UFUColor.transparent,
+            color: list[index].isDisabled
+                ? UFUColor.lightGray
+                : UFUColor.transparent,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -121,59 +131,78 @@ class UFUMultiSelectList extends StatelessWidget {
                         children: [
                           list[index].child != null
                               ? Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            child: UFUAvatar(
-                              borderColor: list[index].borderColor ??
-                                  UFUColor.transparent,
-                              backgroundColor: list[index].color,
-                              size: UFUAvatarSize.small,
-                              child: list[index].child,
-                            ),
-                          )
+                                  margin: const EdgeInsets.only(right: 20),
+                                  child: UFUAvatar(
+                                    borderColor:
+                                        list[index].borderColor ??
+                                        UFUColor.transparent,
+                                    backgroundColor: list[index].color,
+                                    size: UFUAvatarSize.small,
+                                    child: list[index].child,
+                                  ),
+                                )
                               : const SizedBox.shrink(),
-                          Flexible(child: Row(
-                            children: [
-                              if(list[index].prefixLabel != null) ...{
-                                UFUText(text: list[index].prefixLabel!, overflow: TextOverflow.ellipsis, fontWeight: UFUFontWeight.medium,),
-                              },
-                              Flexible(
-                                  child: UFUText(text: list[index].label,overflow: TextOverflow.ellipsis,),
-                              ),
-                              if((!(list[index].active ?? true) && showInactiveUserLabel))
-                               UFUText(
-                                text: ' (Inactive)', 
-                                textColor: AppTheme.themeColors.red, 
-                                overflow: TextOverflow.ellipsis,
-                              ), 
-                              if(list[index].suffixLabel != null) ...{
-                                const SizedBox(width: 5),
-                                UFUText(text: list[index].suffixLabel!, textSize: UFUTextSize.heading4, overflow: TextOverflow.ellipsis, textColor: AppTheme.themeColors.secondaryText),
-                              }
-                            ],
-                          )),
+                          Flexible(
+                            child: Row(
+                              children: [
+                                if (list[index].prefixLabel != null) ...{
+                                  UFUText(
+                                    text: list[index].prefixLabel!,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: UFUFontWeight.medium,
+                                  ),
+                                },
+                                Flexible(
+                                  child: UFUText(
+                                    text: list[index].label,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                if ((!(list[index].active ?? true) &&
+                                    showInactiveUserLabel))
+                                  UFUText(
+                                    text: ' (Inactive)',
+                                    textColor: AppTheme.themeColors.red,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                if (list[index].suffixLabel != null) ...{
+                                  const SizedBox(width: 5),
+                                  UFUText(
+                                    text: list[index].suffixLabel!,
+                                    textSize: UFUTextSize.heading4,
+                                    overflow: TextOverflow.ellipsis,
+                                    textColor:
+                                        AppTheme.themeColors.secondaryText,
+                                  ),
+                                },
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      if(list[index].isDisabled) ...{
-                        const SizedBox(height: 2,),
+                      if (list[index].isDisabled) ...{
+                        const SizedBox(height: 2),
                         UFUText(
-                          text: list[index].disableMessage ?? '', 
+                          text: list[index].disableMessage ?? '',
                           textColor: AppTheme.themeColors.darkGray,
                           textSize: UFUTextSize.heading5,
                         ),
-                      }
+                      },
                     ],
                   ),
                 ),
                 UFUCheckbox(
                   selected: list[index].isSelect,
-                  onTap: list[index].isDisabled ? null : (value) {
-                    onItemTap!(list[index].id);
-                  },
+                  onTap: list[index].isDisabled
+                      ? null
+                      : (value) {
+                          onItemTap!(list[index].id);
+                        },
                   disabled: list[index].isDisabled,
                   borderColor: AppTheme.themeColors.primary,
                   color: AppTheme.themeColors.primary,
                   checkColor: AppTheme.themeColors.base,
-                )
+                ),
               ],
             ),
           ),
@@ -183,7 +212,9 @@ class UFUMultiSelectList extends StatelessWidget {
   }
 
   bool isAnyItemVisible() {
-    return list.any((element) => element.label.toLowerCase().contains(searchKeyWord.toLowerCase()));
+    return list.any(
+      (element) =>
+          element.label.toLowerCase().contains(searchKeyWord.toLowerCase()),
+    );
   }
-
 }

@@ -296,10 +296,11 @@ class UFUPlacePicker extends StatefulWidget {
   final InputDecoration? decoration;
 
   final Widget? Function(
-      BuildContext context,
-      GeocodingResult? result,
-      String address,
-      )? bottomCardBuilder;
+    BuildContext context,
+    GeocodingResult? result,
+    String address,
+  )?
+  bottomCardBuilder;
 
   /// Duration for search debounce in milliseconds
   final Duration debounceDuration;
@@ -436,7 +437,6 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
   @override
   Widget build(BuildContext context) {
-
     return PopScope(
       canPop: Navigator.of(context).userGestureInProgress,
       child: Scaffold(
@@ -460,12 +460,11 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                   CameraUpdate.newCameraPosition(cameraPosition()),
                 );
                 _decodeAddress(
-                  Location(
-                    lat: position.latitude,
-                    lng: position.longitude,
-                  ),
+                  Location(lat: position.latitude, lng: position.longitude),
                 );
-                (await _controller.future).showMarkerInfoWindow(const MarkerId("one"));
+                (await _controller.future).showMarkerInfoWindow(
+                  const MarkerId("one"),
+                );
                 setState(() {});
               },
               onMapCreated: (GoogleMapController controller) =>
@@ -482,13 +481,14 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
               buildingsEnabled: widget.buildingsEnabled,
               cameraTargetBounds: widget.cameraTargetBounds,
               circles: widget.circles,
-              cloudMapId: widget.cloudMapId,
-              fortyFiveDegreeImageryEnabled: widget.fortyFiveDegreeImageryEnabled,
+              mapId: widget.cloudMapId,
+              fortyFiveDegreeImageryEnabled:
+                  widget.fortyFiveDegreeImageryEnabled,
               gestureRecognizers: widget.gestureRecognizers,
               indoorViewEnabled: widget.indoorViewEnabled,
               layoutDirection: widget.layoutDirection,
               mapToolbarEnabled: widget.mapToolbarEnabled,
-              onCameraIdle:() async {
+              onCameraIdle: () async {
                 widget.onCameraIdle;
                 final controller = await _controller.future;
 
@@ -496,21 +496,21 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                 final bounds = await controller.getVisibleRegion();
 
                 // Calculate center LatLng
-                final centerLat = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
-                final centerLng = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+                final centerLat =
+                    (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+                final centerLng =
+                    (bounds.northeast.longitude + bounds.southwest.longitude) /
+                    2;
                 final position = LatLng(centerLat, centerLng);
 
-                if(_initialPosition != const LatLng(40.741895, -73.989308)) {
-                  if(isFromSearch) {
-                   setState(() => isFromSearch = false);
+                if (_initialPosition != const LatLng(40.741895, -73.989308)) {
+                  if (isFromSearch) {
+                    setState(() => isFromSearch = false);
                   } else {
                     _decodeAddress(
-                      Location(
-                        lat: position.latitude,
-                        lng: position.longitude,
-                      ),
+                      Location(lat: position.latitude, lng: position.longitude),
                     );
-                    if(_searchController.text.trim().isNotEmpty) {
+                    if (_searchController.text.trim().isNotEmpty) {
                       _searchController.text = "";
                     }
                   }
@@ -528,7 +528,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
               webGestureHandling: widget.webGestureHandling,
               zoomGesturesEnabled: widget.zoomGesturesEnabled,
             ),
-            SafeArea( 
+            SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -539,8 +539,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if(widget.backButton != null)
-                          widget.backButton!,
+                        if (widget.backButton != null) widget.backButton!,
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
@@ -558,12 +557,24 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                               showClearButton: true,
                               left: true,
                               decoration: widget.decoration,
-                              suffixIcon: Icon(Icons.search, size: 18, color: AppTheme.themeColors.secondaryText),
-                              onGetDetailsByPlaceId: (p0, {Prediction? searchedPlace}) => saveCurrentLocation(p0?.result, searchedItem: searchedPlace),
+                              suffixIcon: Icon(
+                                Icons.search,
+                                size: 18,
+                                color: AppTheme.themeColors.secondaryText,
+                              ),
+                              onGetDetailsByPlaceId:
+                                  (p0, {Prediction? searchedPlace}) =>
+                                      saveCurrentLocation(
+                                        p0?.result,
+                                        searchedItem: searchedPlace,
+                                      ),
                               // onSelected: (data) => saveCurrentLocation(null, searchedItem: data), //{print("====> ${data.toJson()}");},
-                              emptyBuilder: (context) => _searchController.text.trim().isEmpty
-                                  ? const SizedBox.shrink() : emptySearchResultBuilder(context),
-                              itemBuilder: (context, content) => searchResultItem(context, content),
+                              emptyBuilder: (context) =>
+                                  _searchController.text.trim().isEmpty
+                                  ? const SizedBox.shrink()
+                                  : emptySearchResultBuilder(context),
+                              itemBuilder: (context, content) =>
+                                  searchResultItem(context, content),
                             ),
                           ),
                         ),
@@ -577,7 +588,9 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                         onPressed: null,
                         tooltip: 'Map Type',
                         backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                         child: PopupMenuButton(
                           initialValue: _mapType,
                           icon: Icon(
@@ -612,7 +625,10 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                     ),
                   if (!widget.hideLocationButton)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 16,
+                      ),
                       child: FloatingActionButton(
                         shape: const CircleBorder(),
                         tooltip: widget.fabTooltip,
@@ -623,8 +639,11 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                       ),
                     ),
                   if (!widget.hideBottomCard)
-                    widget.bottomCardBuilder
-                        ?.call(context, _geocodingResult, _address) ??
+                    widget.bottomCardBuilder?.call(
+                          context,
+                          _geocodingResult,
+                          _address,
+                        ) ??
                         Card(
                           margin: widget.bottomCardMargin,
                           shape: widget.bottomCardShape,
@@ -656,15 +675,17 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                                         scrollable: true,
                                         content: Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          children:
-                                          _geocodingResultList.map((element) {
+                                          children: _geocodingResultList.map((
+                                            element,
+                                          ) {
                                             return ListTile(
                                               title: Text(
-                                                  element.formattedAddress ?? ""),
+                                                element.formattedAddress ?? "",
+                                              ),
                                               onTap: () {
                                                 _address =
                                                     element.formattedAddress ??
-                                                        "";
+                                                    "";
                                                 _geocodingResult = element;
                                                 setState(() {});
                                                 Navigator.pop(context, element);
@@ -703,10 +724,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
   /// Camera position moved to location
   CameraPosition cameraPosition() {
-    return CameraPosition(
-      target: _initialPosition,
-      zoom: _zoom,
-    );
+    return CameraPosition(target: _initialPosition, zoom: _zoom);
   }
 
   @override
@@ -772,8 +790,10 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.errorMessage ??
-                  "Address not found, something went wrong!"),
+              content: Text(
+                response.errorMessage ??
+                    "Address not found, something went wrong!",
+              ),
             ),
           );
         }
@@ -785,7 +805,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
       if ((response.results?.length ?? 0) > 1) {
         _geocodingResultList = response.results ?? [];
       }
-      if(_searchController.text.trim().isNotEmpty) {
+      if (_searchController.text.trim().isNotEmpty) {
         _searchController.text = "";
       }
       setState(() {});
@@ -794,23 +814,25 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     }
   }
 
-
-  Future<void> saveCurrentLocation(PlaceDetails? selectedPlace, {Prediction? searchedItem}) async {
+  Future<void> saveCurrentLocation(
+    PlaceDetails? selectedPlace, {
+    Prediction? searchedItem,
+  }) async {
     UFUtils.hideKeyboard();
     if (selectedPlace == null && searchedItem == null) return;
 
-    Location sLocation = selectedPlace?.geometry?.location
-        ?? _geocodingResult?.geometry?.location
-        ?? widget.location
-        ?? Location(
+    Location sLocation =
+        selectedPlace?.geometry?.location ??
+        _geocodingResult?.geometry?.location ??
+        widget.location ??
+        Location(
           lat: _initialPosition.latitude,
           lng: _initialPosition.longitude,
         );
 
-    if(searchedItem != null) {
-
+    if (searchedItem != null) {
       Map<String, dynamic> addressComponent = {"address_components": []};
-      if(searchedItem.terms?.isNotEmpty ?? false) {
+      if (searchedItem.terms?.isNotEmpty ?? false) {
         for (var element in selectedPlace!.addressComponents ?? []) {
           addressComponent["address_components"].add(element.toJson());
         }
@@ -818,57 +840,66 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
       _geocodingResult = GeocodingResult.fromJson({
         "geometry": {
-          "location": {
-            "lat": sLocation.lat,
-            "lng": sLocation.lng,
-          }
+          "location": {"lat": sLocation.lat, "lng": sLocation.lng},
         },
         "place_id": searchedItem.placeId,
         'formatted_address': searchedItem.description,
-        ...addressComponent
+        ...addressComponent,
       });
 
       setState(() => isFromSearch = true);
     }
 
     (await _controller.future).animateCamera(
-        CameraUpdate.newCameraPosition(CameraPosition(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
           target: LatLng(sLocation.lat, sLocation.lng),
           zoom: _zoom,
-        )));
+        ),
+      ),
+    );
 
     widget.onDecodeAddress?.call(_geocodingResult);
   }
 
-  Widget searchResultItem(BuildContext context, Prediction content) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-    decoration: BoxDecoration(
-      color: AppTheme.themeColors.base,
-      // border: Border.all(color: AppTheme.themeColors.tertiary, width: 1),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+  Widget searchResultItem(BuildContext context, Prediction content) =>
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppTheme.themeColors.base,
+          // border: Border.all(color: AppTheme.themeColors.tertiary, width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset("assets/images/ic_location_pin.png", color: Colors.black, height: 18, width: 18),
-            const SizedBox(width: 12),
-            Expanded(child: UFUText(
-              text: content.terms?.firstOrNull?.value ?? "",
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Image.asset(
+                  "assets/images/ic_location_pin.png",
+                  color: Colors.black,
+                  height: 18,
+                  width: 18,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: UFUText(
+                    text: content.terms?.firstOrNull?.value ?? "",
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            UFUText(
+              text: content.description ?? '',
+              maxLine: 5,
+              textSize: UFUTextSize.heading6,
               textAlign: TextAlign.start,
-            ))
+            ),
           ],
         ),
-        const SizedBox(height: 5),
-        UFUText(text: content.description ?? '',
-          maxLine: 5,
-          textSize: UFUTextSize.heading6,
-          textAlign: TextAlign.start,
-        )
-      ],
-    ),
-  );
+      );
 
   Widget emptySearchResultBuilder(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -878,14 +909,11 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     ),
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: UFUText(text: "No Address Found!"))
-      ],
+      children: [Expanded(child: UFUText(text: "No Address Found!"))],
     ),
   );
 
-
-  Future<void> fetchAndNavigateToCurrentLocation () async {
+  Future<void> fetchAndNavigateToCurrentLocation() async {
     /// call parent method
     if (widget.getLocation != null) {
       widget.getLocation!.call();
@@ -893,33 +921,34 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
     /// get current location
     if (widget.hasLocationPermission) {
-
       if (!(await UFUtils.permissionUtils.getLocationPermission())) {
         debugPrint("------> Permission denied ");
-        bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-        if(!isLocationEnabled) {
+        bool? isLocationEnabled =
+            await Permission.locationWhenInUse.serviceStatus.isEnabled;
+        if (!isLocationEnabled) {
           debugPrint("------> Location service denied ");
           bool locationEnabled = await loc.Location().requestService();
-          if(!locationEnabled) {
-            bool? locEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-            if(!locEnabled) {
+          if (!locationEnabled) {
+            bool? locEnabled =
+                await Permission.locationWhenInUse.serviceStatus.isEnabled;
+            if (!locEnabled) {
               Get.back();
               return;
             }
           }
-        }  else {
-
-        }
+        } else {}
         Get.back();
         return;
       } else {
-        bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-        if(!isLocationEnabled) {
+        bool? isLocationEnabled =
+            await Permission.locationWhenInUse.serviceStatus.isEnabled;
+        if (!isLocationEnabled) {
           debugPrint("------> Location service denied ");
           bool locationEnabled = await loc.Location().requestService();
-          if(!locationEnabled) {
-            bool? locEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-            if(!locEnabled) {
+          if (!locationEnabled) {
+            bool? locEnabled =
+                await Permission.locationWhenInUse.serviceStatus.isEnabled;
+            if (!locEnabled) {
               Get.back();
               return;
             }

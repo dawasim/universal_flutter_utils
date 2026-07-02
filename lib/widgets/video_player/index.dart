@@ -11,7 +11,8 @@ class UFUVideoPlayer extends StatelessWidget {
     return GetBuilder<UFUVideoPlayerController>(
       global: false,
       init: UFUVideoPlayerController(),
-      dispose: (GetBuilderState<UFUVideoPlayerController> state) => state.controller?.onDispose(),
+      dispose: (GetBuilderState<UFUVideoPlayerController> state) =>
+          state.controller?.onDispose(),
       builder: (controller) {
         if (controller.chewieController == null) {
           return const Center(child: UFULoader());
@@ -19,9 +20,7 @@ class UFUVideoPlayer extends StatelessWidget {
         return UFUScaffold(
           body: Stack(
             children: [
-              Center(
-                child: Chewie(controller: controller.chewieController!),
-              ),
+              Center(child: Chewie(controller: controller.chewieController!)),
 
               SafeArea(
                 child: Padding(

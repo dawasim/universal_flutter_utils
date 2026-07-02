@@ -21,7 +21,8 @@ class UFUSingleSelectHeader extends StatelessWidget {
     this.showIncludeInactiveButton = false,
     this.onTapIncludeInactiveButton,
     this.includeInactive = false,
-    super.key});
+    super.key,
+  });
 
   //Single select header title
   final String title;
@@ -48,13 +49,13 @@ class UFUSingleSelectHeader extends StatelessWidget {
   final Widget? iconButtonIconWidget;
   final Widget? suffixChild;
   final bool isDisabled;
-  
+
   /// For show include inactive button or not
   final bool showIncludeInactiveButton;
-  
+
   /// Funtion for perform action on include inactive button click
   final VoidCallback? onTapIncludeInactiveButton;
-  
+
   /// For change include inactive status
   final bool includeInactive;
 
@@ -64,11 +65,11 @@ class UFUSingleSelectHeader extends StatelessWidget {
       children: [
         UFUResponsiveBuilder(
           mobile: Container(
-              height: 4,
-              width: 30,
-              margin: const EdgeInsets.only(top: 8, bottom: 8),
+            height: 4,
+            width: 30,
+            margin: const EdgeInsets.only(top: 8, bottom: 8),
           ),
-          tablet: const SizedBox(height: 20,),
+          tablet: const SizedBox(height: 20),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
@@ -80,25 +81,27 @@ class UFUSingleSelectHeader extends StatelessWidget {
                 child: UFUText(
                   text: title,
                   fontWeight: UFUFontWeight.bold,
-                  textSize: UFUTextSize.heading3
-                )
+                  textSize: UFUTextSize.heading3,
+                ),
               ),
 
-              if(suffixChild != null) suffixChild!,
+              ?suffixChild,
 
               Visibility(
-              visible: showIncludeInactiveButton,
+                visible: showIncludeInactiveButton,
                 child: Padding(
-              padding: const EdgeInsets.only(left: 2),
-              child: UFUTextButton(
-                onPressed: onTapIncludeInactiveButton,
-                text:  includeInactive ? 'Exclude Inactive' : 'Include Inactive', 
-                textSize: UFUTextSize.heading4, 
-                color: AppTheme.themeColors.primary,
+                  padding: const EdgeInsets.only(left: 2),
+                  child: UFUTextButton(
+                    onPressed: onTapIncludeInactiveButton,
+                    text: includeInactive
+                        ? 'Exclude Inactive'
+                        : 'Include Inactive',
+                    textSize: UFUTextSize.heading4,
+                    color: AppTheme.themeColors.primary,
+                  ),
+                ),
               ),
-            ),
-          ),
-              if(canShowIconButton)
+              if (canShowIconButton)
                 UFUIconButton(
                   backgroundColor: iconButtonBackgroundColor,
                   borderRadius: iconButtonBorderRadius,
@@ -107,7 +110,7 @@ class UFUSingleSelectHeader extends StatelessWidget {
                   iconSize: iconButtonIconSize,
                   iconColor: iconButtonIconColor,
                   iconWidget: iconButtonIconWidget,
-                )
+                ),
             ],
           ),
         ),

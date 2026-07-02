@@ -7,19 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
-
-import 'package:image/image.dart' as img;
-import 'package:path/path.dart' as path;
 
 import 'audio_file_handeling/index.dart';
 
 class UFFilePickerUtil {
-
   Future<String?> selectDocument({List<String>? allowedExtensions}) async {
-
     // if (!(await UFUtils.permissionUtils.getStoragePermission())) {
     //   await permissionDeniedDialogue();
     //   return null;
@@ -28,16 +25,18 @@ class UFFilePickerUtil {
     // Pick a file with allowed extensions
     FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
-      allowedExtensions: allowedExtensions ?? [
-        'pdf',
-        'doc',
-        'docx',
-        // 'xls',
-        // 'xlsx',
-        'png',
-        'jpg',
-        'jpeg'
-      ], // Add your desired extensions
+      allowedExtensions:
+          allowedExtensions ??
+          [
+            'pdf',
+            'doc',
+            'docx',
+            // 'xls',
+            // 'xlsx',
+            'png',
+            'jpg',
+            'jpeg',
+          ], // Add your desired extensions
     );
 
     String? filePath;
@@ -60,9 +59,8 @@ class UFFilePickerUtil {
   Future<List<XFile>> captureImageFromCamera({bool selectMultiple = false}) async {
 
     try {
-
       if (!(await UFUtils.permissionUtils.getCameraPermission())) {
-        if(await Permission.camera.status.isPermanentlyDenied) {
+        if (await Permission.camera.status.isPermanentlyDenied) {
           UFUtils.hideLoaderDialog();
           await permissionDeniedDialogue();
         }
@@ -78,7 +76,6 @@ class UFFilePickerUtil {
     } catch (e, _) {
       rethrow;
     }
-
   }
 
   Future<dynamic> recordAudio() async {
@@ -212,41 +209,49 @@ class UFFilePickerUtil {
   }
 
   Future<XFile> _compressImage(XFile file) async {
-    // Read the image from the XFile
-    final imageFile = File(file.path);
-    final image = img.decodeImage(await imageFile.readAsBytes());
 
-    if (image == null) {
-      throw Exception("Failed to decode image.");
+    try {
+      // Read the image from the XFile
+      final imageFile = File(file.path);
+      final image = img.decodeImage(await imageFile.readAsBytes());
+
+      if (image == null) {
+        throw Exception("Failed to decode image.");
+      }
+
+      // Resize the image to a smaller size (optional)
+      final resizedImage = img.copyResize(image, width: 600);
+
+      // Compress the image
+      final compressedImageBytes = img.encodeJpg(resizedImage, quality: 85);
+
+      // Write the compressed image to a new file
+      final compressedImagePath = path.join(path.dirname(file.path), 'compressed_${path.basename(file.path)}');
+      final compressedImageFile = File(compressedImagePath);
+      await compressedImageFile.writeAsBytes(compressedImageBytes);
+
+      // Return the compressed image as XFile
+      return XFile(compressedImagePath);
+    } catch (e) {
+      debugPrint("File compression fail");
+      return file;
     }
-
-    // Resize the image to a smaller size (optional)
-    final resizedImage = img.copyResize(image, width: 600);
-
-    // Compress the image
-    final compressedImageBytes = img.encodeJpg(resizedImage, quality: 85);
-
-    // Write the compressed image to a new file
-    final compressedImagePath = path.join(path.dirname(file.path), 'compressed_${path.basename(file.path)}');
-    final compressedImageFile = File(compressedImagePath);
-    await compressedImageFile.writeAsBytes(compressedImageBytes);
-
-    // Return the compressed image as XFile
-    return XFile(compressedImagePath);
   }
 
   Future<void> permissionDeniedDialogue() async {
-    await ShowUFUBottomSheet(child: (UFUBottomSheetController controller) => UFUConfirmationDialog(
-      title: "Permission Denied",
-      subTitle: "This action requires additional permissions. Please enable the necessary permissions in your device settings",
-      subTitleColor: AppTheme.themeColors.text,
-      type: UFUConfirmationDialogType.message,
-      suffixBtnText: "Go to Settings",
-      onTapSuffix: () async {
-        Get.back();
-        await openAppSettings();
-      },
-    ));
+    await ShowUFUBottomSheet(
+      child: (UFUBottomSheetController controller) => UFUConfirmationDialog(
+        title: "Permission Denied",
+        subTitle:
+            "This action requires additional permissions. Please enable the necessary permissions in your device settings",
+        subTitleColor: AppTheme.themeColors.text,
+        type: UFUConfirmationDialogType.message,
+        suffixBtnText: "Go to Settings",
+        onTapSuffix: () async {
+          Get.back();
+          await openAppSettings();
+        },
+      ),
+    );
   }
-
 }

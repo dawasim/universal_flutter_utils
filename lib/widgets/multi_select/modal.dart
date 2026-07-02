@@ -30,7 +30,7 @@ class UFUMultiSelectModel {
   int? subListLength;
 
   List<TagLimitedModel>? tags;
-  
+
   String? prefixLabel;
 
   String? suffixLabel;
@@ -69,7 +69,6 @@ class UFUMultiSelectModel {
   });
 
   factory UFUMultiSelectModel.clone(UFUMultiSelectModel source) {
-
     return UFUMultiSelectModel(
       label: source.label,
       id: source.id,
@@ -88,32 +87,29 @@ class UFUMultiSelectModel {
       active: source.active,
       isDisabled: source.isDisabled,
       disableMessage: source.disableMessage,
-      additionalDetails: source.additionalDetails
+      additionalDetails: source.additionalDetails,
     );
   }
 
   @override
-  bool operator == (other) {
-    return (other is UFUMultiSelectModel)
-        && other.id == id
-        && other.label == label
-        && other.borderColor == borderColor
-        && other.isSelect == isSelect
-        && other.color == color
-        && other.child == child
-        && other.subList == subList
-        && other.subListLength == subListLength
-        && other.tags == tags
-        && other.prefixLabel == prefixLabel
-        && other.additionData == additionData
-        && other.displayLabelOnly == displayLabelOnly
-        && other.active == active
-        && other.suffixLabel == suffixLabel
-    ;
+  bool operator ==(other) {
+    return (other is UFUMultiSelectModel) &&
+        other.id == id &&
+        other.label == label &&
+        other.borderColor == borderColor &&
+        other.isSelect == isSelect &&
+        other.color == color &&
+        other.child == child &&
+        other.subList == subList &&
+        other.subListLength == subListLength &&
+        other.tags == tags &&
+        other.prefixLabel == prefixLabel &&
+        other.additionData == additionData &&
+        other.displayLabelOnly == displayLabelOnly &&
+        other.active == active &&
+        other.suffixLabel == suffixLabel;
   }
 
   @override
   int get hashCode => 1;
-
-
 }

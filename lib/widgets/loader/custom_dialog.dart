@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // it is implemented to have dynamic/adjustable dialog size as per content
 
 class CustomDialog extends StatelessWidget {
-
   const CustomDialog({
     super.key,
     this.shape = _shape,
@@ -13,7 +12,7 @@ class CustomDialog extends StatelessWidget {
     this.alignment = Alignment.center,
     this.padding = const EdgeInsets.all(16),
     this.margin = const EdgeInsets.all(24),
-    this.insetDuration = const Duration(milliseconds: 100)
+    this.insetDuration = const Duration(milliseconds: 100),
   });
 
   /// It is used to shape dialog
@@ -40,12 +39,11 @@ class CustomDialog extends StatelessWidget {
 
   /// This is used to initialize shape of CustomDialog
   static const _shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(4.0)));
-
+    borderRadius: BorderRadius.all(Radius.circular(4.0)),
+  );
 
   @override
   Widget build(BuildContext context) {
-
     return AnimatedPadding(
       padding: margin,
       duration: insetDuration,
@@ -54,14 +52,13 @@ class CustomDialog extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 0),
           child: Material(
-            color: Theme.of(context).dialogTheme.backgroundColor, // Picks dialog color as per theme
+            color: Theme.of(
+              context,
+            ).dialogTheme.backgroundColor, // Picks dialog color as per theme
             elevation: elevation,
             shape: shape,
             type: MaterialType.card,
-            child: Padding(
-              padding: padding,
-              child: child,
-            ),
+            child: Padding(padding: padding, child: child),
           ),
         ),
       ),

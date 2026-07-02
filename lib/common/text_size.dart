@@ -43,5 +43,4 @@ enum UFUTextSize {
   ///  [UFUTextSize.size30] is used to set textSize of a text widget
   /// Font Size - 30
   size30,
-
 }

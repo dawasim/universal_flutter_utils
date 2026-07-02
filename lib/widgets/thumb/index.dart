@@ -19,7 +19,7 @@ class UFUThumb extends StatelessWidget {
     this.onLongPress,
     this.userName,
     this.titleBottomText = 'Uploaded by',
-    super.key
+    super.key,
   });
 
   /// It is used to defines type of thumb as [UFUThumbType.folder]
@@ -79,12 +79,13 @@ class UFUThumb extends StatelessWidget {
             const UFUThumbFolder(),
             (folderCount != null)
                 ? Positioned(
-                top: 40,
-                left: 10,
-                child: UFUText(
-                  text: folderCount!,
-                  textColor: AppTheme.themeColors.primary,
-                ))
+                    top: 40,
+                    left: 10,
+                    child: UFUText(
+                      text: folderCount!,
+                      textColor: AppTheme.themeColors.primary,
+                    ),
+                  )
                 : const SizedBox.shrink(),
           ],
         ),
@@ -95,17 +96,13 @@ class UFUThumb extends StatelessWidget {
   Widget getImage() {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-      child: UFUThumbImage(
-        thumbImage: thumbImage,
-      ),
+      child: UFUThumbImage(thumbImage: thumbImage),
     );
   }
 
   Widget getIcon() {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 16
-      ),
+      padding: const EdgeInsets.only(top: 16),
       child: Center(
         child: UFUThumbIcon(
           isSelect: isSelect,
@@ -145,18 +142,20 @@ class UFUThumb extends StatelessWidget {
   List<Widget>? getChild() {
     List<Widget> content = [];
     for (int i = 0; i < thumbIconList!.length; i++) {
-      content.add(Padding(
-        padding: const EdgeInsets.only(left: 5, bottom: 5),
-        child: Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-            color: AppTheme.themeColors.darkGray,
-            borderRadius: BorderRadius.circular(20),
+      content.add(
+        Padding(
+          padding: const EdgeInsets.only(left: 5, bottom: 5),
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+              color: AppTheme.themeColors.darkGray,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: thumbIconList![i],
           ),
-          child: thumbIconList![i],
         ),
-      ));
+      );
     }
     return content;
   }
@@ -186,17 +185,19 @@ class UFUThumb extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 width: 1.0,
-                color: (isSelect) ? Colors.transparent : AppTheme.themeColors.dimGray,
+                color: (isSelect)
+                    ? Colors.transparent
+                    : AppTheme.themeColors.dimGray,
               ),
               boxShadow: (isSelect)
                   ? [
-                BoxShadow(
-                  color: AppTheme.themeColors.text.withAlpha(25),
-                  blurRadius: 4.0,
-                  spreadRadius: -2.0,
-                  offset: const Offset(0.0, 4.0),
-                ),
-              ]
+                      BoxShadow(
+                        color: AppTheme.themeColors.text.withAlpha(25),
+                        blurRadius: 4.0,
+                        spreadRadius: -2.0,
+                        offset: const Offset(0.0, 4.0),
+                      ),
+                    ]
                   : null,
             ),
             child: Column(
@@ -207,8 +208,8 @@ class UFUThumb extends StatelessWidget {
                       color: (isSelect)
                           ? AppTheme.themeColors.lightBlue
                           : ((type == UFUThumbType.image)
-                          ? AppTheme.themeColors.dimGray
-                          : UFUColor.transparent),
+                                ? AppTheme.themeColors.dimGray
+                                : UFUColor.transparent),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
@@ -219,13 +220,11 @@ class UFUThumb extends StatelessWidget {
                         getType(type),
                         (thumbIconList != null)
                             ? Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Row(
-                              children: getChild()!,
-                            ),
-                          ),
-                        )
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Row(children: getChild()!),
+                                ),
+                              )
                             : const SizedBox.shrink(),
                         Positioned.fill(
                           child: Align(
@@ -234,21 +233,18 @@ class UFUThumb extends StatelessWidget {
                               padding: const EdgeInsets.all(5),
                               child: statusTag ?? const SizedBox.shrink(),
                             ),
-                          )),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 6
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 6),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,25 +257,29 @@ class UFUThumb extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textColor: AppTheme.themeColors.text,
                             ),
-                            if(userName != null && userName!.isNotEmpty) Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: UFUText(
-                                text: '$titleBottomText: $userName',
-                                textAlign: TextAlign.left,
-                                maxLine: 2,
-                                textSize: UFUTextSize.heading5,
-                                overflow: TextOverflow.ellipsis,
-                                textColor: AppTheme.themeColors.tertiary,
+                            if (userName != null && userName!.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: UFUText(
+                                  text: '$titleBottomText: $userName',
+                                  textAlign: TextAlign.left,
+                                  maxLine: 2,
+                                  textSize: UFUTextSize.heading5,
+                                  overflow: TextOverflow.ellipsis,
+                                  textColor: AppTheme.themeColors.tertiary,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      suffixIcon ?? (isSelect ? getSuffixIcon() : isQuickActionIconDisabled ? const SizedBox(height: 29, width: 29,) : getSuffixIcon()),
-                      const SizedBox(width: 8,),
+                      const SizedBox(width: 5),
+                      suffixIcon ??
+                          (isSelect
+                              ? getSuffixIcon()
+                              : isQuickActionIconDisabled
+                              ? const SizedBox(height: 29, width: 29)
+                              : getSuffixIcon()),
+                      const SizedBox(width: 8),
                     ],
                   ),
                 ),

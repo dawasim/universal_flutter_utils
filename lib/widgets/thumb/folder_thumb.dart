@@ -34,10 +34,7 @@ class UFUThumbFolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: getWidth(),
-        maxHeight: getHeight(),
-      ),
+      constraints: BoxConstraints(maxWidth: getWidth(), maxHeight: getHeight()),
       child: SvgPicture.asset(
         'assets/folder.svg',
         package: 'UFU_mobile_flutter_ui',

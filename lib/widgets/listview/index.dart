@@ -11,7 +11,7 @@ class UFUListView extends StatefulWidget {
   final Widget Function(BuildContext, int) itemBuilder;
 
   final bool? disableOnRefresh;
-  
+
   final EdgeInsets? padding;
 
   final Axis scrollDirection;
@@ -77,11 +77,13 @@ class UFUListViewState extends State<UFUListView> {
     //Listening page scroll to detect is page reached to bottom or not
     //if reached bottom then calling load more function to load next page data in list
     infiniteScrollController.addListener(() async {
-      if((infiniteScrollController.position.pixels + UFUResponsiveDesign.floatingButtonSize + 50)
-        >= infiniteScrollController.position.maxScrollExtent
-        && widget.onLoadMore != null
-        && !isLoadingMore
-        && !isRefreshing) {
+      if ((infiniteScrollController.position.pixels +
+                  UFUResponsiveDesign.floatingButtonSize +
+                  50) >=
+              infiniteScrollController.position.maxScrollExtent &&
+          widget.onLoadMore != null &&
+          !isLoadingMore &&
+          !isRefreshing) {
         toggleIsLoadingMore();
         await widget.onLoadMore!();
         toggleIsLoadingMore();
@@ -97,27 +99,31 @@ class UFUListViewState extends State<UFUListView> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(widget.isLoading ?? false) {
+    if (widget.isLoading ?? false) {
       return widget.isGridView ? getGridShimmer() : getListShimmer();
     } else if (widget.listCount == 0) {
-      return widget.noDataWidget ?? UFUNoDataFound(title: widget.noDataText ?? "No Data Found");
+      return widget.noDataWidget ??
+          UFUNoDataFound(title: widget.noDataText ?? "No Data Found");
     } else {
       return /*Flexible(
-      child: */widget.onRefresh != null ?  RefreshIndicator(
-          onRefresh: () async {
-            if(isLoadingMore) return;
-            toggleIsRefreshing();
-            await widget.onRefresh!();
-            toggleIsRefreshing();
-          },
-          notificationPredicate: (scroll){
-            return isLoadingMore
-                ? false
-                : !(widget.disableOnRefresh ?? false);
-          },
-          child: widget.isGridView ? getGridView() : getListView()
-      ) : widget.isGridView ? getGridView() : getListView();
+      child: */ widget.onRefresh != null
+          ? RefreshIndicator(
+              onRefresh: () async {
+                if (isLoadingMore) return;
+                toggleIsRefreshing();
+                await widget.onRefresh!();
+                toggleIsRefreshing();
+              },
+              notificationPredicate: (scroll) {
+                return isLoadingMore
+                    ? false
+                    : !(widget.disableOnRefresh ?? false);
+              },
+              child: widget.isGridView ? getGridView() : getListView(),
+            )
+          : widget.isGridView
+          ? getGridView()
+          : getListView();
       // );
     }
   }
@@ -144,11 +150,13 @@ class UFUListViewState extends State<UFUListView> {
       context: context,
       removeTop: true,
       child: GridView.builder(
-        gridDelegate: widget.gridDelegate ?? const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Number of columns
-          crossAxisSpacing: 10, // Spacing between columns
-          mainAxisSpacing: 10, // Spacing between rows
-        ),
+        gridDelegate:
+            widget.gridDelegate ??
+            const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Number of columns
+              crossAxisSpacing: 10, // Spacing between columns
+              mainAxisSpacing: 10, // Spacing between rows
+            ),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: getListPadding(),
         controller: infiniteScrollController,
@@ -162,11 +170,11 @@ class UFUListViewState extends State<UFUListView> {
   }
 
   EdgeInsets? getListPadding() {
-    if(!widget.doAddFloatingButtonMargin) {
+    if (!widget.doAddFloatingButtonMargin) {
       return widget.padding;
-    } else if(widget.padding != null) {
+    } else if (widget.padding != null) {
       return widget.padding?.copyWith(
-          bottom: UFUResponsiveDesign.floatingButtonSize
+        bottom: UFUResponsiveDesign.floatingButtonSize,
       );
     } else {
       return UFUResponsiveDesign.floatingButtonPadding;
@@ -191,13 +199,12 @@ class UFUListViewState extends State<UFUListView> {
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: AppTheme.themeColors.base,
-        borderRadius: BorderRadius.circular(10)
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: widget.shimmerBuilder?.call(context, index)
-        ?? const UFUShimmer(
-          height: 150, width: double.maxFinite,
-        ),
-    )
+      child:
+          widget.shimmerBuilder?.call(context, index) ??
+          const UFUShimmer(height: 150, width: double.maxFinite),
+    ),
   );
 
   Widget getGridShimmer() => GridView.builder(
@@ -205,21 +212,22 @@ class UFUListViewState extends State<UFUListView> {
     shrinkWrap: widget.shrinkWrap,
     scrollDirection: widget.scrollDirection,
     padding: getListPadding(),
-    gridDelegate: widget.gridDelegate ?? const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2, // Number of columns
-      crossAxisSpacing: 10, // Spacing between columns
-      mainAxisSpacing: 10, // Spacing between rows
-    ),
+    gridDelegate:
+        widget.gridDelegate ??
+        const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Number of columns
+          crossAxisSpacing: 10, // Spacing between columns
+          mainAxisSpacing: 10, // Spacing between rows
+        ),
     itemCount: 10,
     itemBuilder: (context, index) => Container(
       decoration: BoxDecoration(
         color: AppTheme.themeColors.base,
-        borderRadius: BorderRadius.circular(10)
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: widget.shimmerBuilder?.call(context, index)
-        ?? const UFUShimmer(
-          height: 150, width: double.maxFinite,
-        ),
-    )
+      child:
+          widget.shimmerBuilder?.call(context, index) ??
+          const UFUShimmer(height: 150, width: double.maxFinite),
+    ),
   );
 }

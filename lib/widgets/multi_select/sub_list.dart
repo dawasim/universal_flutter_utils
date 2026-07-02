@@ -12,7 +12,8 @@ class UFUMultiSelectSubList extends StatelessWidget {
     this.listLoader,
     this.searchKeyWord = '',
     required this.subTitleHeader,
-    super.key});
+    super.key,
+  });
 
   /// Defines the scroll controller of a draggable list.
   final ScrollController? controller;
@@ -44,15 +45,17 @@ class UFUMultiSelectSubList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(type == UFUMultiSelectType.network && isLoading) {
-      return listLoader ?? SizedBox(
-        height: 150,
-        child: Center(
-          child: FadingCircle(
-              color: AppTheme.themeColors.primary,
-              size: 25),
-        ),
-      );
+    if (type == UFUMultiSelectType.network && isLoading) {
+      return listLoader ??
+          SizedBox(
+            height: 150,
+            child: Center(
+              child: FadingCircle(
+                color: AppTheme.themeColors.primary,
+                size: 25,
+              ),
+            ),
+          );
     } else if (subList.isEmpty || !isAnyItemVisible()) {
       return const SizedBox.shrink();
     } else {
@@ -61,33 +64,36 @@ class UFUMultiSelectSubList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20,left: 15),
+              padding: const EdgeInsets.only(top: 20, left: 15),
               child: UFUText(
-                    text: '${subTitleHeader.toUpperCase()} (${subList.length})',
-                    fontWeight: UFUFontWeight.medium,
-                    textAlign: TextAlign.left,
-                    textSize: UFUTextSize.heading4),
+                text: '${subTitleHeader.toUpperCase()} (${subList.length})',
+                fontWeight: UFUFontWeight.medium,
+                textAlign: TextAlign.left,
+                textSize: UFUTextSize.heading4,
+              ),
             ),
             ListView.builder(
-                controller: controller,
-                itemCount: getItemCount(),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 6
-                ),
-                shrinkWrap: true,
-                itemBuilder: (_, index) {
-                  if(index < subList.length) {
-                    return getSelectionTile(index);
-                  } else if(index >= subList.length && canShowMore && type == UFUMultiSelectType.network) {
-                    return Center(
-                      child: FadingCircle(
-                          color: AppTheme.themeColors.primary,
-                          size: 25),
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                }),
+              controller: controller,
+              itemCount: getItemCount(),
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              shrinkWrap: true,
+              itemBuilder: (_, index) {
+                if (index < subList.length) {
+                  return getSelectionTile(index);
+                } else if (index >= subList.length &&
+                    canShowMore &&
+                    type == UFUMultiSelectType.network) {
+                  return Center(
+                    child: FadingCircle(
+                      color: AppTheme.themeColors.primary,
+                      size: 25,
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
           ],
         ),
       );
@@ -95,7 +101,7 @@ class UFUMultiSelectSubList extends StatelessWidget {
   }
 
   int getItemCount() {
-    if(type == UFUMultiSelectType.network) {
+    if (type == UFUMultiSelectType.network) {
       return subList.length + 1;
     }
     return subList.length;
@@ -103,7 +109,9 @@ class UFUMultiSelectSubList extends StatelessWidget {
 
   Widget getSelectionTile(int index) {
     return Visibility(
-      visible: searchKeyWord.isEmpty || subList[index].label.toLowerCase().contains(searchKeyWord),
+      visible:
+          searchKeyWord.isEmpty ||
+          subList[index].label.toLowerCase().contains(searchKeyWord),
       child: Material(
         color: UFUColor.transparent,
         child: InkWell(
@@ -118,7 +126,12 @@ class UFUMultiSelectSubList extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(child: UFUText(text: subList[index].label,overflow: TextOverflow.ellipsis,)),
+                Flexible(
+                  child: UFUText(
+                    text: subList[index].label,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
                 UFUCheckbox(
                   selected: subList[index].isSelect,
                   onTap: (value) {
@@ -127,7 +140,7 @@ class UFUMultiSelectSubList extends StatelessWidget {
                   borderColor: AppTheme.themeColors.primary,
                   color: AppTheme.themeColors.primary,
                   checkColor: AppTheme.themeColors.base,
-                )
+                ),
               ],
             ),
           ),
@@ -137,7 +150,8 @@ class UFUMultiSelectSubList extends StatelessWidget {
   }
 
   bool isAnyItemVisible() {
-    return subList.any((element) => element.label.toLowerCase().contains(searchKeyWord));
+    return subList.any(
+      (element) => element.label.toLowerCase().contains(searchKeyWord),
+    );
   }
-
 }

@@ -22,7 +22,9 @@ class UFUVideoPlayerController extends GetxController {
   Future<void> initializePlayer() async {
     if (videoUrl?.isNotEmpty ?? false) {
       try {
-        videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl ?? ""));
+        videoPlayerController = VideoPlayerController.networkUrl(
+          Uri.parse(videoUrl ?? ""),
+        );
 
         await videoPlayerController.initialize();
         chewieController = ChewieController(
@@ -38,10 +40,8 @@ class UFUVideoPlayerController extends GetxController {
         await Future.delayed(const Duration(seconds: 2));
         UFUToast.showToast("Unable to load video");
       }
-
     }
   }
-
 
   void onDispose() {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

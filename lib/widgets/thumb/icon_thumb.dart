@@ -3,10 +3,10 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUThumbIcon extends StatelessWidget {
   const UFUThumbIcon({
-      this.isSelect = false,
-      this.iconType = UFUThumbIconType.pdf,
-      this.size,
-      super.key,
+    this.isSelect = false,
+    this.iconType = UFUThumbIconType.pdf,
+    this.size,
+    super.key,
   });
 
   /// It is used to set icon thumb is selected or not.
@@ -107,70 +107,70 @@ class UFUThumbIcon extends StatelessWidget {
       case UFUThumbIconType.xlsm:
       case UFUThumbIconType.xlsx:
         return const Color(0xff1E6E42);
-      
+
       case UFUThumbIconType.ac5:
       case UFUThumbIconType.ac6:
         return const Color(0xff000000);
 
       case UFUThumbIconType.ai:
-        return const Color(0xffB95500);    
-      
+        return const Color(0xffB95500);
+
       case UFUThumbIconType.csv:
-        return const Color(0xff1F7246);    
-      
+        return const Color(0xff1F7246);
+
       case UFUThumbIconType.doc:
       case UFUThumbIconType.docx:
-        return const Color(0xff335599);    
-      
+        return const Color(0xff335599);
+
       case UFUThumbIconType.dwg:
         return const Color(0xff7361AB);
-      
+
       case UFUThumbIconType.dxf:
       case UFUThumbIconType.templateGroup:
         return const Color(0xff955E88);
-      
+
       case UFUThumbIconType.eml:
         return const Color(0xff525050);
-        
+
       case UFUThumbIconType.eps:
         return const Color(0xffFF7300);
 
       case UFUThumbIconType.esx:
       case UFUThumbIconType.template:
         return const Color(0xff3B70BC);
-      
+
       case UFUThumbIconType.json:
         return const Color(0xffE77D4B);
-      
+
       case UFUThumbIconType.numbers:
         return const Color(0xff1A72E8);
-      
+
       case UFUThumbIconType.pages:
         return const Color(0xff1BB2DC);
-      
+
       case UFUThumbIconType.ppt:
       case UFUThumbIconType.pptx:
         return const Color(0xffD04626);
-      
+
       case UFUThumbIconType.psd:
       case UFUThumbIconType.hover:
         return const Color(0xff0095EF);
-      
+
       case UFUThumbIconType.sdr:
         return const Color(0xff4B85CD);
-      
+
       case UFUThumbIconType.sfz:
         return const Color(0xff546A7A);
 
       case UFUThumbIconType.skp:
         return const Color(0xffFF0000);
-        
+
       case UFUThumbIconType.ve:
         return const Color(0xff6D6DFD);
 
       case UFUThumbIconType.zip:
         return const Color(0xff157EFB);
-        
+
       case UFUThumbIconType.png:
         return const Color(0xff2A3C50);
 
@@ -180,9 +180,9 @@ class UFUThumbIcon extends StatelessWidget {
       case UFUThumbIconType.jpeg:
       case UFUThumbIconType.jpg:
         return const Color(0xff155994);
-        
+
       case UFUThumbIconType.html:
-        return const Color(0xffB95500);    
+        return const Color(0xffB95500);
 
       default:
         return const Color(0xffDC4437);
@@ -210,7 +210,7 @@ class UFUThumbIcon extends StatelessWidget {
         return 120;
     }
   }
-  
+
   bool doGetIconFromAsset() {
     switch (iconType) {
       case UFUThumbIconType.hover:
@@ -226,13 +226,21 @@ class UFUThumbIcon extends StatelessWidget {
   String getAssetIcon() {
     switch (iconType) {
       case UFUThumbIconType.hover:
-        return isSmall ? 'assets/images/hover/hover-logo.png' : 'assets/images/hover/hover-bg.png';
+        return isSmall
+            ? 'assets/images/hover/hover-logo.png'
+            : 'assets/images/hover/hover-bg.png';
       case UFUThumbIconType.eagleView:
-        return isSmall ? 'assets/images/eagleview/eagle_view.png' : 'assets/images/eagleview/evlogo.png';
+        return isSmall
+            ? 'assets/images/eagleview/eagle_view.png'
+            : 'assets/images/eagleview/evlogo.png';
       case UFUThumbIconType.skyMeasure:
-        return isSmall ? 'assets/images/skymeasure/skymeasure.png' : 'assets/images/skymeasure/smlogo.png';
+        return isSmall
+            ? 'assets/images/skymeasure/skymeasure.png'
+            : 'assets/images/skymeasure/smlogo.png';
       case UFUThumbIconType.quickMeasure:
-        return isSmall ? 'assets/images/quick_measure/quickmeasure.png' : 'assets/images/quick_measure/quickmeasure_bg.png';
+        return isSmall
+            ? 'assets/images/quick_measure/quickmeasure.png'
+            : 'assets/images/quick_measure/quickmeasure_bg.png';
       default:
         return "";
     }
@@ -240,51 +248,46 @@ class UFUThumbIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    if(doGetIconFromAsset()) {
+    if (doGetIconFromAsset()) {
       return Container(
         constraints: BoxConstraints(
           maxWidth: getAssetSize(),
           maxHeight: getAssetSize(),
         ),
         padding: const EdgeInsets.all(4),
-        child: Center(
-          child: Image.asset(
-            getAssetIcon(),
-          ),
-        ),
+        child: Center(child: Image.asset(getAssetIcon())),
       );
     }
-    
+
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: getSize(),
-        maxHeight: getSize(),
-      ),
+      constraints: BoxConstraints(maxWidth: getSize(), maxHeight: getSize()),
       decoration: BoxDecoration(
         color: (isSelect)
             ? AppTheme.themeColors.primary
             : getIconColor(iconType).withAlpha(180),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Center(
-        child: getThumbTextOrIcon(),
-      ),
+      child: Center(child: getThumbTextOrIcon()),
     );
   }
 
   Widget getThumbTextOrIcon() {
-
     switch (iconType) {
       case UFUThumbIconType.template:
-        return UFUIcon(Icons.description_outlined,
-          color: (isSelect) ? AppTheme.themeColors.base : getIconColor(iconType),
+        return UFUIcon(
+          Icons.description_outlined,
+          color: (isSelect)
+              ? AppTheme.themeColors.base
+              : getIconColor(iconType),
           size: size == ThumbSize.small ? 18 : 24,
         );
 
       case UFUThumbIconType.templateGroup:
-        return UFUIcon(Icons.filter_none_outlined,
-          color: (isSelect) ? AppTheme.themeColors.base : getIconColor(iconType),
+        return UFUIcon(
+          Icons.filter_none_outlined,
+          color: (isSelect)
+              ? AppTheme.themeColors.base
+              : getIconColor(iconType),
           size: size == ThumbSize.small ? 18 : 24,
         );
 
@@ -295,10 +298,10 @@ class UFUThumbIcon extends StatelessWidget {
           textSize: (size == ThumbSize.small)
               ? UFUTextSize.heading6
               : UFUTextSize.heading4,
-          textColor:
-          (isSelect) ? AppTheme.themeColors.base : getIconColor(iconType),
+          textColor: (isSelect)
+              ? AppTheme.themeColors.base
+              : getIconColor(iconType),
         );
-
     }
   }
 }

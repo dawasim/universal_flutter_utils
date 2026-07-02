@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-
 class UFUCheckbox extends StatelessWidget {
   const UFUCheckbox({
     this.disabled = false,
@@ -22,7 +21,8 @@ class UFUCheckbox extends StatelessWidget {
     this.onTap,
     this.padding,
     this.separatorWidth = 8.5,
-    super.key});
+    super.key,
+  });
 
   /// Defines enabled or disabled of a checkbox.
   final bool disabled;
@@ -91,14 +91,15 @@ class UFUCheckbox extends StatelessWidget {
     ///Defines border of a checkbox.
     getBorder() {
       return Border.all(
-          color: disabled ? borderColors!.withValues(alpha:0.5) : borderColors!,
-          width: 1);
+        color: disabled ? borderColors!.withValues(alpha: 0.5) : borderColors!,
+        width: 1,
+      );
     }
 
     ///Defines text widget of a checkbox.
     Widget getText() {
       getColor() {
-        return disabled ? textColors!.withValues(alpha:0.4) : textColors;
+        return disabled ? textColors!.withValues(alpha: 0.4) : textColors;
       }
 
       return UFUText(
@@ -116,13 +117,13 @@ class UFUCheckbox extends StatelessWidget {
     Widget getCheckBox() {
       getColor() {
         return selected!
-            ? (disabled ? colors!.withValues(alpha:0.5) : colors)
+            ? (disabled ? colors!.withValues(alpha: 0.5) : colors)
             : uncheckColor ?? Colors.white;
       }
 
       return InkWell(
         borderRadius: BorderRadius.circular(50),
-        highlightColor: AppTheme.themeColors.primary.withValues(alpha:0.1),
+        highlightColor: AppTheme.themeColors.primary.withValues(alpha: 0.1),
         onTap: disabled ? null : () => onTap!(selected!),
         child: SizedBox(
           height: 32,
@@ -139,11 +140,11 @@ class UFUCheckbox extends StatelessWidget {
               ),
               duration: const Duration(milliseconds: 1),
               child: Center(
-                 child: UFUIcon(
+                child: UFUIcon(
                   Icons.check,
                   color: checkColor ?? AppTheme.themeColors.base,
                   size: 14,
-                )
+                ),
               ),
             ),
           ),
@@ -161,9 +162,7 @@ class UFUCheckbox extends StatelessWidget {
         return Row(
           children: [
             getText(),
-            SizedBox(
-              width: separatorWidth,
-            ),
+            SizedBox(width: separatorWidth),
             getCheckBox(),
           ],
         );
@@ -171,9 +170,7 @@ class UFUCheckbox extends StatelessWidget {
       return Row(
         children: [
           getCheckBox(),
-          SizedBox(
-            width: separatorWidth,
-          ),
+          SizedBox(width: separatorWidth),
           getText(),
         ],
       );
@@ -183,10 +180,10 @@ class UFUCheckbox extends StatelessWidget {
       onTap: disabled
           ? null
           : (isTextClickable!
-          ? () {
-        onTap!(selected!);
-      }
-          : null),
+                ? () {
+                    onTap!(selected!);
+                  }
+                : null),
       child: Padding(
         padding: padding ?? const EdgeInsets.symmetric(horizontal: 8),
         child: FittedBox(fit: BoxFit.scaleDown, child: getFittedBoxData()),
@@ -194,4 +191,3 @@ class UFUCheckbox extends StatelessWidget {
     );
   }
 }
-

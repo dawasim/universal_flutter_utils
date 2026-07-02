@@ -6,7 +6,6 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import '../../../api_config/api_config.dart';
 import '../../../models/address.dart';
 
-
 class UFULocationPickerController extends GetxController {
   late final apiService = UFApiConfig();
   Rx<GeocodingResult?> selectedAddress = Rx<GeocodingResult?>(null);
@@ -18,7 +17,12 @@ class UFULocationPickerController extends GetxController {
 
   bool? isEdit = false;
 
-  UFULocationPickerController({required this.apiKey, this.placesAPIHeader, this.address, this.isEdit});
+  UFULocationPickerController({
+    required this.apiKey,
+    this.placesAPIHeader,
+    this.address,
+    this.isEdit,
+  });
 
   LatLng? currentLocation;
 
@@ -31,14 +35,14 @@ class UFULocationPickerController extends GetxController {
   }
 
   void loadFormData() {
-    if(address?.latitude != null && address?.longitude != null) {
+    if (address?.latitude != null && address?.longitude != null) {
       currentLocation = LatLng(address!.latitude!, address!.longitude!);
       selectedAddress.value = GeocodingResult.fromJson({
         "geometry": {
           "location": {
             "lat": address?.latitude ?? "",
             "lng": address?.longitude ?? "",
-          }
+          },
         },
         "place_id": address?.placeId ?? "",
         'formatted_address': address?.getFormatedAddress() ?? "",
@@ -60,7 +64,8 @@ class UFULocationPickerController extends GetxController {
       for (var component in selectedPlace.addressComponents ?? []) {
         if (component.types?.contains('locality') ?? false) {
           city = component.longName;
-        } else if (component.types?.contains('administrative_area_level_1') ?? false) {
+        } else if (component.types?.contains('administrative_area_level_1') ??
+            false) {
           state = component.longName;
         } else if (component.types?.contains('country') ?? false) {
           country = component.longName;
@@ -69,7 +74,9 @@ class UFULocationPickerController extends GetxController {
         }
       }
 
-      debugPrint("selectedLocLatLng----> ${selectedPlace.geometry?.location.lat}----${selectedPlace.geometry?.location.lng}");
+      debugPrint(
+        "selectedLocLatLng----> ${selectedPlace.geometry?.location.lat}----${selectedPlace.geometry?.location.lng}",
+      );
 
       address = address ?? UFUAddressModel();
 
@@ -94,8 +101,8 @@ class UFULocationPickerController extends GetxController {
 
   void setSelectedAddress(GeocodingResult? result, {bool? isFromSearch}) {
     if (result != null) {
-      if(isFromSearch ?? false) isEdit = true;
-      if(isEdit ?? false) {
+      if (isFromSearch ?? false) isEdit = true;
+      if (isEdit ?? false) {
         isEdit = false;
       } else {
         selectedAddress.value = result;
@@ -107,7 +114,8 @@ class UFULocationPickerController extends GetxController {
     if (result != null) {
       autocompletePlace.value = result.result;
       selectedAddress.value = GeocodingResult(
-        geometry: result.result?.geometry ??
+        geometry:
+            result.result?.geometry ??
             Geometry(location: Location(lat: 0, lng: 0)),
         placeId: result.result?.placeId,
         addressComponents: result.result?.addressComponents,

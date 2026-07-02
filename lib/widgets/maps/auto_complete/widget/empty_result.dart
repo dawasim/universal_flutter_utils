@@ -14,9 +14,7 @@ class EmptySearchResult extends StatelessWidget {
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: UFUText(text: "No Address Found!"))
-        ],
+        children: [Expanded(child: UFUText(text: "No Address Found!"))],
       ),
     );
   }

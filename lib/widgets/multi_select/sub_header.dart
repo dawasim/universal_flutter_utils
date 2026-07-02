@@ -17,7 +17,8 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
     this.showIncludeInactiveButton = false,
     this.includeInactive = false,
     this.onTapIncludeInactiveButton,
-    super.key});
+    super.key,
+  });
 
   /// Defines the mainList length of a multiselect.
   final int mainListLength;
@@ -36,7 +37,7 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
 
   /// It is used to show count or not.
   final bool canShowCount;
-  
+
   /// Defines tempSelected item count of a filterList.
   final int? tempSelectedItemsCount;
 
@@ -56,15 +57,12 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
   /// Used to show includeInactive text or excludeInactive.
   final bool includeInactive;
 
-  /// Function to handle tap of includeInactive button 
+  /// Function to handle tap of includeInactive button
   final VoidCallback? onTapIncludeInactiveButton;
-
 
   Widget getSelectListLength() {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 4
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: UFUText(
         text: '$selectedItemCount/$mainListLength',
         textColor: AppTheme.themeColors.secondaryText,
@@ -77,78 +75,71 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
       return const SizedBox.shrink();
     }
     if (selectedItemCount == mainListLength) {
-      return UFUIcon(
-        Icons.check,
-        color: AppTheme.themeColors.base,
-        size: 14,
-      );
+      return UFUIcon(Icons.check, color: AppTheme.themeColors.base, size: 14);
     }
-    if(isViewSubList){
-      if (subList.where((element) => element.isSelect).isNotEmpty){
-      if(filterListItemsCount == tempSelectedItemsCount){
-         return UFUIcon(
-          Icons.check,
-          color: AppTheme.themeColors.base,
-          size: 14,
-      );
-      } else if(tempSelectedItemsCount == 0) {
-        return const SizedBox.shrink();
-      } else {
-        return UFUIcon(
-          Icons.remove,
-          size: 14,
-          color: AppTheme.themeColors.base,
-    );
+    if (isViewSubList) {
+      if (subList.where((element) => element.isSelect).isNotEmpty) {
+        if (filterListItemsCount == tempSelectedItemsCount) {
+          return UFUIcon(
+            Icons.check,
+            color: AppTheme.themeColors.base,
+            size: 14,
+          );
+        } else if (tempSelectedItemsCount == 0) {
+          return const SizedBox.shrink();
+        } else {
+          return UFUIcon(
+            Icons.remove,
+            size: 14,
+            color: AppTheme.themeColors.base,
+          );
+        }
       }
     }
-    }
-    return UFUIcon(
-      Icons.remove,
-      size: 14,
-      color: AppTheme.themeColors.base,
-    );
+    return UFUIcon(Icons.remove, size: 14, color: AppTheme.themeColors.base);
   }
-  String getText(){
-    if(selectedItemCount == 0){
+
+  String getText() {
+    if (selectedItemCount == 0) {
       return 'Select All';
     }
-    if(subList.where((element) => element.isSelect).isNotEmpty){
-      if(tempSelectedItemsCount == 0){
+    if (subList.where((element) => element.isSelect).isNotEmpty) {
+      if (tempSelectedItemsCount == 0) {
         return 'Select All';
       } else {
         return 'Clear All';
       }
-    } 
+    }
     return 'Clear All';
   }
 
-  Color getColor(){
-    if(selectedItemCount == 0) {
+  Color getColor() {
+    if (selectedItemCount == 0) {
       return AppTheme.themeColors.base;
     }
-    if(isViewSubList){
-      if(subList.where((element) => element.isSelect).isNotEmpty ){
-        if(tempSelectedItemsCount == 0){
+    if (isViewSubList) {
+      if (subList.where((element) => element.isSelect).isNotEmpty) {
+        if (tempSelectedItemsCount == 0) {
           return AppTheme.themeColors.base;
         }
-      return AppTheme.themeColors.primary;
-    }
+        return AppTheme.themeColors.primary;
+      }
     }
     return AppTheme.themeColors.primary;
   }
 
   Widget getSelectAndClearList() {
     return Padding(
-      padding: const EdgeInsets.only(
-        right: 10
-      ),
+      padding: const EdgeInsets.only(right: 10),
       child: Material(
         color: UFUColor.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(25),
-          onTap: isDisabled ? null : (){
-            selectAndClearAll!();
-          },
+          onTap: isDisabled
+              ? null
+              : () {
+                  selectAndClearAll!();
+                },
           child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 4, 5, 4),
             child: Row(
@@ -161,24 +152,23 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
                     textSize: UFUTextSize.heading4,
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 Opacity(
                   opacity: isDisabled ? 0.4 : 1,
                   child: Container(
                     height: 17,
                     width: 17,
                     decoration: BoxDecoration(
-                        color: getColor(),
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: AppTheme.themeColors.primary,
-                          width: 1.0,
-                        )),
+                      color: getColor(),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                        color: AppTheme.themeColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
                     child: getIcon(),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -194,7 +184,7 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if(canShowCount) getSelectListLength(),
+          if (canShowCount) getSelectListLength(),
           Visibility(
             visible: showIncludeInactiveButton,
             child: Padding(
@@ -203,15 +193,21 @@ class UFUMultiSelectSubHeader extends StatelessWidget {
                 color: UFUColor.transparent,
                 child: UFUTextButton(
                   onPressed: onTapIncludeInactiveButton,
-                  text: includeInactive ? 'Exclude Inactive' : 'Include Inactive', 
-                  textSize: UFUTextSize.heading4, 
+                  text: includeInactive
+                      ? 'Exclude Inactive'
+                      : 'Include Inactive',
+                  textSize: UFUTextSize.heading4,
                   color: AppTheme.themeColors.primary,
                 ),
               ),
             ),
           ),
           const Spacer(),
-          (canShowClearAll && mainListLength > 0) ? ((listLength! > 0) ? getSelectAndClearList() : const SizedBox.shrink()) : const SizedBox.shrink(),
+          (canShowClearAll && mainListLength > 0)
+              ? ((listLength! > 0)
+                    ? getSelectAndClearList()
+                    : const SizedBox.shrink())
+              : const SizedBox.shrink(),
         ],
       ),
     );

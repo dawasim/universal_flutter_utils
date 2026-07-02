@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class UFUInputBoxController {
-
   bool validateOnChange = false;
   Function(String)? validator;
   GlobalKey key = GlobalKey();
@@ -65,8 +64,9 @@ class UFUInputBoxController {
   bool validate() {
     if (validator != null) {
       final result = validator!(controller.text);
-      return result == null || result
-          .isEmpty; // Assuming the validator returns null or an empty string for valid cases
+      return result == null ||
+          result
+              .isEmpty; // Assuming the validator returns null or an empty string for valid cases
     }
     return true; // If no validator is set, consider it valid
   }

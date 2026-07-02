@@ -27,8 +27,12 @@ class UFApiConfig {
   }
 
   // Unified GET request
-  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters,
-    bool infiniteTimeout = false, Map<String, dynamic>? header}) async {
+  Future<dynamic> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    bool infiniteTimeout = false,
+    Map<String, dynamic>? header,
+  }) async {
     try {
       // Backup current timeout settings
       final originalConnectTimeout = _dio.options.connectTimeout;
@@ -42,20 +46,18 @@ class UFApiConfig {
 
       Options? requestOptions;
 
-      if(header != null) {
-        requestOptions = Options(
-          extra: {
-            "header": header,
-          },
-        );
+      if (header != null) {
+        requestOptions = Options(extra: {"header": header});
       }
 
       final encodedParams = queryParameters;
 
-      final uri = Uri.parse(UFUtils.baseUrl + path).replace(queryParameters: encodedParams);
+      final uri = Uri.parse(
+        UFUtils.baseUrl + path,
+      ).replace(queryParameters: encodedParams);
 
       final response = await _dio.getUri(uri, options: requestOptions);
-      
+
       // Restore original timeout settings
       if (infiniteTimeout) {
         _dio.options.connectTimeout = originalConnectTimeout;
@@ -69,9 +71,14 @@ class UFApiConfig {
   }
 
   // Unified POST request
-  Future<dynamic> post(String path, {Map<String, dynamic>? data,
-    bool infiniteTimeout = false, bool overrideBody = false,
-    Map<String, dynamic>? header,  Map<String, dynamic>? queryParameters,}) async {
+  Future<dynamic> post(
+    String path, {
+    Map<String, dynamic>? data,
+    bool infiniteTimeout = false,
+    bool overrideBody = false,
+    Map<String, dynamic>? header,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       // Backup current timeout settings
       final originalConnectTimeout = _dio.options.connectTimeout;
@@ -85,12 +92,8 @@ class UFApiConfig {
 
       Options? requestOptions;
 
-      if(header != null) {
-        requestOptions = Options(
-          extra: {
-            "header": header,
-          },
-        );
+      if (header != null) {
+        requestOptions = Options(extra: {"header": header});
       }
 
       dynamic body;
@@ -101,9 +104,12 @@ class UFApiConfig {
       } else {
         body = jsonEncode(data ?? {});
       }
-      
-      final response = await _dio.post(UFUtils.baseUrl + path, data: body,
-          options: requestOptions, queryParameters: queryParameters
+
+      final response = await _dio.post(
+        UFUtils.baseUrl + path,
+        data: body,
+        options: requestOptions,
+        queryParameters: queryParameters,
       );
 
       // Restore original timeout settings
@@ -118,11 +124,15 @@ class UFApiConfig {
     }
   }
 
-
   // Unified PUT request
-  Future<dynamic> put(String path, {Map<String, dynamic>? data,
-    bool infiniteTimeout = false, bool overrideBody = false,
-    Map<String, dynamic>? header, Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> put(
+    String path, {
+    Map<String, dynamic>? data,
+    bool infiniteTimeout = false,
+    bool overrideBody = false,
+    Map<String, dynamic>? header,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       // Backup current timeout settings
       final originalConnectTimeout = _dio.options.connectTimeout;
@@ -136,12 +146,8 @@ class UFApiConfig {
 
       Options? requestOptions;
 
-      if(header != null) {
-        requestOptions = Options(
-          extra: {
-            "header": header,
-          },
-        );
+      if (header != null) {
+        requestOptions = Options(extra: {"header": header});
       }
 
       dynamic body;
@@ -153,8 +159,12 @@ class UFApiConfig {
         body = jsonEncode(data ?? {});
       }
 
-      final response = await _dio.put(UFUtils.baseUrl + path, data: body,
-          options: requestOptions, queryParameters: queryParameters);
+      final response = await _dio.put(
+        UFUtils.baseUrl + path,
+        data: body,
+        options: requestOptions,
+        queryParameters: queryParameters,
+      );
 
       // Restore original timeout settings
       if (infiniteTimeout) {
@@ -168,11 +178,15 @@ class UFApiConfig {
     }
   }
 
-
   // Unified PATCH request
-  Future<dynamic> patch(String path, {Map<String, dynamic>? data,
-    bool infiniteTimeout = false, bool overrideBody = false,
-    Map<String, dynamic>? header, Map<String, dynamic>? queryParameters,}) async {
+  Future<dynamic> patch(
+    String path, {
+    Map<String, dynamic>? data,
+    bool infiniteTimeout = false,
+    bool overrideBody = false,
+    Map<String, dynamic>? header,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       // Backup current timeout settings
       final originalConnectTimeout = _dio.options.connectTimeout;
@@ -186,12 +200,8 @@ class UFApiConfig {
 
       Options? requestOptions;
 
-      if(header != null) {
-        requestOptions = Options(
-          extra: {
-            "header": header,
-          },
-        );
+      if (header != null) {
+        requestOptions = Options(extra: {"header": header});
       }
 
       dynamic body;
@@ -203,8 +213,12 @@ class UFApiConfig {
         body = jsonEncode(data ?? {});
       }
 
-      final response = await _dio.patch(UFUtils.baseUrl + path, data: body,
-        options: requestOptions, queryParameters: queryParameters);
+      final response = await _dio.patch(
+        UFUtils.baseUrl + path,
+        data: body,
+        options: requestOptions,
+        queryParameters: queryParameters,
+      );
 
       // Restore original timeout settings
       if (infiniteTimeout) {
@@ -221,7 +235,9 @@ class UFApiConfig {
   // Unified POST request
   Future<dynamic> delete(String path, {Map<String, dynamic>? data}) async {
     try {
-      final body = UFUtils.applyEncryption ? EncryptionUtil.secKeyEncryptWithBodyAppKey(data ?? {}) : jsonEncode(data);
+      final body = UFUtils.applyEncryption
+          ? EncryptionUtil.secKeyEncryptWithBodyAppKey(data ?? {})
+          : jsonEncode(data);
       final response = await _dio.delete(UFUtils.baseUrl + path, data: body);
       return response.data;
     } catch (e) {
@@ -238,7 +254,7 @@ class UFApiConfig {
       // Create FormData with the file
       FormData formData = FormData.fromMap({
         fileParam: await MultipartFile.fromFile(file.path, filename: fileName),
-        if (data != null) ...data, // Add any additional data if needed
+        ...?data, // Add any additional data if needed
       });
 
       String? token = await UFUtils.preferences.readAuthToken();
@@ -278,7 +294,7 @@ class UFApiConfig {
       // Create FormData with the file
       FormData formData = FormData.fromMap({
         fileParam: multipartFiles,
-        if (data != null) ...data, // Add any additional data if needed
+        ...?data, // Add any additional data if needed
       });
 
       String? token = await UFUtils.preferences.readAuthToken();
@@ -288,9 +304,11 @@ class UFApiConfig {
         path,
         data: formData,
         options: Options(
-          headers: {'Authorization': 'Bearer $token',
+          headers: {
+            'Authorization': 'Bearer $token',
             "Content-Type": "multipart/form-data",
-            "x-portal": "user"},
+            "x-portal": "user",
+          },
           extra: {"skipInterceptor": true},
         ),
       );

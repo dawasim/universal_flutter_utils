@@ -16,7 +16,8 @@ class UFUMultiSelectHeader extends StatelessWidget {
     this.isSelectedSubListItems = false,
     this.isDisabled = false,
     required this.isViewSubList,
-    super.key});
+    super.key,
+  });
 
   /// Defines title of a multiselect.
   final String title;
@@ -39,7 +40,7 @@ class UFUMultiSelectHeader extends StatelessWidget {
   /// helperText can be used to display some info as a helper to user
   final String? helperText;
 
-  /// Defines to show user filter 
+  /// Defines to show user filter
   final bool canShowSubList;
 
   /// Function to show user filter or not.
@@ -60,9 +61,7 @@ class UFUMultiSelectHeader extends StatelessWidget {
     return Column(
       children: [
         UFUResponsiveBuilder(
-          tablet: const SizedBox(
-            height: 15,
-          ),
+          tablet: const SizedBox(height: 15),
           mobile: Container(
             height: 4,
             width: 30,
@@ -78,83 +77,76 @@ class UFUMultiSelectHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: UFUText(
-                    text: title.toUpperCase(),
-                    fontWeight: UFUFontWeight.medium,
-                    textSize: UFUTextSize.heading3,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
+                  text: title.toUpperCase(),
+                  fontWeight: UFUFontWeight.medium,
+                  textSize: UFUTextSize.heading3,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
                 ),
               ),
               Row(
                 children: [
-                  if(totalAmount != null) totalAmount!,
-                  canShowSubList ? Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 4,
-                            right: 3
-                        ),
-                        height: 26,
-                        width: 26,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(6),
-                          color: AppTheme.themeColors.dimGray,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(6),
-                            onTap: showSubList,
-                            child: UFUIcon(
-                              Icons.group_outlined,
-                              color: AppTheme.themeColors.tertiary,
-                              size: 18,
+                  ?totalAmount,
+                  canShowSubList
+                      ? Stack(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 4, right: 3),
+                              height: 26,
+                              width: 26,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Material(
+                                borderRadius: BorderRadius.circular(6),
+                                color: AppTheme.themeColors.dimGray,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(6),
+                                  onTap: showSubList,
+                                  child: UFUIcon(
+                                    Icons.group_outlined,
+                                    color: AppTheme.themeColors.tertiary,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      if(isSelectedSubListItems) Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                                color: AppTheme.themeColors.success,
-                                borderRadius: BorderRadius.circular(5)
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ) : headerPrefixChild ?? const SizedBox.shrink(),
+                            if (isSelectedSubListItems)
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    height: 10,
+                                    width: 10,
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.themeColors.success,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )
+                      : headerPrefixChild ?? const SizedBox.shrink(),
                 ],
               ),
             ],
           ),
         ),
 
-        if(helperText != null)
+        if (helperText != null)
           Container(
-          padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 28
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 28),
+            margin: const EdgeInsets.only(right: 20, left: 20, bottom: 15),
+            decoration: BoxDecoration(
+              color: AppTheme.themeColors.lightBlue,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: UFUText(
+              text: helperText!,
+              textColor: AppTheme.themeColors.tertiary,
+            ),
           ),
-          margin: const EdgeInsets.only(
-              right: 20,
-              left: 20,
-              bottom: 15
-          ),
-          decoration: BoxDecoration(
-            color: AppTheme.themeColors.lightBlue,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: UFUText(
-            text: helperText!,
-            textColor: AppTheme.themeColors.tertiary,
-          ),
-        ),
 
         if (canShowSearchBar)
           Container(

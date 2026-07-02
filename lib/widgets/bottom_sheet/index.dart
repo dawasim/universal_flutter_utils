@@ -9,7 +9,7 @@ class UFUPopUpBuilder extends StatelessWidget {
     super.key,
     required this.child,
     this.allowFullWidth = false,
-    this.enableInsets = false
+    this.enableInsets = false,
   });
 
   final bool allowFullWidth;
@@ -17,11 +17,12 @@ class UFUPopUpBuilder extends StatelessWidget {
   final Widget Function(UFUBottomSheetController controller) child;
 
   Widget get popOverChild => GetBuilder<UFUBottomSheetController>(
-      init: UFUBottomSheetController(),
-      global: false,
-      builder: (controller) {
-        return child(controller);
-      });
+    init: UFUBottomSheetController(),
+    global: false,
+    builder: (controller) {
+      return child(controller);
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class UFUPopUpBuilder extends StatelessWidget {
             padding: !enableInsets
                 ? EdgeInsets.zero
                 : MediaQuery.of(context).viewInsets +
-                    const EdgeInsets.only(bottom: 20),
+                      const EdgeInsets.only(bottom: 20),
             duration: const Duration(milliseconds: 50),
             child: Container(
               constraints: allowFullWidth
@@ -44,11 +45,9 @@ class UFUPopUpBuilder extends StatelessWidget {
                   : BoxConstraints(
                       maxWidth: UFUResponsiveDesign.maxPopOverWidth,
                       minWidth: UFUResponsiveDesign.maxPopOverWidth,
-                      maxHeight: UFUResponsiveDesign.maxPopOverHeight),
-              child: Material(
-                color: UFUColor.transparent,
-                child: popOverChild,
-              ),
+                      maxHeight: UFUResponsiveDesign.maxPopOverHeight,
+                    ),
+              child: Material(color: UFUColor.transparent, child: popOverChild),
             ),
           ),
         );
@@ -62,6 +61,7 @@ class UFUPopUpBuilder extends StatelessWidget {
 /// but we don't have controller for managing our loading state
 /// a default controller will be provided with it and loading
 /// state can be toggled easily by [controller.toggleIsLoading()]
+// ignore: non_constant_identifier_names
 Future<dynamic> ShowUFUBottomSheet({
   required Widget Function(UFUBottomSheetController controller) child,
   bool isScrollControlled = false,
@@ -69,28 +69,31 @@ Future<dynamic> ShowUFUBottomSheet({
   bool isDismissible = true,
   bool enableDrag = false,
   bool allowFullWidth = false,
-  bool enableInsets = false}) async {
-
+  bool enableInsets = false,
+}) async {
   // Avoiding dialog and bottom sheet opening in unit testing
   if (RunModeService.isUnitTestMode) return;
 
   if (!UFUScreen.isMobile) {
     return await showUFUDialog(
-        child: child,
-        allowFullWidth: allowFullWidth,
-        enableInsets: enableInsets);
+      child: child,
+      allowFullWidth: allowFullWidth,
+      enableInsets: enableInsets,
+    );
   } else {
     return await Get.bottomSheet(
-      UFUPopUpBuilder(
-        child: child,
-      ),
-      
+      UFUPopUpBuilder(child: child),
+
       isScrollControlled: isScrollControlled,
       ignoreSafeArea: ignoreSafeArea,
       isDismissible: isDismissible,
       enableDrag: enableDrag,
-      enterBottomSheetDuration: const Duration(milliseconds: UFUtils.transitionDuration),
-      exitBottomSheetDuration: const Duration(milliseconds: UFUtils.transitionDuration),
+      enterBottomSheetDuration: const Duration(
+        milliseconds: UFUtils.transitionDuration,
+      ),
+      exitBottomSheetDuration: const Duration(
+        milliseconds: UFUtils.transitionDuration,
+      ),
     );
   }
 }
@@ -100,7 +103,6 @@ Future<dynamic> showUFUDialog({
   bool allowFullWidth = false,
   bool enableInsets = false,
 }) async {
-
   // Avoiding dialog and bottom sheet opening in unit testing
   if (RunModeService.isUnitTestMode) return;
 
@@ -109,11 +111,15 @@ Future<dynamic> showUFUDialog({
       child: (controller) => Center(
         child: Material(
           color: Colors.transparent,
-          child: child.call(controller))),
+          child: child.call(controller),
+        ),
+      ),
       allowFullWidth: allowFullWidth,
       enableInsets: enableInsets,
     ),
-    transitionDuration: const Duration(milliseconds: UFUtils.transitionDuration),
+    transitionDuration: const Duration(
+      milliseconds: UFUtils.transitionDuration,
+    ),
   );
 }
 
@@ -123,7 +129,6 @@ Future<dynamic> showUFUGeneralDialog({
   bool? isDismissible = true,
   bool allowFullWidth = false,
 }) async {
-
   // Avoiding dialog and bottom sheet opening in unit testing
   if (RunModeService.isUnitTestMode) return;
 
@@ -133,14 +138,17 @@ Future<dynamic> showUFUGeneralDialog({
     return await showUFUDialog(child: child, allowFullWidth: allowFullWidth);
   } else {
     return await Get.generalDialog(
-        barrierDismissible: isDismissible ?? false,
-        barrierLabel: '',
-        transitionDuration: const Duration(milliseconds: UFUtils.transitionDuration),
-        transitionBuilder: (context, animation, secondaryAnimation, child) {
-          return Animations.fromBottom(animation, secondaryAnimation, child);
-        },
-        pageBuilder: (animation, secondaryAnimation, child) {
-          return persistentChild;
-        });
+      barrierDismissible: isDismissible ?? false,
+      barrierLabel: '',
+      transitionDuration: const Duration(
+        milliseconds: UFUtils.transitionDuration,
+      ),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return Animations.fromBottom(animation, secondaryAnimation, child);
+      },
+      pageBuilder: (animation, secondaryAnimation, child) {
+        return persistentChild;
+      },
+    );
   }
 }

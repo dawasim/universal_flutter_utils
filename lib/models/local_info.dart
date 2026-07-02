@@ -1,5 +1,5 @@
 class UFULocalInfoModel {
-/*
+  /*
 {
   "status": "success",
   "country": "India",
@@ -86,4 +86,3 @@ class UFULocalInfoModel {
     return data;
   }
 }
-

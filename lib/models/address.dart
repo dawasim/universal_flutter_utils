@@ -1,4 +1,3 @@
-
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class UFUAddressModel {
@@ -86,12 +85,18 @@ class UFUAddressModel {
 
   String getFormatedAddress() {
     return [
-      address1 == null || (address1?.trim().isEmpty ?? true) ? null : '$address1',
-      address2 == null || (address2?.trim().isEmpty ?? true) ? null : '$address2',
+      address1 == null || (address1?.trim().isEmpty ?? true)
+          ? null
+          : '$address1',
+      address2 == null || (address2?.trim().isEmpty ?? true)
+          ? null
+          : '$address2',
       city == null || (city?.trim().isEmpty ?? true) ? null : '$city',
       state == null || (state?.trim().isEmpty ?? true) ? null : '$state',
       country == null || (country?.trim().isEmpty ?? true) ? null : '$country',
-      postcode == null || (postcode?.trim().isEmpty ?? true) ? null : '$postcode',
+      postcode == null || (postcode?.trim().isEmpty ?? true)
+          ? null
+          : '$postcode',
     ].where((e) => e != null).join(', ');
   }
 
@@ -130,5 +135,4 @@ class UFUAddressModel {
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
-
 }

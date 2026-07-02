@@ -115,7 +115,7 @@ class UFUSingleSelectView extends StatelessWidget {
 
   Widget getView(BuildContext context, AutoScrollController? scrollController) {
     double getMaxHeight() {
-      if(MediaQuery.of(context).viewInsets.bottom > 0) {
+      if (MediaQuery.of(context).viewInsets.bottom > 0) {
         return MediaQuery.of(context).size.height * 0.4;
       } else {
         return MediaQuery.of(context).size.height * 0.60;
@@ -125,126 +125,139 @@ class UFUSingleSelectView extends StatelessWidget {
     return SafeArea(
       bottom: isFilterSheet,
       child: AnimatedPadding(
-          duration: const Duration(milliseconds: 100),
-          padding: UFUResponsiveDesign.popOverBottomInsets,
-          child: Padding(
-            padding: EdgeInsets.only(left: 10, right: 10,
-              bottom: isFilterSheet && !UFUScreen.hasBottomPadding ? 20 : 0),
-            child: ClipRRect(
+        duration: const Duration(milliseconds: 100),
+        padding: UFUResponsiveDesign.popOverBottomInsets,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 10,
+            right: 10,
+            bottom: isFilterSheet && !UFUScreen.hasBottomPadding ? 20 : 0,
+          ),
+          child: ClipRRect(
+            borderRadius: getBorderRadius(),
+            child: Material(
               borderRadius: getBorderRadius(),
-              child: Material(
-                borderRadius: getBorderRadius(),
-                color: AppTheme.themeColors.backgroundColor,
-                child: SafeArea(
-                  top: false,
-                  bottom: !isFilterSheet,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UFUSingleSelectHeader(
-                        canShowSearchBar: canShowSearchBar ?? ((type == UFUSingleSelectType.network || !isFilterSheet) && mainList.length > 10),
-                        title: title!,
-                        inputHintText: inputHintText,
-                        searchInputCtrl: searchInputCtrl,
-                        onSearch: onSearch,
-                        canShowIconButton: canShowIconButton,
-                        iconButtonBackgroundColor: iconButtonBackgroundColor,
-                        iconButtonBorderRadius: iconButtonBorderRadius,
-                        onIconButtonTap: onIconButtonTap,
-                        iconButtonIcon: iconButtonIcon,
-                        iconButtonIconColor: iconButtonIconColor,
-                        iconButtonIconSize: iconButtonIconSize,
-                        iconButtonIconWidget: iconButtonIconWidget,
-                        showIncludeInactiveButton: showIncludeInactiveButton,
-                        onTapIncludeInactiveButton: onTapIncludeInactiveButton,
-                        includeInactive: includeInactive,
-                      ),
+              color: AppTheme.themeColors.backgroundColor,
+              child: SafeArea(
+                top: false,
+                bottom: !isFilterSheet,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UFUSingleSelectHeader(
+                      canShowSearchBar:
+                          canShowSearchBar ??
+                          ((type == UFUSingleSelectType.network ||
+                                  !isFilterSheet) &&
+                              mainList.length > 10),
+                      title: title!,
+                      inputHintText: inputHintText,
+                      searchInputCtrl: searchInputCtrl,
+                      onSearch: onSearch,
+                      canShowIconButton: canShowIconButton,
+                      iconButtonBackgroundColor: iconButtonBackgroundColor,
+                      iconButtonBorderRadius: iconButtonBorderRadius,
+                      onIconButtonTap: onIconButtonTap,
+                      iconButtonIcon: iconButtonIcon,
+                      iconButtonIconColor: iconButtonIconColor,
+                      iconButtonIconSize: iconButtonIconSize,
+                      iconButtonIconWidget: iconButtonIconWidget,
+                      showIncludeInactiveButton: showIncludeInactiveButton,
+                      onTapIncludeInactiveButton: onTapIncludeInactiveButton,
+                      includeInactive: includeInactive,
+                    ),
 
-                      Flexible(
-                        child: Stack(
-                          children: [
-                            if (!isVisible!)
-                              SizedBox(
-                                  height: getMaxHeight(),
-                                  child: Center(
-                                      child: FadingCircle(
-                                    color: AppTheme.themeColors.primary,
-                                    size: 30,
-                                  ))),
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 100),
-                              constraints: BoxConstraints(maxHeight: getMaxHeight()),
-                              child: Opacity(
-                                opacity: isVisible! ? 1 : 0,
-                                child: UFUSingleSelectList(
-                                  scrollController: scrollController!,
-                                  list: list,
-                                  selectedItemId: selectedItemId,
-                                  onSelect: onSelect,
-                                  type: type,
-                                  canShowLoadMore: canShowLoadMore,
-                                  isLoading: isLoading,
-                                  isLoadMore: isLoadMore,
-                                  listLoader: listLoader,
-                                  showInActiveUserLabel: showIncludeInactiveButton,
+                    Flexible(
+                      child: Stack(
+                        children: [
+                          if (!isVisible!)
+                            SizedBox(
+                              height: getMaxHeight(),
+                              child: Center(
+                                child: FadingCircle(
+                                  color: AppTheme.themeColors.primary,
+                                  size: 30,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 100),
+                            constraints: BoxConstraints(
+                              maxHeight: getMaxHeight(),
+                            ),
+                            child: Opacity(
+                              opacity: isVisible! ? 1 : 0,
+                              child: UFUSingleSelectList(
+                                scrollController: scrollController!,
+                                list: list,
+                                selectedItemId: selectedItemId,
+                                onSelect: onSelect,
+                                type: type,
+                                canShowLoadMore: canShowLoadMore,
+                                isLoading: isLoading,
+                                isLoadMore: isLoadMore,
+                                listLoader: listLoader,
+                                showInActiveUserLabel:
+                                    showIncludeInactiveButton,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            if (prefixButtonText != null)
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
-                                  child: UFUButton(
-                                    text: prefixButtonText?.toUpperCase(),
-                                    colorType: UFUButtonColorType.lightGray,
-                                    size: UFUButtonSize.small,
-                                    onPressed: onTapPrefixBtn,
-                                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          if (prefixButtonText != null)
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 15,
+                                ),
+                                child: UFUButton(
+                                  text: prefixButtonText?.toUpperCase(),
+                                  colorType: UFUButtonColorType.lightGray,
+                                  size: UFUButtonSize.small,
+                                  onPressed: onTapPrefixBtn,
                                 ),
                               ),
-                            if (suffixButtonText != null) ...{
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
-                                  child: UFUButton(
-                                    text: suffixButtonText,
-                                    colorType: UFUButtonColorType.primary,
-                                    size: UFUButtonSize.small,
-                                    onPressed: onTapSuffixBtn,
-                                  ),
+                            ),
+                          if (suffixButtonText != null) ...{
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 15,
+                                ),
+                                child: UFUButton(
+                                  text: suffixButtonText,
+                                  colorType: UFUButtonColorType.primary,
+                                  size: UFUButtonSize.small,
+                                  onPressed: onTapSuffixBtn,
                                 ),
                               ),
-                            },
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                            ),
+                          },
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
+      ),
     );
   }
 
   BorderRadius getBorderRadius() {
-    if(isFilterSheet) {
+    if (isFilterSheet) {
       return BorderRadius.circular(20);
     } else {
       return UFUResponsiveDesign.bottomSheetRadius;
     }
   }
-
 }

@@ -42,47 +42,106 @@ class UFUtils {
   static String startDestination = "";
   static String refreshDestination = "";
   static Function()? refreshToken;
-  
+
   static String fontFamily = "";
   static bool get isRtl => DirectionHelper.isRtl;
-  static Gradient buttonGradient = LinearGradient(colors: [AppTheme.themeColors.primary, AppTheme.themeColors.primary]);
-  
-  static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey = GlobalKey<UFUConfirmationDialogState>();
-  static GlobalKey<UFUConfirmationDialogState> ufuTokenExpireKey = GlobalKey<UFUConfirmationDialogState>();
+  static Gradient buttonGradient = LinearGradient(
+    colors: [AppTheme.themeColors.primary, AppTheme.themeColors.primary],
+  );
+
+  static GlobalKey<UFUConfirmationDialogState> ufuLoaderKey =
+      GlobalKey<UFUConfirmationDialogState>();
+  static GlobalKey<UFUConfirmationDialogState> ufuTokenExpireKey =
+      GlobalKey<UFUConfirmationDialogState>();
 
   ///   Form Validations
-  static String? emailValidator(String? value, {bool isRequired = true, String field = "Email"}) => FormValidator.emailValidator(value, isRequired: isRequired, field: field);
+  static String? emailValidator(
+    String? value, {
+    bool isRequired = true,
+    String field = "Email",
+  }) =>
+      FormValidator.emailValidator(value, isRequired: isRequired, field: field);
 
-  static String? passwordValidator(String? value, {bool isRequired = true, String field = "Password"}) => FormValidator.passwordValidator(value, isRequired: isRequired, field: field);
+  static String? passwordValidator(
+    String? value, {
+    bool isRequired = true,
+    String field = "Password",
+  }) => FormValidator.passwordValidator(
+    value,
+    isRequired: isRequired,
+    field: field,
+  );
 
-  static String? confirmPasswordValidator(String? value, {bool isRequired = true, required String password}) => FormValidator.confirmPasswordValidator(value, isRequired: isRequired, passwordText: password);
+  static String? confirmPasswordValidator(
+    String? value, {
+    bool isRequired = true,
+    required String password,
+  }) => FormValidator.confirmPasswordValidator(
+    value,
+    isRequired: isRequired,
+    passwordText: password,
+  );
 
-  static String? phoneValidator(String? value, {bool isRequired = true, String field = "Phone Number", RegExp? phoneRegex}) => FormValidator.phoneValidator(value, isRequired: isRequired, field: field, phoneRegex: phoneRegex);
+  static String? phoneValidator(
+    String? value, {
+    bool isRequired = true,
+    String field = "Phone Number",
+    RegExp? phoneRegex,
+  }) => FormValidator.phoneValidator(
+    value,
+    isRequired: isRequired,
+    field: field,
+    phoneRegex: phoneRegex,
+  );
 
-  static String? textValidator(String? value, {bool isRequired = true, int minCount = 3}) => FormValidator.textValidator(value, isRequired: isRequired, minCount: minCount);
+  static String? textValidator(
+    String? value, {
+    bool isRequired = true,
+    int minCount = 3,
+  }) => FormValidator.textValidator(
+    value,
+    isRequired: isRequired,
+    minCount: minCount,
+  );
 
   ///   Date-Time Formatting
-  static String? formatDate(DateTime dateTime, {String format = 'dd/MM/yyyy'}) => DateTimeUtils.formatDate(dateTime, format: format);
+  static String? formatDate(
+    DateTime dateTime, {
+    String format = 'dd/MM/yyyy',
+  }) => DateTimeUtils.formatDate(dateTime, format: format);
 
-  static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) => DateTimeUtils.formatTime(dateTime, format: format);
+  static String? formatTime(DateTime dateTime, {String format = 'hh:mm a'}) =>
+      DateTimeUtils.formatTime(dateTime, format: format);
 
-  static String? formatCompleteDateTime(DateTime dateTime, {String format = 'dd/MM/yyy hh:mm a'}) => DateTimeUtils.formatCompleteDateTime(dateTime, format: format);
+  static String? formatCompleteDateTime(
+    DateTime dateTime, {
+    String format = 'dd/MM/yyy hh:mm a',
+  }) => DateTimeUtils.formatCompleteDateTime(dateTime, format: format);
 
   static String? timeAgo(DateTime dateTime) => DateTimeUtils.timeAgo(dateTime);
 
   static String? dayWishes() => DateTimeUtils.dayWishes();
 
-  static DateTime? parseDate(String dateString, {String format = 'dd/MM/yyy'}) => DateTimeUtils.parseDate(dateString, format: format);
+  static DateTime? parseDate(
+    String dateString, {
+    String format = 'dd/MM/yyy',
+  }) => DateTimeUtils.parseDate(dateString, format: format);
 
-  static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) => DateTimeUtils.parseTime(timeString, format: format);
+  static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) =>
+      DateTimeUtils.parseTime(timeString, format: format);
 
-  static DateTime? parseCompleteDateTime(String completeDateTimeString, {String format = 'dd/MM/yyy hh:mm a'}) => DateTimeUtils.parseCompleteDateTime(completeDateTimeString, format: format);
+  static DateTime? parseCompleteDateTime(
+    String completeDateTimeString, {
+    String format = 'dd/MM/yyy hh:mm a',
+  }) => DateTimeUtils.parseCompleteDateTime(
+    completeDateTimeString,
+    format: format,
+  );
 
   static DateTime? timeOfDayToDateTime(TimeOfDay time) {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day, time.hour, time.minute);
   }
-
 
   ///   Number Formatting
   static String? addComasToNumber(String? data) {
@@ -93,7 +152,6 @@ class UFUtils {
 
     return null;
   }
-
 
   ///   Permission Handling
   static UFPermissionUtils permissionUtils = UFPermissionUtils();
@@ -120,7 +178,8 @@ class UFUtils {
   static UFUCommonMethods commonMethods = UFUCommonMethods();
 
   static bool isLoaderVisible() => ufuLoaderKey.currentContext != null;
-  static bool isTokenExpiredVisible() => ufuTokenExpireKey.currentContext != null;
+  static bool isTokenExpiredVisible() =>
+      ufuTokenExpireKey.currentContext != null;
 
   //Add additional arguments to existing arguments
   static void addArguments(Map<String, int> args) {
@@ -145,9 +204,7 @@ class UFUtils {
 
   // copyToClipBoard can be used to copy text to clipboard
   static Future<void> copyToClipBoard(String text) async {
-    await Clipboard.setData(
-      ClipboardData(text: text),
-    );
+    await Clipboard.setData(ClipboardData(text: text));
   }
 
   // parseHtmlToText with HTML string as input and will return text from it
@@ -171,8 +228,10 @@ class UFUtils {
     return false;
   }
 
-  static List<String> convertEmailListToStringList(List<dynamic>? models,
-      {bool? isAlreadyString}) {
+  static List<String> convertEmailListToStringList(
+    List<dynamic>? models, {
+    bool? isAlreadyString,
+  }) {
     List<String> emailList = [];
 
     if (isAlreadyString != null && isAlreadyString) {
@@ -240,8 +299,10 @@ class UFUtils {
     );
   }
 
-  static UFUThumbIconType getIconTypeAccordingToExtension(String filePath,
-      {String? extensionName}) {
+  static UFUThumbIconType getIconTypeAccordingToExtension(
+    String filePath, {
+    String? extensionName,
+  }) {
     String ext = extensionName ?? FileHelper.getFileExtension(filePath) ?? '';
 
     switch (ext) {
@@ -321,17 +382,22 @@ class UFUtils {
 
   static void hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
-  static void showKeyboard() => FocusManager.instance.primaryFocus?.requestFocus();
+  static void showKeyboard() =>
+      FocusManager.instance.primaryFocus?.requestFocus();
 
   static void hideLoaderDialog() {
     if (UFUtils.isLoaderVisible()) Get.back();
   }
 
-  static Future<bool> launchUrl(String url, {bool isInExternalMode = true}) async =>
-      await ul.launchUrl(Uri.parse(url),
-          mode: isInExternalMode
-              ? LaunchMode.externalApplication
-              : LaunchMode.platformDefault);
+  static Future<bool> launchUrl(
+    String url, {
+    bool isInExternalMode = true,
+  }) async => await ul.launchUrl(
+    Uri.parse(url),
+    mode: isInExternalMode
+        ? LaunchMode.externalApplication
+        : LaunchMode.platformDefault,
+  );
 
   static Future<bool> launchCall(String phoneNumber) async =>
       await ul.launchUrl(Uri.parse("tel://$phoneNumber"));
@@ -370,9 +436,7 @@ class UFUtils {
   // }
 
   static Future<void> handleError(Object e) async {
-
     if (e is DioException) {
-
       if (e.response?.statusCode == 401) {
         if (UFUtils.refreshToken != null) {
           await UFUtils.refreshToken?.call();
@@ -392,7 +456,9 @@ class UFUtils {
       debugPrint('🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 ');
       return;
     } else {
-      String? user = await UFUtils.preferences.readObject(UFUtils.preferences.userData);
+      String? user = await UFUtils.preferences.readObject(
+        UFUtils.preferences.userData,
+      );
       Map<String, dynamic>? userJson = user != null ? jsonDecode(user) : null;
 
       List<String> information = [];
@@ -404,15 +470,17 @@ class UFUtils {
         e,
         StackTrace.current,
         fatal: false,
-        information: information
+        information: information,
       );
       return;
     }
   }
 
-  static Future<bool> openAppSetting() async => await Geolocator.openAppSettings();
+  static Future<bool> openAppSetting() async =>
+      await Geolocator.openAppSettings();
 
-  static Future<bool> openLocationSetting() => Geolocator.openLocationSettings();
+  static Future<bool> openLocationSetting() =>
+      Geolocator.openLocationSettings();
 
   static bool isValueNullOrEmpty(dynamic value) {
     bool canCheckEmptiness = (value is String || value is List);
@@ -434,13 +502,12 @@ class UFUtils {
   }
 
   static Future<String> getOldAppDBPath(String dataBaseName) async {
-    Directory? appLibraryDirectory;
     if (Platform.isAndroid) {
-      appLibraryDirectory = await getApplicationDocumentsDirectory();
+      final appLibraryDirectory = await getApplicationDocumentsDirectory();
       return '${appLibraryDirectory.path.replaceFirst("/app_flutter", "")}/databases/$dataBaseName';
     } else {
-      appLibraryDirectory = await getLibraryDirectory();
-      return "${appLibraryDirectory.path}/LocalDatabase/$dataBaseName";
+      final appLibraryDirectory = await getLibraryDirectory();
+      return '${appLibraryDirectory.path}/LocalDatabase/$dataBaseName';
     }
   }
 
@@ -462,35 +529,38 @@ class UFUtils {
   }
 
   static Future<LatLng?> fetchCurrentLocation() async {
-
     /// get current location
     if (!(await permissionUtils.getLocationPermission())) {
       debugPrint("------> Permission denied ");
       bool isPermanentlyDenied = await Permission.location.isPermanentlyDenied;
-      bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
+      bool? isLocationEnabled =
+          await Permission.locationWhenInUse.serviceStatus.isEnabled;
 
-      if(isPermanentlyDenied) {
+      if (isPermanentlyDenied) {
         await picker.permissionDeniedDialogue();
         return null;
-      } else if(!isLocationEnabled){
+      } else if (!isLocationEnabled) {
         debugPrint("------> Location service denied ");
         bool locationEnabled = await loc.Location().requestService();
-        if(!locationEnabled) {
-          bool? locEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-          if(!locEnabled) {
+        if (!locationEnabled) {
+          bool? locEnabled =
+              await Permission.locationWhenInUse.serviceStatus.isEnabled;
+          if (!locEnabled) {
             return null;
           }
         }
       }
       return null;
     } else {
-      bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-      if(!isLocationEnabled) {
+      bool? isLocationEnabled =
+          await Permission.locationWhenInUse.serviceStatus.isEnabled;
+      if (!isLocationEnabled) {
         debugPrint("------> Location service denied ");
         bool locationEnabled = await loc.Location().requestService();
-        if(!locationEnabled) {
-          bool? locEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
-          if(!locEnabled) {
+        if (!locationEnabled) {
+          bool? locEnabled =
+              await Permission.locationWhenInUse.serviceStatus.isEnabled;
+          if (!locEnabled) {
             return null;
           }
         }

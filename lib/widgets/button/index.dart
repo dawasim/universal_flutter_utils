@@ -90,7 +90,7 @@ class UFUButton extends StatelessWidget {
 
   /// Return textSize by using button size and default size is [UFUTextSize.heading3].
   UFUTextSize getTextSize(UFUButtonSize size) {
-    if(textSize != null) return textSize!;
+    if (textSize != null) return textSize!;
 
     switch (size) {
       case UFUButtonSize.flat:
@@ -116,7 +116,7 @@ class UFUButton extends StatelessWidget {
   Color getTextColor(UFUButtonColorType colorType) {
     Color color = AppTheme.themeColors.base;
 
-    if(textColor != null) return textColor!;
+    if (textColor != null) return textColor!;
 
     switch (colorType) {
       case UFUButtonColorType.primary:
@@ -155,7 +155,6 @@ class UFUButton extends StatelessWidget {
 
   /// Return Color  by using colorType and default color is [AppTheme.themeColors.primary] but for outline button color is [UFUColor.transparent].
   Color getButtonColor(UFUButtonColorType colorType) {
-
     if (type == UFUButtonType.outline) {
       return UFUColor.transparent;
     }
@@ -214,7 +213,7 @@ class UFUButton extends StatelessWidget {
 
   /// Return Color by using colorType and default color is [AppTheme.themeColors.primary].
   Color getBorderColor(UFUButtonColorType colorType) {
-    if(borderColor != null) return borderColor!;
+    if (borderColor != null) return borderColor!;
 
     switch (colorType) {
       case UFUButtonColorType.primary:
@@ -313,79 +312,61 @@ class UFUButton extends StatelessWidget {
         case UFUButtonSize.medium:
         case UFUButtonSize.small:
           return width != null
-              ? BoxConstraints(
-                  minWidth: width ?? 0,
-                )
-              : BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width,
-                );
+              ? BoxConstraints(minWidth: width ?? 0)
+              : BoxConstraints(minWidth: MediaQuery.of(context).size.width);
 
         case UFUButtonSize.datePickerButton:
         case UFUButtonSize.extraSmall:
-          return const BoxConstraints(
-            minWidth: 60.0,
-          );
+          return const BoxConstraints(minWidth: 60.0);
 
         case UFUButtonSize.mediumWithIcon:
-          return const BoxConstraints(
-            minWidth: 120.0,
-          );
+          return const BoxConstraints(minWidth: 120.0);
 
         case UFUButtonSize.smallIcon:
-          return const BoxConstraints(
-            minWidth: 26.0,
-          );
+          return const BoxConstraints(minWidth: 26.0);
 
         case UFUButtonSize.floatingButton:
-          return const BoxConstraints(
-            minWidth: 62.0,
-          );
+          return const BoxConstraints(minWidth: 62.0);
 
         default:
-          return BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width,
-          );
+          return BoxConstraints(minWidth: MediaQuery.of(context).size.width);
       }
     }
 
     BoxConstraints getConstraint() {
       switch (size) {
         case UFUButtonSize.flat:
-          return BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width,
-          );
+          return BoxConstraints(minWidth: MediaQuery.of(context).size.width);
         case UFUButtonSize.large:
         case UFUButtonSize.medium:
           return const BoxConstraints(
-              minWidth: 250.0, maxWidth: UFUResponsiveDesign.maxButtonWidth);
+            minWidth: 250.0,
+            maxWidth: UFUResponsiveDesign.maxButtonWidth,
+          );
         case UFUButtonSize.small:
           return const BoxConstraints(
-              minWidth: 150.0, maxWidth: UFUResponsiveDesign.maxButtonWidth);
+            minWidth: 150.0,
+            maxWidth: UFUResponsiveDesign.maxButtonWidth,
+          );
 
         case UFUButtonSize.size24:
           return const BoxConstraints(
-              minWidth: 60.0, maxWidth: UFUResponsiveDesign.maxButtonWidth);
+            minWidth: 60.0,
+            maxWidth: UFUResponsiveDesign.maxButtonWidth,
+          );
 
         case UFUButtonSize.datePickerButton:
         case UFUButtonSize.extraSmall:
-          return const BoxConstraints(
-            minWidth: 60.0,
-          );
+          return const BoxConstraints(minWidth: 60.0);
 
         case UFUButtonSize.mediumWithIcon:
-          return const BoxConstraints(
-            minWidth: 120.0,
-          );
+          return const BoxConstraints(minWidth: 120.0);
 
         case UFUButtonSize.smallIcon:
-          return const BoxConstraints(
-            minWidth: 26.0,
-          );
+          return const BoxConstraints(minWidth: 26.0);
 
         case UFUButtonSize.floatingButton:
-          return const BoxConstraints(
-            minWidth: 62.0,
-          );
+          return const BoxConstraints(minWidth: 62.0);
 
         // default:
         //   return BoxConstraints(
@@ -422,13 +403,14 @@ class UFUButton extends StatelessWidget {
       color: Colors.transparent, //getButtonColor(colorType),
       child: Ink(
         decoration: BoxDecoration(
-            color: colorType == UFUButtonColorType.gradient
-                ? null
-                : getButtonColor(colorType),
-            gradient: colorType == UFUButtonColorType.gradient
-                ? gradient ?? UFUtils.buttonGradient
-                : null,
-            borderRadius: BorderRadius.circular(shapeRadius())),
+          color: colorType == UFUButtonColorType.gradient
+              ? null
+              : getButtonColor(colorType),
+          gradient: colorType == UFUButtonColorType.gradient
+              ? gradient ?? UFUtils.buttonGradient
+              : null,
+          borderRadius: BorderRadius.circular(shapeRadius()),
+        ),
         child: InkWell(
           splashColor: Colors.transparent,
           onLongPress: onLongPress,
@@ -436,35 +418,39 @@ class UFUButton extends StatelessWidget {
           customBorder: borderShape ?? shapeBorderType,
           onTap: (isLoading || disabled) ? null : onPressed,
           child: Container(
-              width: width,
-              constraints:
-                  isFlat ? getConstraint() : getConstraintForFlatButton(),
-              height: getButtonHeight(size),
-              padding: EdgeInsets.symmetric(
-                  horizontal: (iconWidget == null &&
-                          suffixIconWidget == null &&
-                          text != null)
-                      ? 10
-                      : 5),
-              child: getContainerData()),
+            width: width,
+            constraints: isFlat
+                ? getConstraint()
+                : getConstraintForFlatButton(),
+            height: getButtonHeight(size),
+            padding: EdgeInsets.symmetric(
+              horizontal:
+                  (iconWidget == null &&
+                      suffixIconWidget == null &&
+                      text != null)
+                  ? 10
+                  : 5,
+            ),
+            child: getContainerData(),
+          ),
         ),
       ),
     );
 
-    if(isLoading) {
+    if (isLoading) {
       result = Stack(
-          children: [
-            result,
-            Positioned.fill(
-              child: IgnorePointer(
-                child: Center(
-                  child: CupertinoActivityIndicator(
-                    color: textColor ?? AppTheme.themeColors.base,
-                  ),
+        children: [
+          result,
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Center(
+                child: CupertinoActivityIndicator(
+                  color: textColor ?? AppTheme.themeColors.base,
                 ),
               ),
             ),
-          ]
+          ),
+        ],
       );
     }
 
@@ -489,7 +475,7 @@ class UFUButton extends StatelessWidget {
 
   /// Defines text widget
   Widget getText() {
-    if(isLoading) return const SizedBox.shrink();
+    if (isLoading) return const SizedBox.shrink();
 
     if (text == null && iconWidget != null) {
       return const SizedBox.shrink();
@@ -509,15 +495,11 @@ class UFUButton extends StatelessWidget {
     List<Widget> rowChildren = <Widget>[
       getIcon(),
       (iconWidget != null && text != null)
-          ? const SizedBox(
-              width: 4,
-            )
+          ? const SizedBox(width: 4)
           : const SizedBox.shrink(),
       getText(),
       (suffixIconWidget != null && text != null)
-          ? const SizedBox(
-              width: 4,
-            )
+          ? const SizedBox(width: 4)
           : const SizedBox.shrink(),
       getSuffixIcon(),
     ];

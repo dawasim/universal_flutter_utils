@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UFPrefUtils {
-
   final String isFirstRun = 'isFirstRun';
   final String isLoggedIn = 'isLoggedIn';
   String isLoggedOut = 'isLoggedOut';
@@ -13,7 +12,6 @@ class UFPrefUtils {
   String userData = 'userData';
   String skippedAppVersion = 'skippedAppVersion';
   String notificationPayload = "notification_payload";
-
 
   Future<void> clearPref() async {
     SharedPreferences mStorage = await getStorage();
@@ -44,7 +42,6 @@ class UFPrefUtils {
     SharedPreferences mStorage = await getStorage();
     mStorage.remove(authToken);
   }
-
 
   Future<void> writeString(String key, String value) async {
     SharedPreferences mStorage = await getStorage();

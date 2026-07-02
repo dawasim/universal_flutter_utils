@@ -1,5 +1,1 @@
-
-enum UFUNetworkMultiSelectType {
-  get,
-  post
-}
+enum UFUNetworkMultiSelectType { get, post }

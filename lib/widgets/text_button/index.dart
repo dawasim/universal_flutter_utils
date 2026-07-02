@@ -126,16 +126,16 @@ class UFUTextButton extends StatelessWidget {
     return InkWell(
       onTap: isDisabled ? null : onPressed,
       onLongPress: onLongPress,
-      highlightColor: highlightColor ?? defaultColor.withValues(alpha:0.1),
-      splashColor: highlightColor ?? defaultColor.withValues(alpha:0.1),
+      highlightColor: highlightColor ?? defaultColor.withValues(alpha: 0.1),
+      splashColor: highlightColor ?? defaultColor.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(text != null ? 5 : 10),
       child: Opacity(
         opacity: isDisabled ? 0.4 : 1,
         child: Container(
           padding: EdgeInsets.all(padding),
-          child: getIconAndText()
+          child: getIconAndText(),
         ),
-    )
+      ),
     );
   }
 }

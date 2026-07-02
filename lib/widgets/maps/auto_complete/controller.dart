@@ -7,7 +7,6 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:universal_flutter_utils/models/address.dart';
 
 class UFUPlaceAutoCompleteController extends GetxController {
-
   Completer<GoogleMapController> mapController = Completer();
 
   UFUInputBoxController? searchController;
@@ -15,7 +14,6 @@ class UFUPlaceAutoCompleteController extends GetxController {
 
   UFUTextSize textSize;
   UFUFontWeight fontWeight;
-
 
   UFUPlaceAutoCompleteController({
     this.searchController,
@@ -33,7 +31,9 @@ class UFUPlaceAutoCompleteController extends GetxController {
   TextStyle getHintStyle() {
     return TextStyle(
       fontFamily: UFUtils.fontFamily, // TODO - 'Roboto',
-      fontWeight: TextHelper.getFontWeight(fontWeight), //fontWeight ?? FontWeight.w300,
+      fontWeight: TextHelper.getFontWeight(
+        fontWeight,
+      ), //fontWeight ?? FontWeight.w300,
       height: 1.2,
       color: AppTheme.themeColors.hintText,
       fontSize: TextHelper.getTextSize(textSize),
@@ -43,24 +43,28 @@ class UFUPlaceAutoCompleteController extends GetxController {
   TextStyle getErrorStyle() {
     return TextStyle(
       fontFamily: UFUtils.fontFamily, // TODO - 'Roboto',
-      fontWeight: TextHelper.getFontWeight(fontWeight), //fontWeight ?? FontWeight.w300,
+      fontWeight: TextHelper.getFontWeight(
+        fontWeight,
+      ), //fontWeight ?? FontWeight.w300,
       height: 1.2,
       color: AppTheme.themeColors.red,
       fontSize: TextHelper.getTextSize(UFUTextSize.heading5),
     );
   }
 
-
-  Future<void> saveCurrentLocation(PlaceDetails? selectedPlace, {Prediction? searchedItem, Function(UFUAddressModel?)? onDecodeAddress}) async {
+  Future<void> saveCurrentLocation(
+    PlaceDetails? selectedPlace, {
+    Prediction? searchedItem,
+    Function(UFUAddressModel?)? onDecodeAddress,
+  }) async {
     UFUtils.hideKeyboard();
     if (selectedPlace == null && searchedItem == null) return;
 
     Location? sLocation = selectedPlace?.geometry?.location;
 
-    if(searchedItem != null) {
-
+    if (searchedItem != null) {
       Map<String, dynamic> addressComponent = {"address_components": []};
-      if(searchedItem.terms?.isNotEmpty ?? false) {
+      if (searchedItem.terms?.isNotEmpty ?? false) {
         for (var element in selectedPlace?.addressComponents ?? []) {
           addressComponent["address_components"].add(element.toJson());
         }
@@ -68,10 +72,7 @@ class UFUPlaceAutoCompleteController extends GetxController {
 
       _geocodingResult = GeocodingResult.fromJson({
         "geometry": {
-          "location": {
-            "lat": sLocation?.lat,
-            "lng": sLocation?.lng,
-          }
+          "location": {"lat": sLocation?.lat, "lng": sLocation?.lng},
         },
         "place_id": searchedItem.placeId,
         'formatted_address': searchedItem.description,
@@ -88,7 +89,8 @@ class UFUPlaceAutoCompleteController extends GetxController {
       for (var component in _geocodingResult?.addressComponents ?? []) {
         if (component.types?.contains('locality') ?? false) {
           city = component.longName;
-        } else if (component.types?.contains('administrative_area_level_1') ?? false) {
+        } else if (component.types?.contains('administrative_area_level_1') ??
+            false) {
           state = component.longName;
         } else if (component.types?.contains('country') ?? false) {
           country = component.longName;
@@ -97,7 +99,9 @@ class UFUPlaceAutoCompleteController extends GetxController {
         }
       }
 
-      debugPrint("selectedLocLatLng----> ${_geocodingResult?.geometry?.location.lat}----${_geocodingResult?.geometry?.location.lng}");
+      debugPrint(
+        "selectedLocLatLng----> ${_geocodingResult?.geometry?.location.lat}----${_geocodingResult?.geometry?.location.lng}",
+      );
 
       UFUAddressModel address = UFUAddressModel();
 
@@ -118,7 +122,5 @@ class UFUPlaceAutoCompleteController extends GetxController {
     } catch (e) {
       UFUtils.handleError(e);
     }
-
   }
-
 }

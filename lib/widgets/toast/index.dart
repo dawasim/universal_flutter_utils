@@ -8,18 +8,21 @@ class UFUToast {
   static DateTime? _lastShownTime;
   static const Duration _cooldown = Duration(seconds: 1);
 
-  static void showToast(String message, {String? title, ToastType type = ToastType.success}) {
+  static void showToast(
+    String message, {
+    String? title,
+    ToastType type = ToastType.success,
+  }) {
     final now = DateTime.now();
 
     // Prevent showing toasts if another was just shown recently
-    if (_lastShownTime != null &&
-        now.difference(_lastShownTime!) < _cooldown) {
+    if (_lastShownTime != null && now.difference(_lastShownTime!) < _cooldown) {
       return;
     }
 
     _lastShownTime = now;
 
-    if(UFUScreen.isDesktop) {
+    if (UFUScreen.isDesktop) {
       WindowsToast.show(message, type: type);
       return;
     }
@@ -64,12 +67,12 @@ class WindowsToast extends StatefulWidget {
   State<WindowsToast> createState() => _WindowsToastState();
 
   static void show(
-      String message, {
-        Duration duration = const Duration(seconds: 2),
-        IconData? icon,
-        Color? iconColor,
-        ToastType type = ToastType.success,
-      }) {
+    String message, {
+    Duration duration = const Duration(seconds: 2),
+    IconData? icon,
+    Color? iconColor,
+    ToastType type = ToastType.success,
+  }) {
     final overlay = Get.key.currentState?.overlay;
     if (overlay == null) return;
 
@@ -90,7 +93,8 @@ class WindowsToast extends StatefulWidget {
   }
 }
 
-class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderStateMixin {
+class _WindowsToastState extends State<WindowsToast>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<Offset> _slide;
 
@@ -98,7 +102,10 @@ class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderSt
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 250));
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
 
     _slide = Tween<Offset>(
       begin: const Offset(1, 0), // enter from right
@@ -139,7 +146,9 @@ class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderSt
             decoration: BoxDecoration(
               color: AppTheme.themeColors.themeBlack.withAlpha(175),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: const [BoxShadow(blurRadius: 12, color: Colors.black26)],
+              boxShadow: const [
+                BoxShadow(blurRadius: 12, color: Colors.black26),
+              ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -147,11 +156,17 @@ class _WindowsToastState extends State<WindowsToast> with SingleTickerProviderSt
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    widget.type.isWarning ? Container(
-                        width: 1, height: 12,
-                        color: AppTheme.themeColors.base,
-                      )
-                    : Icon(Icons.circle, color: AppTheme.themeColors.base, size: 20),
+                    widget.type.isWarning
+                        ? Container(
+                            width: 1,
+                            height: 12,
+                            color: AppTheme.themeColors.base,
+                          )
+                        : Icon(
+                            Icons.circle,
+                            color: AppTheme.themeColors.base,
+                            size: 20,
+                          ),
                     Icon(icon, color: iconColor, size: 22),
                   ],
                 ),

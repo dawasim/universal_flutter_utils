@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
@@ -7,7 +6,7 @@ class UFUInputBoxClearIcon extends StatelessWidget {
     super.key,
     this.cancelButtonColor,
     this.cancelButtonSize = 22,
-    required this.type
+    required this.type,
   });
 
   final Color? cancelButtonColor;
@@ -18,8 +17,7 @@ class UFUInputBoxClearIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    switch(type) {
+    switch (type) {
       case UFUInputBoxType.withLabelAndClearIcon:
         return Container(
           height: 18,
@@ -27,8 +25,8 @@ class UFUInputBoxClearIcon extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: cancelButtonColor ?? AppTheme.themeColors.secondaryText
-            )
+              color: cancelButtonColor ?? AppTheme.themeColors.secondaryText,
+            ),
           ),
           child: UFUIcon(
             Icons.clear,

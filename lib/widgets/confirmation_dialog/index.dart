@@ -2,11 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-Future<dynamic> ShowUFUConfirmationDialog({required String? title, String? subTitle, Color? subTitleColor,
-  String? prefixBtnText = 'Cancel', String? suffixBtnText = '', VoidCallback? onTapPrefix,
-  VoidCallback? onTapSuffix, IconData? icon, double? iconSize,  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
-  bool disableButtons = false, Widget? suffixBtnIcon, Widget? content, UFUButtonRadius? buttonRadius,
-  UFUButtonColorType? prefixBtnColorType, VoidCallback? onTapIcon,}) async {
+// ignore: non_constant_identifier_names
+Future<dynamic> ShowUFUConfirmationDialog({
+  required String? title,
+  String? subTitle,
+  Color? subTitleColor,
+  String? prefixBtnText = 'Cancel',
+  String? suffixBtnText = '',
+  VoidCallback? onTapPrefix,
+  VoidCallback? onTapSuffix,
+  IconData? icon,
+  double? iconSize,
+  UFUConfirmationDialogType? type = UFUConfirmationDialogType.message,
+  bool disableButtons = false,
+  Widget? suffixBtnIcon,
+  Widget? content,
+  UFUButtonRadius? buttonRadius,
+  UFUButtonColorType? prefixBtnColorType,
+  VoidCallback? onTapIcon,
+}) async {
   return await Get.bottomSheet(
     UFUConfirmationDialog(
       title: title,
@@ -24,7 +38,7 @@ Future<dynamic> ShowUFUConfirmationDialog({required String? title, String? subTi
       content: content,
       prefixBtnColorType: prefixBtnColorType,
       onTapIcon: onTapIcon,
-      buttonRadius: buttonRadius
+      buttonRadius: buttonRadius,
     ),
     // _buildErrorBottomSheet(title, message, showRetry, retryCallback),
     backgroundColor: AppTheme.themeColors.base,
@@ -36,7 +50,6 @@ Future<dynamic> ShowUFUConfirmationDialog({required String? title, String? subTi
 }
 
 class UFUConfirmationDialog extends StatefulWidget {
-
   const UFUConfirmationDialog({
     super.key,
     required this.title,
@@ -55,7 +68,7 @@ class UFUConfirmationDialog extends StatefulWidget {
     this.prefixBtnColorType,
     this.onTapIcon,
     this.buttonRadius,
-    });
+  });
 
   /// It can be used to set title of the dialog, this is required
   final String? title;
@@ -116,23 +129,22 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
       child: Padding(
         padding: EdgeInsets.only(
           top: AppBar().preferredSize.height / 1.5,
-          bottom: 10
+          bottom: 10,
         ),
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              color: AppTheme.themeColors.base),
+            borderRadius: BorderRadius.circular(18),
+            color: AppTheme.themeColors.base,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Flexible(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height - 180,
+                    maxHeight: MediaQuery.of(context).size.height - 180,
                   ),
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -144,8 +156,9 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                             onTap: widget.onTapIcon,
                             child: Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: AppTheme.themeColors.transparent),
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppTheme.themeColors.transparent,
+                              ),
                               margin: const EdgeInsets.only(bottom: 15, top: 5),
                               padding: const EdgeInsets.all(4),
                               child: UFUIcon(
@@ -171,30 +184,29 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
                             child: UFUText(
                               text: widget.subTitle!,
                               textSize: UFUTextSize.heading4,
-                              textColor: widget.subTitleColor ?? AppTheme.themeColors.text,
+                              textColor:
+                                  widget.subTitleColor ??
+                                  AppTheme.themeColors.text,
                               height: 1.5,
                             ),
                           ),
 
-                        if(widget.content != null) Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: widget.content!,
-                        ),
+                        if (widget.content != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 30),
+                            child: widget.content!,
+                          ),
                       ],
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: getButtons(),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -225,30 +237,31 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
             disabled: widget.disableButtons,
             buttonRadius: widget.buttonRadius,
             colorType: UFUButtonColorType.lightGray,
-            onPressed: widget.onTapPrefix ??
+            onPressed:
+                widget.onTapPrefix ??
                 () {
                   Navigator.pop(context);
                 },
           ),
         ),
-        if(widget.suffixBtnText != null && widget.suffixBtnText!.isNotEmpty) const SizedBox(
-          width: 14,
-        ),
-        if(widget.suffixBtnText != null && widget.suffixBtnText!.isNotEmpty) Expanded(
-          flex: UFUResponsiveDesign.popOverButtonFlex,
-          child: UFUButton(
-            text: widget.suffixBtnIcon == null
-                ? widget.suffixBtnText?.toUpperCase()
-                : '',
-            textColor: AppTheme.themeColors.base,
-            size: UFUButtonSize.small,
-            colorType: UFUButtonColorType.primary,
-            buttonRadius: widget.buttonRadius,
-            onPressed: widget.onTapSuffix,
-            iconWidget: widget.suffixBtnIcon,
-            disabled: widget.disableButtons,
+        if (widget.suffixBtnText != null && widget.suffixBtnText!.isNotEmpty)
+          const SizedBox(width: 14),
+        if (widget.suffixBtnText != null && widget.suffixBtnText!.isNotEmpty)
+          Expanded(
+            flex: UFUResponsiveDesign.popOverButtonFlex,
+            child: UFUButton(
+              text: widget.suffixBtnIcon == null
+                  ? widget.suffixBtnText?.toUpperCase()
+                  : '',
+              textColor: AppTheme.themeColors.base,
+              size: UFUButtonSize.small,
+              colorType: UFUButtonColorType.primary,
+              buttonRadius: widget.buttonRadius,
+              onPressed: widget.onTapSuffix,
+              iconWidget: widget.suffixBtnIcon,
+              disabled: widget.disableButtons,
+            ),
           ),
-        ),
       ],
     );
   }
@@ -265,9 +278,11 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
           disabled: widget.disableButtons,
           buttonRadius: widget.buttonRadius,
           colorType: widget.prefixBtnColorType ?? UFUButtonColorType.lightGray,
-          onPressed: widget.onTapPrefix ?? () {
-            Navigator.pop(context);
-          },
+          onPressed:
+              widget.onTapPrefix ??
+              () {
+                Navigator.pop(context);
+              },
         ),
       ],
     );

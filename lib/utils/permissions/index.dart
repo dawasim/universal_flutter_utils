@@ -1,7 +1,6 @@
 import 'package:permission_handler/permission_handler.dart';
 
 class UFPermissionUtils {
-
   Future<bool> getAllPermissions() async {
     // Request permissions for storage, camera, gallery, and notification
     Map<Permission, PermissionStatus> statuses = await [
@@ -17,7 +16,9 @@ class UFPermissionUtils {
     ].request();
 
     // Check if all permissions are granted
-    bool allPermissionsGranted = statuses.values.every((status) => status.isGranted);
+    bool allPermissionsGranted = statuses.values.every(
+      (status) => status.isGranted,
+    );
 
     if (allPermissionsGranted) {
       return true;
@@ -34,10 +35,9 @@ class UFPermissionUtils {
   }
 
   Future<bool> getStoragePermission() async {
-
     bool result = await _handlePermission(Permission.storage);
     PermissionStatus status = await Permission.storage.status;
-    if(!result) {
+    if (!result) {
       status = await Permission.manageExternalStorage.request();
     }
     return status.isGranted;
@@ -110,7 +110,6 @@ class UFPermissionUtils {
       // Handle other denied statuses
       readStatus = await Permission.contacts.request();
     }
-    return readStatus.isGranted ;
+    return readStatus.isGranted;
   }
-
 }

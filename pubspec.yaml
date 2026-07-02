@@ -1,6 +1,8 @@
 name: universal_flutter_utils
 
-description: "A powerful, all-in-one Flutter utilities and widgets package to speed up development and keep your code clean."
+description: >-
+  Flutter UI toolkit with widgets, Dio API helpers, Firebase auth, file pickers,
+  validators, themes, socket.io, maps, and cross-platform utilities.
 version: 0.0.9
 
 platforms:
@@ -11,7 +13,16 @@ platforms:
   web:
   windows:
 
-homepage: https://github.com/dawasim/universal_flutter_utils/blob/main/README.md
+homepage: https://github.com/dawasim/universal_flutter_utils
+repository: https://github.com/dawasim/universal_flutter_utils
+issue_tracker: https://github.com/dawasim/universal_flutter_utils/issues
+
+topics:
+  - widgets
+  - utilities
+  - ui
+  - networking
+  - authentication
 
 license: MIT
 
@@ -30,20 +41,20 @@ dependencies:
   shimmer_animation: ^2.2.2+1
   scroll_to_index: ^3.0.1
 
-  intl: ^0.20.2
+  intl: ^0.20.3
   get: ^4.7.3
   shared_preferences: ^2.5.5
 
-  path_provider: ^2.1.5
-  file_picker: ^11.0.1
+  path_provider: ^2.1.6
+  file_picker: ^12.0.0-beta.5
   permission_handler: ^12.0.3
-  image_picker: ^1.2.2
+  image_picker: ^1.2.3
   image: ^4.9.1
   custom_image_crop: ^0.1.1
   audio_waveforms: ^2.0.2
   flutter_native_contact_picker: ^0.0.12
   open_filex: ^4.7.0
-  package_info_plus: ^9.0.0
+  package_info_plus: ^10.2.0
 
   # Location
   map_location_picker: ^3.1.0
@@ -51,20 +62,20 @@ dependencies:
   form_builder_extra_fields: ^12.0.0
 
   # Display share prompt
-  share_plus: ^12.0.1
+  share_plus: ^13.2.0
 
   ## Server communication
   http: ^1.6.0
-  dio: ^5.9.2
-  socket_io_client: ^3.1.5
+  dio: ^5.10.0
+  socket_io_client: ^3.1.6
   cached_network_image: ^3.4.1
   url_launcher: ^6.3.2
   flutter_widget_from_html_core: ^0.17.2
-  geolocator: ^14.0.2
+  geolocator: ^14.0.3
   flutter_typeahead: ^5.2.0
 
   # Video Player
-  chewie: ^1.13.0
+  chewie: ^1.14.1
   video_player: ^2.11.1
 
   encrypt: ^5.0.3
@@ -78,13 +89,13 @@ dependencies:
   local_auth: ^3.0.1
 
   # Firebase
-  firebase_core: ^4.10.0
-  firebase_auth: ^6.5.2
-  firebase_crashlytics: ^5.2.3
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+  firebase_crashlytics: ^5.2.4
 
   # Push Notifications
-  firebase_messaging: ^16.3.0
-  flutter_local_notifications: ^22.0.0
+  firebase_messaging: ^16.4.1
+  flutter_local_notifications: ^22.0.1
 
   # Social login
   google_sign_in: ^7.2.0
@@ -97,10 +108,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-
-dependency_overrides:
-  retrofit: 4.8.0
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

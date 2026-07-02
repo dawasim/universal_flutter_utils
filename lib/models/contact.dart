@@ -1,7 +1,7 @@
 import 'package:flutter_native_contact_picker/model/contact.dart';
 
 class ContactModel {
-/*
+  /*
 {
   "fullName": "fullName",
   "phoneNumbers": [
@@ -13,10 +13,7 @@ class ContactModel {
   String? fullName;
   List<String?>? phoneNumbers;
 
-  ContactModel({
-    this.fullName,
-    this.phoneNumbers,
-  });
+  ContactModel({this.fullName, this.phoneNumbers});
 
   ContactModel.fromJson(Map<String, dynamic> json) {
     fullName = json['fullName']?.toString();

@@ -39,10 +39,11 @@ class UFUDashedBorder extends Border {
     this.spaceRatio,
     this.spaceLength,
   }) : super(
-      bottom: horizontal,
-      top: horizontal,
-      left: vertical,
-      right: vertical);
+         bottom: horizontal,
+         top: horizontal,
+         left: vertical,
+         right: vertical,
+       );
 
   /// You can define sides property for all sides.
   factory UFUDashedBorder.all({
@@ -57,7 +58,11 @@ class UFUDashedBorder extends Border {
     double? spaceLength,
   }) {
     final BorderSide side = BorderSide(
-        color: color, width: width, style: style, strokeAlign: strokeAlign);
+      color: color,
+      width: width,
+      style: style,
+      strokeAlign: strokeAlign,
+    );
     return UFUDashedBorder.fromBorderSide(
       side: side,
       dashLength: dashLength,
@@ -76,12 +81,12 @@ class UFUDashedBorder extends Border {
 
   @override
   void paint(
-      Canvas canvas,
-      Rect rect, {
-        TextDirection? textDirection,
-        BoxShape shape = BoxShape.rectangle,
-        BorderRadius? borderRadius,
-      }) {
+    Canvas canvas,
+    Rect rect, {
+    TextDirection? textDirection,
+    BoxShape shape = BoxShape.rectangle,
+    BorderRadius? borderRadius,
+  }) {
     assert(spaceRatio == null || spaceLength == null);
     if (borderRadius != null) {
       Path path = Path()..addRRect(borderRadius.toRRect(rect));
@@ -123,8 +128,9 @@ class UFUDashedBorder extends Border {
         target = distance + diff;
       }
       canvas.drawPath(
-          metric.extractPath(distance % metric.length, target % metric.length),
-          top.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(distance % metric.length, target % metric.length),
+        top.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner && distance < (topWidth) - diff) {
         distance = (topWidth) - diff;
       } else {
@@ -142,21 +148,23 @@ class UFUDashedBorder extends Border {
       double target = 0;
       double diff = 0;
       if (distance == (topWidth)) {
-        diff = distance + dashLength / 2 <=
-            (metric.length - bottomWidth - leftHeight)
+        diff =
+            distance + dashLength / 2 <=
+                (metric.length - bottomWidth - leftHeight)
             ? dashLength / 2
             : (metric.length - bottomWidth - leftHeight) - distance;
         target = distance + diff;
       } else {
         diff =
-        distance + dashLength <= (metric.length - bottomWidth - leftHeight)
+            distance + dashLength <= (metric.length - bottomWidth - leftHeight)
             ? dashLength
             : (metric.length - bottomWidth - leftHeight) - distance;
         target = distance + diff;
       }
       canvas.drawPath(
-          metric.extractPath(distance % metric.length, target % metric.length),
-          right.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(distance % metric.length, target % metric.length),
+        right.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner &&
           distance < (metric.length - bottomWidth - leftHeight) - diff) {
         distance = (metric.length - bottomWidth - leftHeight) - diff;
@@ -187,8 +195,9 @@ class UFUDashedBorder extends Border {
         target = distance + diff;
       }
       canvas.drawPath(
-          metric.extractPath(distance % metric.length, target % metric.length),
-          bottom.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(distance % metric.length, target % metric.length),
+        bottom.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner && distance < metric.length - leftHeight - diff) {
         distance = metric.length - leftHeight - diff;
       } else {
@@ -217,9 +226,12 @@ class UFUDashedBorder extends Border {
       }
 
       canvas.drawPath(
-          metric.extractPath(distance % metric.length,
-              target == metric.length ? metric.length : target % metric.length),
-          left.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(
+          distance % metric.length,
+          target == metric.length ? metric.length : target % metric.length,
+        ),
+        left.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner && distance < metric.length - diff) {
         distance = metric.length - diff;
       } else {
@@ -232,7 +244,11 @@ class UFUDashedBorder extends Border {
   /// This method will work and draw for borders whose corner is radius.
   /// It will draw centered by calculating the corner points.
   void _drawRadiusPath(
-      Canvas canvas, Path source, Rect rect, BorderRadius? borderRadius) {
+    Canvas canvas,
+    Path source,
+    Rect rect,
+    BorderRadius? borderRadius,
+  ) {
     var metric = source.computeMetrics().first;
     var leftHeight = rect.height;
     var rightHeight = rect.height;
@@ -253,7 +269,8 @@ class UFUDashedBorder extends Border {
 
       var tempRadius = BorderRadius.only(bottomLeft: borderRadius.bottomLeft);
       var tempPath = Path()..addRRect(tempRadius.toRRect(rect));
-      bottomLeftCorner = tempPath.computeMetrics().first.length -
+      bottomLeftCorner =
+          tempPath.computeMetrics().first.length -
           (leftHeight +
               borderRadius.topLeft.y +
               bottomWidth +
@@ -263,7 +280,8 @@ class UFUDashedBorder extends Border {
 
       tempRadius = BorderRadius.only(topLeft: borderRadius.topLeft);
       tempPath = Path()..addRRect(tempRadius.toRRect(rect));
-      topLeftCorner = tempPath.computeMetrics().first.length -
+      topLeftCorner =
+          tempPath.computeMetrics().first.length -
           (leftHeight +
               borderRadius.bottomLeft.y +
               topWidth +
@@ -273,7 +291,8 @@ class UFUDashedBorder extends Border {
 
       tempRadius = BorderRadius.only(topRight: borderRadius.topRight);
       tempPath = Path()..addRRect(tempRadius.toRRect(rect));
-      topRightCorner = tempPath.computeMetrics().first.length -
+      topRightCorner =
+          tempPath.computeMetrics().first.length -
           (topWidth +
               borderRadius.topLeft.x +
               rightHeight +
@@ -283,7 +302,8 @@ class UFUDashedBorder extends Border {
 
       tempRadius = BorderRadius.only(bottomRight: borderRadius.bottomRight);
       tempPath = Path()..addRRect(tempRadius.toRRect(rect));
-      bottomRightCorner = tempPath.computeMetrics().first.length -
+      bottomRightCorner =
+          tempPath.computeMetrics().first.length -
           (bottomWidth +
               borderRadius.bottomLeft.x +
               rightHeight +
@@ -294,11 +314,13 @@ class UFUDashedBorder extends Border {
     //endregion
 
     //region calculate spacing and draw left border
-    int partNumber = (leftHeight + bottomLeftCorner / 2 + topLeftCorner / 2) ~/
+    int partNumber =
+        (leftHeight + bottomLeftCorner / 2 + topLeftCorner / 2) ~/
         (dashLength + space);
 
-    var leftSpacing = ((leftHeight + bottomLeftCorner / 2 + topLeftCorner / 2) -
-        (partNumber * dashLength)) /
+    var leftSpacing =
+        ((leftHeight + bottomLeftCorner / 2 + topLeftCorner / 2) -
+            (partNumber * dashLength)) /
         (partNumber);
     double distance = -bottomLeftCorner / 2;
     while (distance < leftHeight + topLeftCorner / 2) {
@@ -318,15 +340,18 @@ class UFUDashedBorder extends Border {
 
       if (distance.isNegative && !target.isNegative) {
         canvas.drawPath(
-            metric.extractPath(distance % metric.length, metric.length),
-            left.toPaint()..strokeCap = strokeCap);
-        canvas.drawPath(metric.extractPath(0, target),
-            left.toPaint()..strokeCap = strokeCap);
+          metric.extractPath(distance % metric.length, metric.length),
+          left.toPaint()..strokeCap = strokeCap,
+        );
+        canvas.drawPath(
+          metric.extractPath(0, target),
+          left.toPaint()..strokeCap = strokeCap,
+        );
       } else {
         canvas.drawPath(
-            metric.extractPath(
-                distance % metric.length, target % metric.length),
-            left.toPaint()..strokeCap = strokeCap);
+          metric.extractPath(distance % metric.length, target % metric.length),
+          left.toPaint()..strokeCap = strokeCap,
+        );
       }
       if (isOnlyCorner && distance < leftHeight + topLeftCorner / 2 - diff) {
         distance = leftHeight + topLeftCorner / 2 - diff;
@@ -337,13 +362,15 @@ class UFUDashedBorder extends Border {
     //endregion
 
     //region calculate spacing and draw top border
-    partNumber = (topWidth + topRightCorner / 2 + topLeftCorner / 2) ~/
+    partNumber =
+        (topWidth + topRightCorner / 2 + topLeftCorner / 2) ~/
         (dashLength + space);
 
-    var topSpacing = (topWidth +
-        topRightCorner / 2 +
-        topLeftCorner / 2 -
-        (partNumber * dashLength)) /
+    var topSpacing =
+        (topWidth +
+            topRightCorner / 2 +
+            topLeftCorner / 2 -
+            (partNumber * dashLength)) /
         (partNumber);
     distance = (leftHeight + topLeftCorner / 2);
 
@@ -352,27 +379,30 @@ class UFUDashedBorder extends Border {
       double target = 0;
       double diff = 0;
       if (distance == (leftHeight + topLeftCorner / 2)) {
-        diff = distance + dashLength / 2 <=
-            (leftHeight + topWidth) + topLeftCorner + topRightCorner / 2
+        diff =
+            distance + dashLength / 2 <=
+                (leftHeight + topWidth) + topLeftCorner + topRightCorner / 2
             ? dashLength / 2
             : (leftHeight + topWidth) +
-            topLeftCorner +
-            topRightCorner / 2 -
-            distance;
+                  topLeftCorner +
+                  topRightCorner / 2 -
+                  distance;
         target = distance + diff;
       } else {
-        diff = distance + dashLength <=
-            (leftHeight + topWidth) + topLeftCorner + topRightCorner / 2
+        diff =
+            distance + dashLength <=
+                (leftHeight + topWidth) + topLeftCorner + topRightCorner / 2
             ? dashLength
             : (leftHeight + topWidth) +
-            topLeftCorner +
-            topRightCorner / 2 -
-            distance;
+                  topLeftCorner +
+                  topRightCorner / 2 -
+                  distance;
         target = distance + diff;
       }
       canvas.drawPath(
-          metric.extractPath(distance % metric.length, target % metric.length),
-          top.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(distance % metric.length, target % metric.length),
+        top.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner &&
           distance <
               (leftHeight + topWidth) +
@@ -389,12 +419,14 @@ class UFUDashedBorder extends Border {
     //endregion
 
     //region calculate spacing and draw right border
-    partNumber = (rightHeight + topRightCorner / 2 + bottomRightCorner / 2) ~/
+    partNumber =
+        (rightHeight + topRightCorner / 2 + bottomRightCorner / 2) ~/
         (dashLength + space);
-    var rightSpacing = (rightHeight +
-        topRightCorner / 2 +
-        bottomRightCorner / 2 -
-        (partNumber * dashLength)) /
+    var rightSpacing =
+        (rightHeight +
+            topRightCorner / 2 +
+            bottomRightCorner / 2 -
+            (partNumber * dashLength)) /
         (partNumber);
     distance = (leftHeight + topWidth) + topLeftCorner + topRightCorner / 2;
 
@@ -407,46 +439,50 @@ class UFUDashedBorder extends Border {
       double diff = 0;
       if (distance ==
           (leftHeight + topWidth) + topLeftCorner + topRightCorner / 2) {
-        diff = distance + dashLength / 2 <=
-            (metric.length -
-                bottomWidth -
-                bottomLeftCorner -
-                (bottomRightCorner / 2))
+        diff =
+            distance + dashLength / 2 <=
+                (metric.length -
+                    bottomWidth -
+                    bottomLeftCorner -
+                    (bottomRightCorner / 2))
             ? dashLength / 2
             : (metric.length -
-            bottomWidth -
-            bottomLeftCorner -
-            (bottomRightCorner / 2)) -
-            distance;
+                      bottomWidth -
+                      bottomLeftCorner -
+                      (bottomRightCorner / 2)) -
+                  distance;
         target = distance + diff;
       } else {
-        diff = distance + dashLength <=
-            (metric.length -
-                bottomWidth -
-                bottomLeftCorner -
-                (bottomRightCorner / 2))
+        diff =
+            distance + dashLength <=
+                (metric.length -
+                    bottomWidth -
+                    bottomLeftCorner -
+                    (bottomRightCorner / 2))
             ? dashLength
             : (metric.length -
-            bottomWidth -
-            bottomLeftCorner -
-            (bottomRightCorner / 2)) -
-            distance;
+                      bottomWidth -
+                      bottomLeftCorner -
+                      (bottomRightCorner / 2)) -
+                  distance;
         target = distance + diff;
       }
       canvas.drawPath(
-          metric.extractPath(distance % metric.length, target % metric.length),
-          right.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(distance % metric.length, target % metric.length),
+        right.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner &&
           distance <
               (metric.length -
-                  bottomWidth -
-                  bottomLeftCorner -
-                  (bottomRightCorner / 2)) -
+                      bottomWidth -
+                      bottomLeftCorner -
+                      (bottomRightCorner / 2)) -
                   diff) {
-        distance = (metric.length -
-            bottomWidth -
-            bottomLeftCorner -
-            (bottomRightCorner / 2)) -
+        distance =
+            (metric.length -
+                bottomWidth -
+                bottomLeftCorner -
+                (bottomRightCorner / 2)) -
             diff;
       } else {
         distance = target + rightSpacing;
@@ -455,14 +491,17 @@ class UFUDashedBorder extends Border {
     //endregion
 
     //region calculate spacing and draw bottom border
-    partNumber = (bottomWidth + bottomRightCorner / 2 + bottomLeftCorner / 2) ~/
+    partNumber =
+        (bottomWidth + bottomRightCorner / 2 + bottomLeftCorner / 2) ~/
         (dashLength + space);
-    var bottomSpacing = (bottomWidth +
-        bottomRightCorner / 2 +
-        bottomLeftCorner / 2 -
-        (partNumber * dashLength)) /
+    var bottomSpacing =
+        (bottomWidth +
+            bottomRightCorner / 2 +
+            bottomLeftCorner / 2 -
+            (partNumber * dashLength)) /
         (partNumber);
-    distance = (metric.length -
+    distance =
+        (metric.length -
         bottomWidth -
         bottomLeftCorner -
         (bottomRightCorner / 2));
@@ -486,8 +525,9 @@ class UFUDashedBorder extends Border {
         target = distance + diff;
       }
       canvas.drawPath(
-          metric.extractPath(distance % metric.length, target % metric.length),
-          bottom.toPaint()..strokeCap = strokeCap);
+        metric.extractPath(distance % metric.length, target % metric.length),
+        bottom.toPaint()..strokeCap = strokeCap,
+      );
       if (isOnlyCorner &&
           distance < metric.length - bottomLeftCorner / 2 - diff) {
         distance = metric.length - bottomLeftCorner / 2 - diff;
@@ -496,5 +536,6 @@ class UFUDashedBorder extends Border {
       }
     }
   }
-//endregion
+
+  //endregion
 }

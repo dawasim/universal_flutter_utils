@@ -1,15 +1,11 @@
-
 class FileUploadStatus {
-
   static const String pending = 'pending';
   static const String uploading = 'uploading';
   static const String paused = 'paused';
   static const String uploaded = 'uploaded';
-
 }
 
 class FileUploadType {
-
   static const String companyFiles = 'companyFiles';
   static const String measurements = 'measurements';
   static const String estimations = 'estimations';
@@ -23,12 +19,10 @@ class FileUploadType {
   static const String companyCam = 'companyCam';
   static const String template = 'template';
   static const String xactimate = 'xactimate';
-  static const String srsOrder = 'srsOrder'; 
-
+  static const String srsOrder = 'srsOrder';
 }
 
 class FileUploadSupportedFiles {
-
   static List<String> extensions = [
     "jpg",
     "jpeg",
@@ -63,15 +57,8 @@ class FileUploadSupportedFiles {
     "esx",
     "sfz",
   ];
-
 }
 
 class SrsSupportedFiles {
-
-  static List<String> extensions = [
-    "jpg",
-    "jpeg",
-    "png",
-    "pdf",
-  ];
+  static List<String> extensions = ["jpg", "jpeg", "png", "pdf"];
 }

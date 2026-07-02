@@ -28,22 +28,24 @@ class UFUNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius!),
-      child: (src?.isNotEmpty ?? false) ? CachedNetworkImage(
-        imageUrl: src!,
-        height: height,
-        width: width,
-        fit: boxFit,
-        httpHeaders: CookiesService.savedCookies,
-        placeholder: (context, error){
-          return getPlaceholder();
-        },
-        errorWidget: (context, error, stackTrace){
-          return getPlaceholder();
-        },
-      ) : getPlaceholder(),
+      child: (src?.isNotEmpty ?? false)
+          ? CachedNetworkImage(
+              imageUrl: src!,
+              height: height,
+              width: width,
+              fit: boxFit,
+              httpHeaders: CookiesService.savedCookies,
+              placeholder: (context, error) {
+                return getPlaceholder();
+              },
+              errorWidget: (context, error, stackTrace) {
+                return getPlaceholder();
+              },
+            )
+          : getPlaceholder(),
     );
   }
 
-  Widget getPlaceholder() => placeHolder ?? Image.asset('assets/images/alt-image.png');
-
+  Widget getPlaceholder() =>
+      placeHolder ?? Image.asset('assets/images/alt-image.png');
 }

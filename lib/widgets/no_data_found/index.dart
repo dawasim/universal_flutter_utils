@@ -29,11 +29,14 @@ class UFUNoDataFound extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if(icon != null)...{
-              UFUIcon(icon!,
-                color: (iconColor ?? AppTheme.themeColors.primary).withAlpha(60),
+            if (icon != null) ...{
+              UFUIcon(
+                icon!,
+                color: (iconColor ?? AppTheme.themeColors.primary).withAlpha(
+                  60,
+                ),
                 size: iconSize ?? 90,
-              )
+              ),
             },
 
             Padding(
@@ -47,12 +50,12 @@ class UFUNoDataFound extends StatelessWidget {
                 textColor: textColor,
               ),
             ),
-            if(!UFUtils.isValueNullOrEmpty(descriptions))...{
+            if (!UFUtils.isValueNullOrEmpty(descriptions)) ...{
               UFUText(
                 text: descriptions ?? '',
                 textColor: AppTheme.themeColors.darkGray,
               ),
-            }
+            },
           ],
         ),
       ),

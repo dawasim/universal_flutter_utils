@@ -33,14 +33,14 @@ class UFUColor {
   static const Color lightYellow = Color(0xffF9F9CB);
   static const Color yellow = Color(0xffE7D070);
   static const Color darkRed = Color(0xffA47070);
-  static const Color lightRed = Color(0xffF4D9D9) ;
+  static const Color lightRed = Color(0xffF4D9D9);
   static const Color lemon = Color(0xffF3F3D5);
   static const Color darkYellow = Color(0xffBCBC8B);
   static const Color mintGreen = Color(0xffD8F8DA);
-  static const Color oliveGreen = Color(0xff9CC39F) ;
+  static const Color oliveGreen = Color(0xff9CC39F);
   static const Color lightPurple = Color(0xffCFDFFF);
   static const Color darkPurple = Color(0xff889CC6);
-  static const Color uranianBlue = Color(0xffC5E6FF) ;
+  static const Color uranianBlue = Color(0xffC5E6FF);
   static const Color cornflowerBlue = Color(0xff92C5EC);
   static const Color green = Color(0xff008000);
   static const Color dimRed = Color(0xfff8d7da);
@@ -50,19 +50,16 @@ class UFUColor {
   static const Color themeGreen = Color(0xff26D07C);
   static const Color themeBlue = Color(0xff4779FF);
 
-
-  static const MaterialColor primaryMaterialColor = MaterialColor(
-      4281216558, {
-        100 : themeBlack,
-        200 : themeBlack,
-        300 : themeBlack,
-        400 : themeBlack,
-        500 : themeBlack,
-        600 : themeBlack,
-        700 : themeBlack,
-        800 : themeBlack,
-        900 : themeBlack,
-      }
-  );
+  static const MaterialColor primaryMaterialColor = MaterialColor(4281216558, {
+    100: themeBlack,
+    200: themeBlack,
+    300: themeBlack,
+    400: themeBlack,
+    500: themeBlack,
+    600: themeBlack,
+    700: themeBlack,
+    800: themeBlack,
+    900: themeBlack,
+  });
   static const Color lightestGray = Color(0xffE5E5E5);
 }

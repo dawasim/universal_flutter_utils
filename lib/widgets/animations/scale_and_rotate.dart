@@ -8,7 +8,8 @@ class UFUScaleAndRotateAnim extends StatelessWidget {
     required this.secondChildKey,
     required this.firstChild,
     required this.secondChild,
-    this.forward = true});
+    this.forward = true,
+  });
 
   /// It can be used to set duration of animation
   /// default is [300ms]

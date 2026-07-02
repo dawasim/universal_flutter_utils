@@ -14,10 +14,13 @@ class UFUOtpInputBox extends StatefulWidget {
 
   final UFUInputBoxController? inputBoxController;
   final TextEditingController? controller;
+
   /// It is use to get focus of a inputBox.
   final FocusNode? focusNode;
+
   /// Use to validate values of inputBox.
   final FormFieldValidator<dynamic>? validator;
+
   /// Fires when user completes pin input
   final ValueChanged<String>? onCompleted;
 
@@ -26,7 +29,6 @@ class UFUOtpInputBox extends StatefulWidget {
 }
 
 class _UFUOtpInputBoxState extends State<UFUOtpInputBox> {
-
   late UFUInputBoxController inputBoxController;
   String errorText = '';
   final formKey = GlobalKey<FormState>();
@@ -43,7 +45,7 @@ class _UFUOtpInputBoxState extends State<UFUOtpInputBox> {
 
   String? validateField(String? value) {
     setState(() {
-      if(widget.validator != null) {
+      if (widget.validator != null) {
         errorText = widget.validator!(value) ?? '';
       }
     });
@@ -52,7 +54,6 @@ class _UFUOtpInputBoxState extends State<UFUOtpInputBox> {
 
   @override
   Widget build(BuildContext context) {
-
     Color focusedBorderColor = AppTheme.themeColors.primary;
     Color fillColor = AppTheme.themeColors.base;
     Color borderColor = AppTheme.themeColors.inverse;
@@ -60,16 +61,12 @@ class _UFUOtpInputBoxState extends State<UFUOtpInputBox> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(
-        fontSize: 22,
-        color: AppTheme.themeColors.primary,
-      ),
+      textStyle: TextStyle(fontSize: 22, color: AppTheme.themeColors.primary),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: borderColor),
       ),
     );
-
 
     return Pinput(
       controller: inputBoxController.controller,

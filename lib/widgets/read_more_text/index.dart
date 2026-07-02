@@ -24,11 +24,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
-
-enum TrimMode {
-  length,
-  line,
-}
+enum TrimMode { length, line }
 
 class UFUReadMoreText extends StatefulWidget {
   const UFUReadMoreText(
@@ -51,6 +47,8 @@ class UFUReadMoreText extends StatefulWidget {
     // this.fontFamily = UFUFontFamily.productSans,
     this.fontWeight = UFUFontWeight.regular,
     this.textColor,
+    this.trimCollapsedTextColor,
+    this.trimExpandedTextColor,
     this.height,
     this.showDialogOnReadMore = false,
   });
@@ -82,9 +80,11 @@ class UFUReadMoreText extends StatefulWidget {
 
   final UFUTextSize textSize;
   // final UFUFontFamily fontFamily;
-  
+
   final UFUFontWeight fontWeight;
   final Color? textColor;
+  final Color? trimCollapsedTextColor;
+  final Color? trimExpandedTextColor;
   final double? height;
   final bool? showDialogOnReadMore;
 
@@ -98,27 +98,32 @@ const String lineSeparator = '\u2028';
 
 class UFUReadMoreTextState extends State<UFUReadMoreText> {
   bool isReadMore = true;
-  
 
   void _onTapLink() {
     setState(() {
-      if((widget.text.length>250&&widget.text.length<500) && !(widget.showDialogOnReadMore!)) {
-         isReadMore = !isReadMore;
-      widget.callback?.call(isReadMore);
-      }
-      else
-      {
+      if ((widget.text.length > 250 && widget.text.length < 500) &&
+          !(widget.showDialogOnReadMore!)) {
+        isReadMore = !isReadMore;
+        widget.callback?.call(isReadMore);
+      } else {
         showGeneralDialog(
-        context: context,
-        barrierDismissible: false,
-        barrierLabel: '',
-        transitionDuration: const Duration(milliseconds: 200),
-        transitionBuilder: (context, animation, secondaryAnimation, child) {
-          return !UFUScreen.isTablet ? Animations.fromBottom(animation, secondaryAnimation, child) : child;
-        }, 
-        pageBuilder:(animation, secondaryAnimation, child) {
-          return UFUReadDialog(text: widget.text, title: widget.dialogTitle ?? 'Title', subtitle: widget.dialogSubTitle);
-        });
+          context: context,
+          barrierDismissible: false,
+          barrierLabel: '',
+          transitionDuration: const Duration(milliseconds: 200),
+          transitionBuilder: (context, animation, secondaryAnimation, child) {
+            return !UFUScreen.isTablet
+                ? Animations.fromBottom(animation, secondaryAnimation, child)
+                : child;
+          },
+          pageBuilder: (animation, secondaryAnimation, child) {
+            return UFUReadDialog(
+              text: widget.text,
+              title: widget.dialogTitle ?? 'Title',
+              subtitle: widget.dialogSubTitle,
+            );
+          },
+        );
       }
     });
   }
@@ -131,17 +136,25 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
     final overflow = defaultTextStyle.overflow;
 
     TextSpan link = UFUTextSpan.getSpan(
-      isReadMore ? widget.trimCollapsedText.capitalize() : widget.trimExpandedText.capitalize(),
+      isReadMore
+          ? widget.trimCollapsedText.capitalize()
+          : widget.trimExpandedText.capitalize(),
       recognizer: TapGestureRecognizer()..onTap = _onTapLink,
-      textColor: AppTheme.themeColors.primary,
+      textColor: isReadMore
+          ? widget.trimCollapsedTextColor ?? AppTheme.themeColors.primary
+          : widget.trimExpandedTextColor ?? AppTheme.themeColors.primary,
       fontStyle: FontStyle.italic,
-      textSize: widget.textSize
+      textSize: widget.textSize,
     );
 
     TextSpan delimiter = UFUTextSpan.getSpan(
-      isReadMore ? widget.trimCollapsedText.isNotEmpty ? widget.delimiter : '' : '',
+      isReadMore
+          ? widget.trimCollapsedText.isNotEmpty
+                ? widget.delimiter
+                : ''
+          : '',
       recognizer: TapGestureRecognizer()..onTap = _onTapLink,
-      fontStyle: FontStyle.italic
+      fontStyle: FontStyle.italic,
     );
 
     Widget result = LayoutBuilder(
@@ -155,7 +168,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
           textColor: widget.textColor,
           textSize: widget.textSize,
           // fontFamily: widget.fontFamily,
-          fontWeight: widget.fontWeight
+          fontWeight: widget.fontWeight,
         );
 
         // Layout and measure link
@@ -185,12 +198,14 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
 
         if (linkSize.width < maxWidth) {
           final readMoreSize = linkSize.width + delimiterSize.width;
-          final pos = textPainter.getPositionForOffset(Offset(
-            textDirection == TextDirection.rtl
-                ? readMoreSize
-                : textSize.width - readMoreSize,
-            textSize.height,
-          ));
+          final pos = textPainter.getPositionForOffset(
+            Offset(
+              textDirection == TextDirection.rtl
+                  ? readMoreSize
+                  : textSize.width - readMoreSize,
+              textSize.height,
+            ),
+          );
           endIndex = textPainter.getOffsetBefore(pos.offset) ?? 0;
         } else {
           var pos = textPainter.getPositionForOffset(
@@ -213,7 +228,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 textSize: widget.textSize,
                 // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
-                 height: widget.height
+                height: widget.height,
               );
             } else {
               textSpan = UFUTextSpan.getSpan(
@@ -222,7 +237,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 textSize: widget.textSize,
                 // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
-                height: widget.height
+                height: widget.height,
               );
             }
             break;
@@ -231,14 +246,14 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
               textSpan = UFUTextSpan.getSpan(
                 isReadMore
                     ? widget.text.substring(0, endIndex) +
-                        (linkLongerThanLine ? lineSeparator : '')
+                          (linkLongerThanLine ? lineSeparator : '')
                     : '${widget.text} ',
                 children: <TextSpan>[delimiter, link],
                 textColor: widget.textColor,
                 textSize: widget.textSize,
                 // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
-                height: widget.height
+                height: widget.height,
               );
             } else {
               textSpan = UFUTextSpan.getSpan(
@@ -247,7 +262,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
                 // fontFamily: widget.fontFamily,
                 fontWeight: widget.fontWeight,
                 textSize: widget.textSize,
-                height: widget.height
+                height: widget.height,
               );
             }
             break;
@@ -269,9 +284,7 @@ class UFUReadMoreTextState extends State<UFUReadMoreText> {
       result = Semantics(
         textDirection: widget.textDirection,
         label: widget.semanticsLabel,
-        child: ExcludeSemantics(
-          child: result,
-        ),
+        child: ExcludeSemantics(child: result),
       );
     }
     return result;
