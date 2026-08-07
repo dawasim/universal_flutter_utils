@@ -57,14 +57,14 @@ class UFUSocialLogin {
   //   return null;
   // }
 
-  Future<UserCredential?> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle({required String clientId}) async {
     try {
       // 1. Get the singleton instance (No longer use the unnamed constructor)
       final GoogleSignIn googleSignIn = GoogleSignIn.instance;
 
       // 2. Initialize the instance (MUST be called before authenticate)
       // Note: For Web, you must pass your clientId here.
-      await googleSignIn.initialize();
+      await googleSignIn.initialize(serverClientId: clientId);
 
       // 3. Trigger the authentication flow (signIn() is now authenticate())
       final GoogleSignInAccount googleUser = await googleSignIn.authenticate(); // User canceled the sign-in
@@ -91,7 +91,7 @@ class UFUSocialLogin {
     }
   }
 
-  Future<Map<String, dynamic>?> signInWithApple(String clientId) async {
+  Future<Map<String, dynamic>?> signInWithApple({required String clientId}) async {
     try {
       final rawNonce = generateNonce();
       final nonce = sha256ofString(rawNonce);

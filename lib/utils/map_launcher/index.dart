@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_flutter_utils/models/address.dart';
@@ -37,7 +37,7 @@ class MapLauncher {
   }) async {
     try {
       Uri url;
-      if (Platform.isIOS) {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
         // iOS → Apple Maps
         final encodedLabel = Uri.encodeComponent(label);
         url = Uri.parse(
@@ -62,7 +62,7 @@ class MapLauncher {
       Uri url;
       final query = Uri.encodeComponent(formattedAddress);
 
-      if (Platform.isIOS) {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
         // iOS → Apple Maps
         url = Uri.parse('http://maps.apple.com/?q=$query');
       } else {
@@ -83,7 +83,7 @@ class MapLauncher {
   }) async {
     try {
       Uri url;
-      if (Platform.isIOS) {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
         // iOS does not support PlaceId → use Google Maps web link
         url = Uri.parse(
           'https://www.google.com/maps/search/?api=1&query=$label&query_place_id=$placeId',
