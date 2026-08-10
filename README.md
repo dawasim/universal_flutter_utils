@@ -3,26 +3,25 @@
 [![pub package](https://img.shields.io/pub/v/universal_flutter_utils.svg)](https://pub.dev/packages/universal_flutter_utils)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-A **production-ready Flutter UI toolkit and utilities package** for building mobile, web, and desktop apps faster. Includes reusable **widgets**, **Dio API helpers**, **Firebase authentication**, **file pickers**, **form validators**, **themes**, **socket.io**, **maps**, and more — all in one import.
+A **production-ready Flutter UI toolkit and utilities package** for building mobile, web, and desktop apps faster. It bundles reusable **widgets**, **Dio API helpers**, **Firebase & push notifications**, **authentication**, **file/media pickers**, **maps & location**, **form validators**, **theming**, **Socket.io**, and cross-platform helpers — all behind a single import.
 
-> Version: `0.0.10-beta.1` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils)
+> Version: `0.0.11` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils) · [API docs](https://pub.dev/documentation/universal_flutter_utils/latest/)
 
 ---
 
 ## Why use this package?
 
-Stop rebuilding the same Flutter boilerplate in every project. `universal_flutter_utils` bundles the UI components and backend helpers most apps need:
+Most Flutter apps repeat the same building blocks: styled buttons, OTP inputs, bottom sheets, Dio interceptors, file upload flows, permission prompts, and Firebase setup. `universal_flutter_utils` packages those patterns so you can focus on business logic instead of boilerplate.
 
-- **Flutter widgets** — buttons, inputs, loaders, bottom sheets, lists, avatars, shimmer, OTP, video player
-- **Form validation** — email, phone, password, required field, and custom validators
-- **Networking** — Dio HTTP client with interceptors, AES encryption, retry, and error handling
-- **Real-time** — Socket.io configuration with logging interceptors
-- **Firebase** — auth, crashlytics, push notifications (FCM), and messaging setup
-- **Authentication** — Google Sign-In, Apple Sign-In, Facebook login, and biometric (fingerprint / Face ID)
-- **File picker** — image, camera, audio recording, document upload, and file helpers
-- **Maps & location** — place picker, Google Maps autocomplete, geolocation utilities
-- **Theming** — light/dark themes, typography, colors, responsive layout builder
-- **Cross-platform** — Android, iOS, Web, macOS, Windows, Linux
+**Designed for real production apps** — the included `example/` app shows how teams typically wire things up: configure `UFUtils` once at startup, theme via `AppTheme`, then use widgets and helpers throughout screens.
+
+**Single entry point** — one import exposes widgets, utilities, models, theme, extensions, and networking:
+
+```dart
+import 'package:universal_flutter_utils/universal_flutter_utils.dart';
+```
+
+**Cross-platform** — Android, iOS, Web, macOS, Windows, and Linux.
 
 ---
 
@@ -32,7 +31,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  universal_flutter_utils: ^0.0.10-beta.1
+  universal_flutter_utils: ^0.0.11
 ```
 
 Then run:
@@ -43,15 +42,52 @@ flutter pub get
 
 ---
 
-## Quick Start
+## App Setup (Recommended Pattern)
 
-Import the package:
+Based on the included example app, configure global settings once in `initState` or before `runApp`:
 
 ```dart
-import 'package:universal_flutter_utils/universal_flutter_utils.dart';
+void main() {
+  runApp(const MyApp());
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    // App identity & API endpoints
+    UFUtils.appName = "My App";
+    UFUtils.baseUrl = "https://api.example.com/";
+    UFUtils.socketBaseUrl = "wss://socket.example.com";
+
+    // Optional: encryption, token refresh, navigation on 401
+    UFUtils.applyEncryption = true;
+    UFUtils.refreshToken = () async { /* refresh auth token */ };
+    UFUtils.refreshDestination = "/login";
+
+    // Brand colors — used across all UFU widgets automatically
+    AppTheme.themeColors.primary = Color(0xff9381ff);
+    AppTheme.themeColors.secondary = Color(0xffb8b8ff);
+    AppTheme.themeColors.tertiary = Color(0xffffd8be);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: UFUtils.appName,
+      theme: ThemeData(useMaterial3: true),
+      home: HomePage(),
+    );
+  }
+}
 ```
 
-### Flutter UI widgets
+---
+
+## Quick Start
+
+### UI widgets
 
 ```dart
 UFUButton(
@@ -60,18 +96,18 @@ UFUButton(
   textSize: UFUTextSize.heading2,
   fontWeight: UFUFontWeight.medium,
   radius: 12,
-  onPressed: () => print("Button Pressed!"),
+  onPressed: () {},
 )
 
-UFUInputBox(
-  hintText: "Email",
-  controller: emailController,
-)
+UFUInputBox(hintText: "Email", controller: emailController)
 
 UFUOtpInputBox(onCompleted: (otp) => verifyOtp(otp))
 
 ShowUFULoader(msg: "Loading...")
-ShowUFUBottomSheet(child: (controller) => YourWidget())
+
+ShowUFUBottomSheet(
+  child: (controller) => YourWidget(),
+)
 ```
 
 ### Form validators
@@ -80,57 +116,198 @@ ShowUFUBottomSheet(child: (controller) => YourWidget())
 UFUtils.textValidator(text, isRequired: true, minCount: 3);
 UFUtils.emailValidator(email, isRequired: true);
 UFUtils.phoneValidator(phone, isRequired: true);
+UFUtils.passwordValidator(password, isRequired: true);
+UFUtils.confirmPasswordValidator(confirm, password: password);
 ```
 
-### File picker
+### File & media pickers
 
 ```dart
-List<XFile> images = await UFUtils.picker.selectImageFromGallery();
+List<XFile> images = await UFUtils.picker.selectImageFromGallery(selectMultiple: true);
 List<XFile> photos = await UFUtils.picker.captureImageFromCamera();
+String? docPath = await UFUtils.picker.selectDocument();
+dynamic audio = await UFUtils.picker.recordAudio();
+String? contact = await UFUtils.picker.selectContacts();
+DateTime? date = await UFUtils.picker.selectDate();
+TimeOfDay? time = await UFUtils.picker.selectTime();
 ```
 
-### Theme
+### API calls
 
 ```dart
-final theme = AppTheme.lightTheme;
-MaterialApp(theme: theme, ...);
+final api = UFApiConfig();
+final data = await api.get('/users');
+await api.post('/auth/login', data: {'email': email, 'password': password});
+await api.uploadFile(path: '/upload', file: file, fileParam: 'file');
+```
+
+### Firebase & notifications
+
+```dart
+await UFUtils.firebaseUtils.initFirebase(
+  options: DefaultFirebaseOptions.currentPlatform,
+  notificationTap: (payload) => handleNotification(payload),
+);
+UFUtils.firebaseUtils.initFCMToken();
+```
+
+### Socket.io
+
+```dart
+await UFSocketConfig.initializeSocket(
+  initListeners: ({required socket, required on}) {
+    on('message', (data) => print(data));
+  },
+);
+UFSocketConfig.send('event', {'key': 'value'});
 ```
 
 ---
 
-## Widgets
+## Facilities Overview
 
-| Category | Components |
-| -------- | ---------- |
-| **Buttons** | `UFUButton`, `UFUIconButton`, `UFUTextButton`, `UFUCheckbox` |
-| **Inputs** | `UFUInputBox`, `UFUOtpInputBox`, debounced search input |
-| **Selection** | `UFUMultiSelect`, `UFUSingleSelect`, `UFUPopUpMenuButton` |
-| **Layout** | `UFUScaffold`, `UFUListView`, `UFUResponsiveBuilder`, `UFUDashedBorder` |
-| **Feedback** | `ShowUFULoader`, `UFUToast`, `UFUShimmer`, `UFUNoDataFound` |
-| **Dialogs** | `ShowUFUConfirmationDialog`, `ShowUFUBottomSheet`, `ShowRecordingDialog` |
-| **Media** | `UFUNetworkImage`, `UFUVideoPlayer`, `UFUAvatar`, image cropper |
-| **Text** | `UFUText`, `UFUReadMoreText`, selectable text support |
-| **Maps** | Place picker, Google Maps autocomplete, location helpers |
-| **Pickers** | Image picker, file picker, audio recorder bottom sheet |
+Everything below is available from the single package import.
 
----
+### UI Widgets
 
-## Utilities
+| Category | Components | Details |
+| -------- | ---------- | ------- |
+| **Buttons** | `UFUButton`, `UFUIconButton`, `UFUTextButton` | Size, radius, color types, gradient support via `UFUtils.buttonGradient` |
+| **Inputs** | `UFUInputBox`, `UFUOtpInputBox`, `UFUCheckbox` | Built-in clear icon, debounced search (`Debounce`), custom input types |
+| **Selection** | `UFUMultiSelect`, `UFUSingleSelect`, `UFUPopUpMenuButton` | Local & network-backed lists, search, load-more, sub-lists, tag modal, max selection |
+| **Layout** | `UFUScaffold`, `UFUListView`, `UFUResponsiveBuilder`, `UFUDashedBorder` | Gradient scaffold, tap-to-dismiss keyboard, paginated list/grid with pull-to-refresh |
+| **Feedback** | `ShowUFULoader`, `UFUToast`, `UFUShimmer`, `UFUNoDataFound` | Custom loader dialog, shimmer placeholders, empty states |
+| **Dialogs & sheets** | `ShowUFUConfirmationDialog`, `ShowUFUBottomSheet`, `ShowRecordingDialog` | Adaptive popover on tablet/desktop, bottom sheet on mobile, unsaved-changes flow |
+| **Media** | `UFUNetworkImage`, `UFUVideoPlayer`, `UFUAvatar`, `UFUImageCropper` | Cached images, Chewie video player, circle/square/ratio crop (16:7, 1:1, 5:3) |
+| **Text & HTML** | `UFUText`, `UFUTextSpan`, `UFUReadMoreText`, `UFUHtmlViewer` | Typography system, expandable text, styled HTML rendering |
+| **Files & thumbs** | `UFUThumb`, `UFUSvgImage` | 30+ file-type icons (pdf, docx, xlsx, zip, dwg, etc.), folder/image thumbs |
+| **Maps & location** | `UFULocationPicker`, `UFUPlaceAutoComplete` | Google Maps place picker, address autocomplete, geocoding into `UFUAddressModel` |
+| **Animations** | `UFUAnimatedSpinKit`, scale animations | Three-bounce, fading-circle loaders, scale in/out effects |
+| **Misc** | `UFULoadMoreButton`, custom list bottom sheet, image/file picker widgets | Pagination helper, reusable sheet patterns |
 
-| Category | What it offers |
-| -------- | -------------- |
-| **API / Dio** | `api_config/` — AES encryption, request/response/error interceptors, file upload |
-| **Socket.io** | `socket_config/` — connection config and logging interceptors |
-| **Validators** | Email, phone, password, required fields, custom rules |
-| **File helpers** | Gallery, camera, audio, multi-file upload, file preparation |
-| **Date & time** | Formatting and parsing utilities |
-| **Permissions** | Camera, storage, location, notification permission handling |
-| **Preferences** | Shared preferences wrapper for tokens, language, settings |
-| **Biometric** | Fingerprint and Face ID authentication |
-| **Social login** | Google, Apple, Facebook sign-in helpers |
-| **Firebase** | Auth, Crashlytics, FCM push notifications |
-| **Extensions** | String helpers, card number formatter, input box extensions |
-| **Theme** | `AppTheme`, `ThemeColors`, font weights, text sizes, form UI helper |
+### Networking (`UFApiConfig`)
+
+| Feature | Description |
+| ------- | ----------- |
+| **HTTP verbs** | `get`, `post`, `put`, `patch`, `delete` with unified error handling |
+| **AES encryption** | Optional request body encryption via `EncryptionUtil` (`UFUtils.applyEncryption`) |
+| **Interceptors** | Request, response, and error interceptors for auth headers, logging, and token injection |
+| **File upload** | Single (`uploadFile`) and multi-file (`uploadMultiFile`) multipart uploads with bearer auth |
+| **File download** | `downloadFile` with progress callback, platform-aware save location |
+| **Timeouts** | Configurable connect/receive timeouts; `infiniteTimeout` flag for long operations |
+| **Retry helper** | `Retry.execute()` with cooldown and cancellable delayed retry |
+
+### Real-time (`UFSocketConfig`)
+
+| Feature | Description |
+| ------- | ----------- |
+| **Connection** | WebSocket transport with auto-reconnect and force-new connection |
+| **Auth** | Sends auth token from shared preferences in headers |
+| **Events** | `send`, `on`, default connect/disconnect/error listeners |
+| **Interceptors** | Pluggable interceptor manager with built-in logging interceptor |
+
+### Authentication & Security
+
+| Feature | Description |
+| ------- | ----------- |
+| **Social login** | `UFUSocialLogin` — Google Sign-In, Apple Sign-In, Facebook login via Firebase Auth |
+| **Biometric** | `UFUBiometricRecognition` — fingerprint / Face ID support check and validation |
+| **Token storage** | `UFPrefUtils` — auth token, refresh token, remember-me, user data persistence |
+| **401 handling** | `UFUtils.handleError` — automatic token refresh callback and route redirect on unauthorized |
+
+### Firebase & Push Notifications
+
+| Feature | Description |
+| ------- | ----------- |
+| **Firebase init** | `UFFirebaseUtils.initFirebase()` with platform-specific options |
+| **FCM token** | Token retrieval, APNS support on Apple platforms, token refresh listener |
+| **Local notifications** | `UFNotificationUtils` — Android, iOS, macOS, Linux, and Windows notification setup |
+| **Foreground/background** | FCM message listener, background handler, tap-to-navigate payload storage |
+| **Crashlytics** | Non-Dio errors logged with user ID, screen route, and app version context |
+
+### File, Media & Device Pickers (`UFUtils.picker`)
+
+| Feature | Description |
+| ------- | ----------- |
+| **Gallery & camera** | Single/multi image pick with optional compression |
+| **Documents** | Custom extension filtering (pdf, doc, docx, png, jpg, jpeg, etc.) |
+| **Audio recording** | Waveform-based recording dialog with microphone permission handling |
+| **Contacts** | Native contact picker returning JSON-encoded `ContactModel` |
+| **Date & time** | Themed date/time pickers aligned with `AppTheme` colors |
+| **Permissions** | Automatic permission checks with "open settings" dialog on permanent denial |
+| **File helpers** | Extension detection, file-type icon mapping, size limits, folder structure rules |
+
+### Maps & Location
+
+| Feature | Description |
+| ------- | ----------- |
+| **Place picker** | Full-screen map with search, pin drag, and address decode (`UFULocationPicker`) |
+| **Autocomplete** | Inline Google Places search with debounce (`UFUPlaceAutoComplete`) |
+| **Current location** | `UFUtils.fetchCurrentLocation()` with permission and GPS service checks |
+| **Map launcher** | Open address in external maps app (`UFUtils.launchMapIntent`) |
+| **Address model** | `UFUAddressModel` — structured address with lat/lng, city, state, postcode |
+| **Local IP info** | `UFULocalRepo` — fetch geolocation from IP via ip-api.com |
+
+### Form Validation & Data Helpers
+
+| Validator / Helper | Description |
+| ------------------ | ----------- |
+| **Email** | Required check + regex validation |
+| **Phone** | Required check + customizable regex |
+| **Password** | 8–12 chars, uppercase, lowercase, number, special character rules |
+| **Confirm password** | Match validation against original password |
+| **Text** | Required + minimum length |
+| **Date/time** | Format, parse, `timeAgo`, `dayWishes` greeting |
+| **Numbers** | Comma-separated number formatting |
+| **HTML** | Strip/parse HTML to plain text |
+| **Clipboard** | Copy text to clipboard |
+| **Card number** | Format with spaces every 4 digits + input formatter extension |
+| **Grouping** | `UFUtils.groupBy()` for list grouping |
+| **RTL** | `UFUtils.isRtl` via `DirectionHelper` |
+
+### Permissions (`UFUtils.permissionUtils`)
+
+Handles request flows for: storage, camera, photos, notifications, location, contacts, audio, microphone, and videos — with individual or batch (`getAllPermissions`) request methods.
+
+### Theming (`AppTheme`)
+
+| Feature | Description |
+| ------- | ----------- |
+| **Light / dark** | `AppTheme.setTheme(isDark)` toggles full color palette |
+| **Custom colors** | 40+ semantic colors (primary, success, warning, gradients, status colors) |
+| **Typography** | `UFUTextSize`, `UFUFontWeight`, `UFUFontFamily` used consistently across widgets |
+| **Form styling** | `FormUiHelper` for consistent form field appearance |
+| **Responsive** | `UFUScreen`, `UFUResponsiveDesign` breakpoints for mobile / tablet / desktop |
+
+### Extensions
+
+| Extension | Description |
+| --------- | ----------- |
+| **String** | `capitalize()`, decimal formatting via `formatUpTo()` |
+| **Card number** | Input formatter for credit card fields |
+| **No leading zero** | Formatter to prevent leading zeros in numeric inputs |
+| **Input box** | Convenience extensions on input controllers |
+
+### Models
+
+| Model | Description |
+| ----- | ----------- |
+| `UFUAddressModel` | Structured address with JSON serialization |
+| `ContactModel` | Native contact data wrapper |
+| `UFULocalInfoModel` | IP-based location info |
+| `PopoverAction` | Action item for popover menus |
+| `UFUMultiSelectModel` | Item model for single/multi select lists |
+| Network multiselect params | Request params for server-driven select lists |
+
+### Common Services & Constants
+
+| Module | Description |
+| ------ | ----------- |
+| `CookiesService` | Parse and store CloudFront cookies for authenticated CDN requests |
+| `RunMode` | App vs unit/integration testing mode enum |
+| `DeviceType` | Mobile, tablet, desktop detection |
+| Pagination constants | Shared list pagination defaults |
+| Widget keys | Predefined keys for testing and widget finding |
 
 ---
 
@@ -138,14 +315,14 @@ MaterialApp(theme: theme, ...);
 
 ```plaintext
 lib/
- ├── api_config/         → Dio HTTP client, AES encryption, interceptors
- ├── common/             → Constants, enums, Firebase & cookie services
- ├── extensions/         → String and input formatters
- ├── models/             → Address, contact, shared data models
- ├── socket_config/      → Socket.io helpers
- ├── theme/              → Themes, colors, typography
- ├── utils/              → Validators, file picker, permissions, preferences
- ├── widgets/            → UI components (buttons, inputs, lists, maps, etc.)
+ ├── api_config/          → UFApiConfig, AES encryption, Dio interceptors, retry
+ ├── common/              → Constants, enums, cookies, Firebase, social login, notifications
+ ├── extensions/          → String helpers, input formatters
+ ├── models/              → Address, contact, local info, select list models
+ ├── socket_config/       → UFSocketConfig, socket interceptors
+ ├── theme/               → AppTheme, ThemeColors, typography, form UI helper
+ ├── utils/               → UFUtils hub — validators, picker, permissions, preferences
+ ├── widgets/             → 40+ UI components (buttons, inputs, lists, maps, media, etc.)
  └── universal_flutter_utils.dart → Single entry-point export
 ```
 
@@ -153,27 +330,112 @@ lib/
 
 ## Example App
 
-The included `example/` project demonstrates:
+The `example/` project is the reference implementation. It demonstrates:
 
-- API calls with Dio interceptors and encryption
-- File picking and uploading
-- `UFUButton`, `UFUText`, `UFUInputBox`, and other widgets
-- Theme setup and responsive layout
+| Screen | What it shows |
+| ------ | ------------- |
+| **Widgets Sample** | Buttons, text styles, icon buttons, single/multi select, avatars, paginated list view, profile image edit |
+| **API Sample** | POST login/token request and GET request using `UFApiConfig` with `GetX` controller |
+| **File Picker** | Document pick, gallery, camera, audio recording, contact pick, date & time pickers |
+
+Run it:
 
 ```bash
 cd example
+flutter pub get
 flutter run
 ```
+
+Typical integration pattern from the example:
+
+```dart
+// Navigate to feature screens built with UFU widgets
+UFUButton(text: "Widgets Sample", onPressed: () => Get.to(WidgetsSamples()));
+UFUButton(text: "API Sample", onPressed: () => Get.to(APISampleCalls()));
+UFUButton(text: "File Picker", onPressed: () => Get.to(FilePicker()));
+```
+
+---
+
+## Typical Production Workflows
+
+### Paginated list with pull-to-refresh
+
+```dart
+UFUListView(
+  listCount: items.length,
+  onRefresh: () => controller.fetchPage(reset: true),
+  onLoadMore: () => controller.fetchPage(),
+  isLoading: controller.isLoading,
+  shimmerBuilder: (_, __) => UFUShimmer(...),
+  noDataText: "No results found",
+  itemBuilder: (context, index) => ItemTile(item: items[index]),
+)
+```
+
+### Network-backed multi-select filter
+
+```dart
+UFUMultiSelect(
+  title: 'Select categories',
+  type: UFUMultiSelectType.network,
+  mainList: categories,
+  onSearch: (query) => controller.searchCategories(query),
+  onLoadMore: () => controller.loadMoreCategories(),
+  onDone: (selected) => applyFilter(selected),
+)
+```
+
+### Confirmation before destructive action
+
+```dart
+ShowUFUConfirmationDialog(
+  title: 'Delete item?',
+  subTitle: 'This action cannot be undone.',
+  prefixBtnText: 'Cancel',
+  suffixBtnText: 'Delete',
+  onTapSuffix: () => deleteItem(),
+);
+```
+
+### Image pick → crop → upload
+
+```dart
+final images = await UFUtils.picker.captureImageFromCamera();
+if (images.isNotEmpty) {
+  final cropped = await Get.to(() => UFUImageCropper(
+    imagePath: images.first.path,
+    cropShape: UFUImageCropShape.circle,
+    cropRatio: UFUImageCropRatio.ratio1x1,
+  ));
+  if (cropped != null) {
+    await UFApiConfig().uploadFile(path: '/avatar', file: File(cropped), fileParam: 'file');
+  }
+}
+```
+
+---
+
+## Platform Support
+
+| Platform | Widgets | File picker | Firebase / FCM | Biometric | Maps |
+| -------- | ------- | ----------- | -------------- | --------- | ---- |
+| Android  | ✅ | ✅ | ✅ | ✅ | ✅ |
+| iOS      | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Web      | ✅ | ✅ | ✅ | — | ✅ |
+| macOS    | ✅ | ✅ | ✅ | ✅ | — |
+| Windows  | ✅ | ✅ | Partial | — | — |
+| Linux    | ✅ | ✅ | Partial | — | — |
 
 ---
 
 ## Search & Discoverability
 
-This package is tagged for pub.dev topics: **widgets**, **utilities**, **ui**, **networking**, **authentication**.
+Pub.dev topics: **widgets**, **utilities**, **ui**, **networking**, **authentication**.
 
 Common searches this package helps with:
 
-`flutter widgets` · `flutter ui kit` · `dio interceptor` · `flutter form validation` · `flutter file picker` · `flutter bottom sheet` · `flutter otp input` · `flutter multi select` · `flutter shimmer` · `firebase auth flutter` · `socket.io flutter` · `flutter theme` · `google maps place picker` · `flutter biometric auth` · `social login flutter` · `flutter utilities`
+`flutter widgets` · `flutter ui kit` · `dio interceptor` · `flutter form validation` · `flutter file picker` · `flutter bottom sheet` · `flutter otp input` · `flutter multi select` · `flutter shimmer` · `firebase auth flutter` · `socket.io flutter` · `flutter theme` · `google maps place picker` · `flutter biometric auth` · `social login flutter` · `flutter utilities` · `flutter pagination list` · `flutter image cropper` · `flutter push notifications`
 
 ---
 

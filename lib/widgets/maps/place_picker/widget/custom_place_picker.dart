@@ -481,7 +481,6 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
               buildingsEnabled: widget.buildingsEnabled,
               cameraTargetBounds: widget.cameraTargetBounds,
               circles: widget.circles,
-              mapId: widget.cloudMapId,
               fortyFiveDegreeImageryEnabled:
                   widget.fortyFiveDegreeImageryEnabled,
               gestureRecognizers: widget.gestureRecognizers,

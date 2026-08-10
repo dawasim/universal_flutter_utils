@@ -273,10 +273,11 @@ class UFUConfirmationDialogState extends State<UFUConfirmationDialog> {
       children: [
         UFUButton(
           text: widget.prefixBtnText?.toUpperCase(),
-          textColor: AppTheme.themeColors.text,
+          // textColor: AppTheme.themeColors.text,
           size: UFUButtonSize.small,
           disabled: widget.disableButtons,
           buttonRadius: widget.buttonRadius,
+          type: UFUButtonType.solid,
           colorType: widget.prefixBtnColorType ?? UFUButtonColorType.lightGray,
           onPressed:
               widget.onTapPrefix ??
