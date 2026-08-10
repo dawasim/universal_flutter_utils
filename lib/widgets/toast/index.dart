@@ -12,6 +12,10 @@ class UFUToast {
     String message, {
     String? title,
     ToastType type = ToastType.success,
+    Color? backgroundColor,
+    Color? textColor,
+    UFUTextSize? testSize,
+    ToastGravity? gravity,
   }) {
     final now = DateTime.now();
 
@@ -36,10 +40,10 @@ class UFUToast {
     Fluttertoast.showToast(
       msg: title != null ? "$title\n$message" : message,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      backgroundColor: Colors.black87,
-      textColor: Colors.white,
-      fontSize: 16.0,
+      gravity: gravity ?? ToastGravity.TOP,
+      backgroundColor: backgroundColor ?? Colors.black87,
+      textColor: textColor ?? Colors.white,
+      fontSize: TextHelper.getTextSize(testSize ?? UFUTextSize.heading3),
     );
   }
 }

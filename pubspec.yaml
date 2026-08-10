@@ -3,7 +3,7 @@ name: universal_flutter_utils
 description: >-
   Flutter UI toolkit with widgets, Dio API helpers, Firebase auth, file pickers,
   validators, themes, socket.io, maps, and cross-platform utilities.
-version: 0.0.10
+version: 0.0.10-beta.2
 
 platforms:
   android:
@@ -46,7 +46,7 @@ dependencies:
   shared_preferences: ^2.5.5
 
   path_provider: ^2.1.6
-  file_picker: ^11.0.3
+  file_picker: ^12.0.0-beta.7
   permission_handler: ^13.0.0
   image_picker: ^1.2.3
   image: ^4.9.1
@@ -54,7 +54,7 @@ dependencies:
   audio_waveforms: ^2.0.2
   flutter_native_contact_picker: ^0.0.12
   open_filex: ^4.7.0
-  package_info_plus: ^10.2.0
+  package_info_plus: ^10.2.1
 
   # Location
   map_location_picker: ^3.1.0
@@ -110,8 +110,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-dependency_overrides:
-  win32: ^5.9.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
