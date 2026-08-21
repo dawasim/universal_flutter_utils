@@ -5,7 +5,7 @@
 
 A **production-ready Flutter UI toolkit and utilities package** for building mobile, web, and desktop apps faster. It bundles reusable **widgets**, **Dio API helpers**, **Firebase & push notifications**, **authentication**, **file/media pickers**, **maps & location**, **form validators**, **theming**, **Socket.io**, and cross-platform helpers — all behind a single import.
 
-> Version: `0.0.10-beta.3` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils) · [API docs](https://pub.dev/documentation/universal_flutter_utils/latest/)
+> Version: `0.0.11-beta.1` · [View on pub.dev](https://pub.dev/packages/universal_flutter_utils) · [API docs](https://pub.dev/documentation/universal_flutter_utils/latest/)
 
 ---
 
@@ -31,7 +31,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  universal_flutter_utils: ^0.0.10-beta.3
+  universal_flutter_utils: ^0.0.11-beta.1
 ```
 
 Then run:
