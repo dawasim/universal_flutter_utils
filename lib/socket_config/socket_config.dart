@@ -150,7 +150,7 @@ class UFSocket {
 
   void emit({
     required String event,
-    dynamic? data,
+    dynamic data,
     void Function(dynamic response)? onResponse,
     void Function(dynamic error)? onError,
   }) {
@@ -272,7 +272,7 @@ class _PollingClient {
       queryParameters: {
         'EIO': '4',
         'transport': 'polling',
-        if (_sid != null) 'sid': _sid!,
+        'sid': ?_sid,
         ...extra,
       },
     );
