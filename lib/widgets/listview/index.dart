@@ -36,6 +36,10 @@ class UFUListView extends StatefulWidget {
 
   final Widget? noDataWidget;
 
+  /// When true, index 0 starts at the bottom (upside down).
+  /// Load more fires at the visual top; pull-to-refresh at the visual bottom.
+  final bool isReverse;
+
   const UFUListView({
     super.key,
     required this.listCount,
@@ -55,6 +59,7 @@ class UFUListView extends StatefulWidget {
     this.shimmerBuilder,
     this.noDataText,
     this.noDataWidget,
+    this.isReverse = false,
   });
 
   @override
@@ -63,6 +68,7 @@ class UFUListView extends StatefulWidget {
 
 class UFUListViewState extends State<UFUListView> {
   late final ScrollController infiniteScrollController;
+  late final bool _ownsScrollController;
 
   bool isRefreshing = false;
   bool isLoadingMore = false;
@@ -71,29 +77,34 @@ class UFUListViewState extends State<UFUListView> {
 
   @override
   void initState() {
+    _ownsScrollController = widget.scrollController == null;
     infiniteScrollController = widget.scrollController ?? ScrollController();
     super.initState();
 
-    //Listening page scroll to detect is page reached to bottom or not
-    //if reached bottom then calling load more function to load next page data in list
-    infiniteScrollController.addListener(() async {
-      if ((infiniteScrollController.position.pixels +
-                  UFUResponsiveDesign.floatingButtonSize +
-                  50) >=
-              infiniteScrollController.position.maxScrollExtent &&
-          widget.onLoadMore != null &&
-          !isLoadingMore &&
-          !isRefreshing) {
-        toggleIsLoadingMore();
-        await widget.onLoadMore!();
-        toggleIsLoadingMore();
-      }
-    });
+    infiniteScrollController.addListener(_onScroll);
+  }
+
+  Future<void> _onScroll() async {
+    if (!infiniteScrollController.hasClients) return;
+    if ((infiniteScrollController.position.pixels +
+                UFUResponsiveDesign.floatingButtonSize +
+                50) >=
+            infiniteScrollController.position.maxScrollExtent &&
+        widget.onLoadMore != null &&
+        !isLoadingMore &&
+        !isRefreshing) {
+      toggleIsLoadingMore();
+      await widget.onLoadMore!();
+      toggleIsLoadingMore();
+    }
   }
 
   @override
   void dispose() {
-    infiniteScrollController.dispose();
+    infiniteScrollController.removeListener(_onScroll);
+    if (_ownsScrollController) {
+      infiniteScrollController.dispose();
+    }
     super.dispose();
   }
 
@@ -137,6 +148,7 @@ class UFUListViewState extends State<UFUListView> {
         padding: getListPadding(),
         controller: infiniteScrollController,
         scrollDirection: widget.scrollDirection,
+        reverse: widget.isReverse,
         itemCount: widget.listCount + 1,
         itemBuilder: widget.itemBuilder,
         physics: widget.physics,
@@ -161,6 +173,7 @@ class UFUListViewState extends State<UFUListView> {
         padding: getListPadding(),
         controller: infiniteScrollController,
         scrollDirection: widget.scrollDirection,
+        reverse: widget.isReverse,
         itemCount: widget.listCount + 1,
         itemBuilder: widget.itemBuilder,
         physics: widget.physics,
@@ -193,6 +206,7 @@ class UFUListViewState extends State<UFUListView> {
     physics: widget.physics,
     shrinkWrap: widget.shrinkWrap,
     scrollDirection: widget.scrollDirection,
+    reverse: widget.isReverse,
     itemCount: 10,
     padding: getListPadding(),
     itemBuilder: (context, index) => Container(
@@ -211,6 +225,7 @@ class UFUListViewState extends State<UFUListView> {
     physics: widget.physics,
     shrinkWrap: widget.shrinkWrap,
     scrollDirection: widget.scrollDirection,
+    reverse: widget.isReverse,
     padding: getListPadding(),
     gridDelegate:
         widget.gridDelegate ??

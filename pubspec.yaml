@@ -3,7 +3,7 @@ name: universal_flutter_utils
 description: >-
   Flutter UI toolkit with widgets, Dio API helpers, Firebase auth, file pickers,
   validators, themes, socket.io, maps, and cross-platform utilities.
-version: 0.0.10-beta.2
+version: 0.0.10-beta.3
 
 platforms:
   android:
@@ -69,6 +69,7 @@ dependencies:
   http: ^1.6.0
   dio: ^5.11.0
   socket_io_client: ^3.1.6
+  web_socket: ^1.0.1
   cached_network_image: ^3.4.1
   url_launcher: ^6.3.2
   flutter_widget_from_html_core: ^0.17.2
