@@ -68,9 +68,7 @@ class UFSocket {
     debugPrint('Socket namespace: ${target.namespace}');
     debugPrint('Socket transport: polling');
     debugPrint('Socket path: /socket.io/');
-    debugPrint(
-      'Socket authentication configured: ${token.isNotEmpty}',
-    );
+    debugPrint('Socket authentication configured: ${token.isNotEmpty}');
 
     if (!_loggingAttached) {
       interceptors.add(SocketLoggingInterceptor());
@@ -141,7 +139,9 @@ class UFSocket {
     if (onData != null || onError != null) {
       controller.stream.listen(
         onData,
-        onError: onError == null ? null : (Object e, StackTrace _) => onError(e),
+        onError: onError == null
+            ? null
+            : (Object e, StackTrace _) => onError(e),
       );
     }
 
@@ -325,7 +325,9 @@ class _PollingClient {
     final response = await request.close().timeout(const Duration(seconds: 20));
     final responseBody = await _read(response);
     if (response.statusCode >= 400) {
-      throw StateError('Socket post HTTP ${response.statusCode}: $responseBody');
+      throw StateError(
+        'Socket post HTTP ${response.statusCode}: $responseBody',
+      );
     }
     if (responseBody.isNotEmpty && responseBody != 'ok') {
       for (final packet in responseBody.split(String.fromCharCode(30))) {

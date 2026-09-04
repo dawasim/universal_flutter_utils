@@ -8,14 +8,16 @@ import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 import 'package:path_provider/path_provider.dart';
 
 enum UFUImageCropRatio { ratio16x7, ratio1x1, ratio5x3 }
-enum UFUImageCropShape { circle, square, ratio, }
+
+enum UFUImageCropShape { circle, square, ratio }
 
 class UFUImageCropper extends StatefulWidget {
   final String imagePath;
   final UFUImageCropRatio cropRatio;
   final UFUImageCropShape cropShape;
 
-  const UFUImageCropper({super.key,
+  const UFUImageCropper({
+    super.key,
     required this.imagePath,
     required this.cropRatio,
     required this.cropShape,
@@ -39,7 +41,7 @@ class UFUImageCropperState extends State<UFUImageCropper> {
     super.initState();
     controller = CustomImageCropController();
 
-    switch(widget.cropShape) {
+    switch (widget.cropShape) {
       case UFUImageCropShape.circle:
         _currentShape = CustomCropShape.Circle;
         break;
@@ -51,7 +53,7 @@ class UFUImageCropperState extends State<UFUImageCropper> {
         break;
     }
 
-    switch(widget.cropRatio) {
+    switch (widget.cropRatio) {
       case UFUImageCropRatio.ratio16x7:
         _width = 16;
         _height = 7;
@@ -88,7 +90,11 @@ class UFUImageCropperState extends State<UFUImageCropper> {
         ),
         leading: IconButton(
           onPressed: () => Get.back(),
-          icon: Icon(Icons.close, size: 24, color: AppTheme.themeColors.primary),
+          icon: Icon(
+            Icons.close,
+            size: 24,
+            color: AppTheme.themeColors.primary,
+          ),
         ),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
@@ -106,7 +112,9 @@ class UFUImageCropperState extends State<UFUImageCropper> {
               canMove: true,
               canScale: true,
               outlineStrokeWidth: 2,
-              borderRadius: _currentShape == CustomCropShape.Ratio ? _radius : 0,
+              borderRadius: _currentShape == CustomCropShape.Ratio
+                  ? _radius
+                  : 0,
               customProgressIndicator: const CupertinoActivityIndicator(),
               outlineColor: AppTheme.themeColors.primary,
               imageFit: _imageFit,
@@ -124,7 +132,10 @@ class UFUImageCropperState extends State<UFUImageCropper> {
                 if (image != null) {
                   File file = await flipImage(image.bytes, horizontal: true);
                   UFUtils.hideLoaderDialog();
-                  Future.delayed(const Duration(milliseconds: 300), () => Get.back(result: file.path));
+                  Future.delayed(
+                    const Duration(milliseconds: 300),
+                    () => Get.back(result: file.path),
+                  );
                 }
               },
             ),
@@ -142,5 +153,4 @@ class UFUImageCropperState extends State<UFUImageCropper> {
     flippedFile = File(newPath)..writeAsBytesSync(imageBytes);
     return flippedFile;
   }
-
 }

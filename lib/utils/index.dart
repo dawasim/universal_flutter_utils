@@ -124,7 +124,7 @@ class UFUtils {
 
   static DateTime? parseDate(
     String dateString, {
-    String format = 'dd/MM/yyy',
+    String format = 'dd/MM/yyyy',
   }) => DateTimeUtils.parseDate(dateString, format: format);
 
   static DateTime? parseTime(String timeString, {String format = 'hh:mm a'}) =>
@@ -132,7 +132,7 @@ class UFUtils {
 
   static DateTime? parseCompleteDateTime(
     String completeDateTimeString, {
-    String format = 'dd/MM/yyy hh:mm a',
+    String format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
   }) => DateTimeUtils.parseCompleteDateTime(
     completeDateTimeString,
     format: format,

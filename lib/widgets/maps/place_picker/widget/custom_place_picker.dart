@@ -740,7 +740,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     //   );
     // }
 
-    fetchAndNavigateToCurrentLocation();
+    loadAndNavigateToInitialLocation();
 
     super.initState();
   }
@@ -912,7 +912,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     ),
   );
 
-  Future<void> fetchAndNavigateToCurrentLocation() async {
+  Future<void> loadAndNavigateToInitialLocation() async {
     /// call parent method
     if (widget.getLocation != null) {
       widget.getLocation!.call();
@@ -984,6 +984,34 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
       //   ),
       // );
 
+      setState(() {});
+    }
+  }
+
+  Future<void> fetchAndNavigateToCurrentLocation() async {
+    try {
+      ShowUFULoader(msg: "Fetching Location...");
+      _initialPosition =
+          (await UFUtils.fetchCurrentLocation()) ?? _initialPosition;
+
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.best, // Choose appropriate accuracy
+        ),
+      );
+      _initialPosition = LatLng(position.latitude, position.longitude);
+
+      // Get the controller instance
+      final controller = await _controller.future;
+
+      // Animate camera to the updated/current location
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(cameraPosition()),
+      );
+    } catch (e) {
+      UFUtils.handleError(e);
+    } finally {
+      UFUtils.hideLoaderDialog();
       setState(() {});
     }
   }

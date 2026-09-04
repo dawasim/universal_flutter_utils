@@ -22,8 +22,7 @@ class UFFilePickerUtil {
     //   return null;
     // }
 
-    // Pick a file with allowed extensions
-    FilePickerResult? result = await FilePicker.pickFiles(
+    final file = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions:
           allowedExtensions ??
@@ -36,19 +35,14 @@ class UFFilePickerUtil {
             'png',
             'jpg',
             'jpeg',
-          ], // Add your desired extensions
+          ],
     );
-
-    String? filePath;
-    if (result != null) {
-      filePath = result.files.single.path;
-    } else {
-      filePath = null;
-    }
-    return filePath;
+    return file?.path;
   }
 
-  Future<List<XFile>> selectImageFromGallery({bool selectMultiple = false}) async {
+  Future<List<XFile>> selectImageFromGallery({
+    bool selectMultiple = false,
+  }) async {
     return await _pickImageFile(
       source: ImageSource.gallery,
       compress: true,
@@ -56,8 +50,9 @@ class UFFilePickerUtil {
     );
   }
 
-  Future<List<XFile>> captureImageFromCamera({bool selectMultiple = false}) async {
-
+  Future<List<XFile>> captureImageFromCamera({
+    bool selectMultiple = false,
+  }) async {
     try {
       if (!(await UFUtils.permissionUtils.getCameraPermission())) {
         if (await Permission.camera.status.isPermanentlyDenied) {
@@ -94,7 +89,7 @@ class UFFilePickerUtil {
     ///   Check contact permission
     if (Platform.isAndroid) {
       if (!(await UFUtils.permissionUtils.getContactsPermission())) {
-        if(await Permission.contacts.status.isPermanentlyDenied) {
+        if (await Permission.contacts.status.isPermanentlyDenied) {
           // UFUtils.hideLoaderDialog();
           await permissionDeniedDialogue();
         }
@@ -102,7 +97,8 @@ class UFFilePickerUtil {
       }
     }
 
-    Contact? selectedContact = await FlutterNativeContactPicker().selectContact();
+    Contact? selectedContact = await FlutterNativeContactPicker()
+        .selectContact();
 
     if (selectedContact != null) {
       ContactModel? contact = ContactModel.fromContacts(selectedContact);
@@ -111,12 +107,17 @@ class UFFilePickerUtil {
     return null;
   }
 
-  Future<DateTime?> selectDate({DateTime? initialDate, DateTime? startDate, DateTime? endDate,}) async {
+  Future<DateTime?> selectDate({
+    DateTime? initialDate,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     return await showDatePicker(
       context: Get.context!,
       initialDate: initialDate,
       firstDate: DateTime.now().add(const Duration(days: -(365 * 90))),
-      lastDate: startDate ?? DateTime.now().add(const Duration(days: -(365 * 8))),
+      lastDate:
+          startDate ?? DateTime.now().add(const Duration(days: -(365 * 8))),
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       builder: (BuildContext context, Widget? child) {
         return Theme(
@@ -128,9 +129,11 @@ class UFFilePickerUtil {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: AppTheme.themeColors.primary, // Button text color
+                foregroundColor:
+                    AppTheme.themeColors.primary, // Button text color
               ),
-            ), dialogTheme: const DialogThemeData(backgroundColor: Colors.grey),
+            ),
+            dialogTheme: const DialogThemeData(backgroundColor: Colors.grey),
           ),
           child: child!,
         );
@@ -144,21 +147,27 @@ class UFFilePickerUtil {
       initialTime: initialTime ?? TimeOfDay.now(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false), // Ensure AM/PM format
+          data: MediaQuery.of(
+            context,
+          ).copyWith(alwaysUse24HourFormat: false), // Ensure AM/PM format
           child: Theme(
             data: Theme.of(context).copyWith(
               colorScheme: ColorScheme.light(
-                primary: AppTheme.themeColors.primary, // Header background color
+                primary:
+                    AppTheme.themeColors.primary, // Header background color
                 onPrimary: AppTheme.themeColors.tertiary, // Header text color
                 onSurface: AppTheme.themeColors.text, // Body text color
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  foregroundColor: AppTheme.themeColors.primary, // Button text color
+                  foregroundColor:
+                      AppTheme.themeColors.primary, // Button text color
                 ),
               ),
               timePickerTheme: TimePickerThemeData(
-                dialBackgroundColor: AppTheme.themeColors.primary.withAlpha(10), // Dial background color
+                dialBackgroundColor: AppTheme.themeColors.primary.withAlpha(
+                  10,
+                ), // Dial background color
                 dialHandColor: AppTheme.themeColors.primary, // Dial hand color
                 dayPeriodTextColor: WidgetStateColor.resolveWith((states) {
                   // Customize AM/PM text colors
@@ -170,11 +179,16 @@ class UFFilePickerUtil {
                 dayPeriodColor: WidgetStateColor.resolveWith((states) {
                   // Customize AM/PM button background color
                   if (states.contains(WidgetState.selected)) {
-                    return AppTheme.themeColors.primary; // Selected background color
+                    return AppTheme
+                        .themeColors
+                        .primary; // Selected background color
                   }
                   return AppTheme.themeColors.base; // Default background color
                 }),
-              ), dialogTheme: DialogThemeData(backgroundColor: AppTheme.themeColors.darkGray),
+              ),
+              dialogTheme: DialogThemeData(
+                backgroundColor: AppTheme.themeColors.darkGray,
+              ),
             ),
 
             child: child!,
@@ -184,7 +198,11 @@ class UFFilePickerUtil {
     );
   }
 
-  Future<List<XFile>> _pickImageFile({required ImageSource source, bool multiple = false, bool compress = false}) async {
+  Future<List<XFile>> _pickImageFile({
+    required ImageSource source,
+    bool multiple = false,
+    bool compress = false,
+  }) async {
     List<XFile> files = <XFile>[];
     try {
       if (!multiple) {
@@ -209,7 +227,6 @@ class UFFilePickerUtil {
   }
 
   Future<XFile> _compressImage(XFile file) async {
-
     try {
       // Read the image from the XFile
       final imageFile = File(file.path);
@@ -226,7 +243,10 @@ class UFFilePickerUtil {
       final compressedImageBytes = img.encodeJpg(resizedImage, quality: 85);
 
       // Write the compressed image to a new file
-      final compressedImagePath = path.join(path.dirname(file.path), 'compressed_${path.basename(file.path)}');
+      final compressedImagePath = path.join(
+        path.dirname(file.path),
+        'compressed_${path.basename(file.path)}',
+      );
       final compressedImageFile = File(compressedImagePath);
       await compressedImageFile.writeAsBytes(compressedImageBytes);
 

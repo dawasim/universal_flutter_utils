@@ -67,7 +67,8 @@ class UFUSocialLogin {
       await googleSignIn.initialize(serverClientId: clientId);
 
       // 3. Trigger the authentication flow (signIn() is now authenticate())
-      final GoogleSignInAccount googleUser = await googleSignIn.authenticate(); // User canceled the sign-in
+      final GoogleSignInAccount googleUser = await googleSignIn
+          .authenticate(); // User canceled the sign-in
 
       // 4. Access authentication data
       // In v7.x, .authentication is a synchronous property, not a Future.
@@ -76,7 +77,9 @@ class UFUSocialLogin {
       // 5. Create a Firebase credential
       // If you need the accessToken, you may need to request it via
       // googleUser.authorizationClient.authorizeScopes() if it's null here.
-      GoogleSignInClientAuthorization authorization = await googleUser.authorizationClient.authorizeScopes(["email"]);
+      GoogleSignInClientAuthorization authorization = await googleUser
+          .authorizationClient
+          .authorizeScopes(["email"]);
 
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: authorization.accessToken,
@@ -91,28 +94,33 @@ class UFUSocialLogin {
     }
   }
 
-  Future<Map<String, dynamic>?> signInWithApple({required String clientId}) async {
+  Future<Map<String, dynamic>?> signInWithApple({
+    required String clientId,
+  }) async {
     try {
       final rawNonce = generateNonce();
       final nonce = sha256ofString(rawNonce);
 
       // Request credential for the currently signed in Apple account.
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName
-        ],
-        webAuthenticationOptions: GetPlatform.isIOS
-            ? null
-            : WebAuthenticationOptions(
-            clientId: clientId,
-            redirectUri: Uri.parse(
-                'https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple')),
-        nonce: GetPlatform.isIOS ? nonce : null,
-      ).catchError((error) {
-        error.toString().printError();
-        throw Exception(error.toString());
-      });
+      final appleCredential =
+          await SignInWithApple.getAppleIDCredential(
+            scopes: [
+              AppleIDAuthorizationScopes.email,
+              AppleIDAuthorizationScopes.fullName,
+            ],
+            webAuthenticationOptions: GetPlatform.isIOS
+                ? null
+                : WebAuthenticationOptions(
+                    clientId: clientId,
+                    redirectUri: Uri.parse(
+                      'https://grizzled-zippy-cactus.glitch.me/callbacks/sign_in_with_apple',
+                    ),
+                  ),
+            nonce: GetPlatform.isIOS ? nonce : null,
+          ).catchError((error) {
+            error.toString().printError();
+            throw Exception(error.toString());
+          });
 
       // Create an `OAuthCredential` from the credential returned by Apple.
       final oauthCredential = OAuthProvider("apple.com").credential(
@@ -136,12 +144,10 @@ class UFUSocialLogin {
       // Sign in the user with Firebase. If the nonce we generated earlier does
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
       final mUser = await FirebaseAuth.instance.signInWithCredential(
-          oauthCredential);
+        oauthCredential,
+      );
 
-      return {
-        "displayName": displayName,
-        "user": mUser
-      };
+      return {"displayName": displayName, "user": mUser};
     } catch (e) {
       if (UFUtils.isLoaderVisible()) Get.back();
       // showSnackBar(e.toString());
@@ -153,10 +159,13 @@ class UFUSocialLogin {
   }
 
   String generateNonce([int length = 32]) {
-    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
   }
 
   /// Returns the sha256 hash of [input] in hex notation.
@@ -172,16 +181,18 @@ class UFUSocialLogin {
       final fb = FacebookLogin();
 
       // Log in
-      final res = await fb.logIn(permissions: [
-        FacebookPermission.publicProfile,
-        FacebookPermission.email,
-      ]);
+      final res = await fb.logIn(
+        permissions: [
+          FacebookPermission.publicProfile,
+          FacebookPermission.email,
+        ],
+      );
 
       // Check result status
       switch (res.status) {
         case FacebookLoginStatus.success:
-        // Logged In
-        //   final accessToken = res.accessToken?.token;
+          // Logged In
+          //   final accessToken = res.accessToken?.token;
           final profile = await fb.getUserProfile();
           final name = profile?.name;
           final userID = profile?.userId;
@@ -199,10 +210,10 @@ class UFUSocialLogin {
 
           return mData;
         case FacebookLoginStatus.cancel:
-        // User cancel log in
+          // User cancel log in
           throw Exception("Login has been cancelled");
         case FacebookLoginStatus.error:
-        // Log in failed
+          // Log in failed
           throw Exception("${FacebookLoginStatus.error}");
       }
     } catch (e) {

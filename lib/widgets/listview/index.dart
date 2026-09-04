@@ -86,13 +86,17 @@ class UFUListViewState extends State<UFUListView> {
 
   Future<void> _onScroll() async {
     if (!infiniteScrollController.hasClients) return;
-    if ((infiniteScrollController.position.pixels +
-                UFUResponsiveDesign.floatingButtonSize +
-                50) >=
-            infiniteScrollController.position.maxScrollExtent &&
-        widget.onLoadMore != null &&
-        !isLoadingMore &&
-        !isRefreshing) {
+    if (widget.onLoadMore == null || isLoadingMore || isRefreshing) return;
+
+    final position = infiniteScrollController.position;
+    if (position.maxScrollExtent <= 0) return;
+
+    final threshold = UFUResponsiveDesign.floatingButtonSize + 50;
+    final reachedLoadMoreEdge = widget.isReverse
+        ? position.pixels >= (position.maxScrollExtent - threshold)
+        : (position.pixels + threshold) >= position.maxScrollExtent;
+
+    if (reachedLoadMoreEdge) {
       toggleIsLoadingMore();
       await widget.onLoadMore!();
       toggleIsLoadingMore();
@@ -116,27 +120,93 @@ class UFUListViewState extends State<UFUListView> {
       return widget.noDataWidget ??
           UFUNoDataFound(title: widget.noDataText ?? "No Data Found");
     } else {
-      return /*Flexible(
-      child: */ widget.onRefresh != null
-          ? RefreshIndicator(
-              onRefresh: () async {
-                if (isLoadingMore) return;
-                toggleIsRefreshing();
-                await widget.onRefresh!();
-                toggleIsRefreshing();
-              },
-              notificationPredicate: (scroll) {
-                return isLoadingMore
-                    ? false
-                    : !(widget.disableOnRefresh ?? false);
-              },
-              child: widget.isGridView ? getGridView() : getListView(),
-            )
-          : widget.isGridView
-          ? getGridView()
-          : getListView();
-      // );
+      final list = widget.isGridView ? getGridView() : getListView();
+      if (widget.onRefresh == null) return list;
+      return widget.isReverse
+          ? _buildReverseRefresh(list)
+          : _buildRefresh(list);
     }
+  }
+
+  Widget _buildRefresh(Widget child) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        if (isLoadingMore) return;
+        toggleIsRefreshing();
+        await widget.onRefresh!();
+        toggleIsRefreshing();
+      },
+      notificationPredicate: (scroll) {
+        return isLoadingMore ? false : !(widget.disableOnRefresh ?? false);
+      },
+      child: child,
+    );
+  }
+
+  Widget _buildReverseRefresh(Widget child) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handleReverseRefreshNotification,
+      child: Stack(
+        children: [
+          Positioned.fill(child: child),
+          if (isRefreshing)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 12,
+              child: Center(
+                child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    color: AppTheme.themeColors.primary,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  double _reverseRefreshDrag = 0;
+
+  bool _handleReverseRefreshNotification(ScrollNotification notification) {
+    if (widget.disableOnRefresh ?? false) return false;
+    if (isLoadingMore || isRefreshing) return false;
+    if (widget.onRefresh == null) return false;
+
+    if (notification is OverscrollNotification) {
+      final atVisualBottom =
+          notification.metrics.pixels <=
+          notification.metrics.minScrollExtent + 1;
+      final pullDown =
+          (notification.dragDetails?.delta.dy ?? 0) > 0 ||
+          notification.overscroll < 0;
+      if (atVisualBottom && pullDown) {
+        _reverseRefreshDrag +=
+            notification.dragDetails?.delta.dy ?? -notification.overscroll;
+        if (_reverseRefreshDrag > 80) {
+          _startReverseRefresh();
+        }
+      }
+    } else if (notification is ScrollUpdateNotification) {
+      if (notification.metrics.pixels > notification.metrics.minScrollExtent) {
+        _reverseRefreshDrag = 0;
+      }
+    } else if (notification is ScrollEndNotification) {
+      _reverseRefreshDrag = 0;
+    }
+    return false;
+  }
+
+  Future<void> _startReverseRefresh() async {
+    if (isRefreshing || isLoadingMore) return;
+    _reverseRefreshDrag = 0;
+    setState(() => isRefreshing = true);
+    await widget.onRefresh!();
+    if (mounted) setState(() => isRefreshing = false);
   }
 
   Widget getListView() {
@@ -151,7 +221,7 @@ class UFUListViewState extends State<UFUListView> {
         reverse: widget.isReverse,
         itemCount: widget.listCount + 1,
         itemBuilder: widget.itemBuilder,
-        physics: widget.physics,
+        physics: _scrollPhysics,
         shrinkWrap: widget.shrinkWrap,
       ),
     );
@@ -176,10 +246,18 @@ class UFUListViewState extends State<UFUListView> {
         reverse: widget.isReverse,
         itemCount: widget.listCount + 1,
         itemBuilder: widget.itemBuilder,
-        physics: widget.physics,
+        physics: _scrollPhysics,
         shrinkWrap: widget.shrinkWrap,
       ),
     );
+  }
+
+  ScrollPhysics? get _scrollPhysics {
+    if (widget.physics != null) return widget.physics;
+    if (widget.onRefresh != null) {
+      return const AlwaysScrollableScrollPhysics();
+    }
+    return null;
   }
 
   EdgeInsets? getListPadding() {

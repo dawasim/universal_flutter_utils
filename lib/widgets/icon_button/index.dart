@@ -32,17 +32,22 @@ class UFUIconButton extends StatelessWidget {
     return Material(
       color: backgroundColor ?? AppTheme.themeColors.lightBlue,
       borderRadius: BorderRadius.circular(borderRadius ?? 8),
-      child:
-          iconWidget ??
-          UFUTextButton(
-            icon: icon ?? Icons.add,
-            iconSize: iconSize ?? 18,
-            color: iconColor ?? AppTheme.themeColors.primary,
-            highlightColor: highlightColor,
-            onPressed: onTap,
-            onLongPress: onLongPress,
-            isDisabled: isDisabled,
-          ),
+      child: iconWidget != null
+          ? InkWell(
+              onTap: isDisabled ? null : onTap,
+              onLongPress: isDisabled ? null : onLongPress,
+              borderRadius: BorderRadius.circular(borderRadius ?? 8),
+              child: iconWidget,
+            )
+          : UFUTextButton(
+              icon: icon ?? Icons.add,
+              iconSize: iconSize ?? 18,
+              color: iconColor ?? AppTheme.themeColors.primary,
+              highlightColor: highlightColor,
+              onPressed: onTap,
+              onLongPress: onLongPress,
+              isDisabled: isDisabled,
+            ),
     );
   }
 }

@@ -74,7 +74,7 @@ class UFUText extends StatelessWidget {
     // This hack was likely added to help English text wrap better,
     // but it is "poison" for cursive scripts like Arabic.
     if (overflow != null && !containsArabic && !isSelectable) {
-      return text.replaceAll('', '\u200B');
+      return text.characters.join('\u200B');
     }
 
     return text;

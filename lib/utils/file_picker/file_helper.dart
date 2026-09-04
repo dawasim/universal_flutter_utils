@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -7,21 +6,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:universal_flutter_utils/universal_flutter_utils.dart';
 
 class FileHelper {
-
   static String localStoragePath = '';
   static String cacheStoragePath = '';
   static String iosTempStoragePath = '';
   static String iosUFUFileStoragePath = '';
 
   //For open device file
-  static Future<void> openLocalFile(String path, {
-    String? type
-  }) async {
+  static Future<void> openLocalFile(String path, {String? type}) async {
     OpenResult result = await OpenFilex.open(path, type: type);
     if (result.type == ResultType.permissionDenied) {
       bool isGranted = await UFUtils.permissionUtils.getStoragePermission();
       if (isGranted) openLocalFile(path);
-    } else if(result.type != ResultType.done) {
+    } else if (result.type != ResultType.done) {
       UFUToast.showToast(result.message.capitalizeFirst!);
     }
   }
@@ -59,7 +55,7 @@ class FileHelper {
   static String? getFileExtension(String filePath) {
     String fileName = getFileName(filePath);
     String extensionName = fileName.split('.').last.toLowerCase();
-    if(FileUploadSupportedFiles.extensions.contains(extensionName)) {
+    if (FileUploadSupportedFiles.extensions.contains(extensionName)) {
       return extensionName;
     }
     return null;
@@ -95,12 +91,18 @@ class FileHelper {
   // decides on the basis on extension whether it is a image file or not
   static bool checkIfImage(String path) {
     String extensionName = path.split('.').last.toLowerCase().trim();
-    return extensionName.contains('UFUg') || extensionName.contains('png') || extensionName.contains('UFUeg') || extensionName.contains('jfif') || extensionName.contains('webp');
+    return extensionName.contains('UFUg') ||
+        extensionName.contains('png') ||
+        extensionName.contains('UFUeg') ||
+        extensionName.contains('jfif') ||
+        extensionName.contains('webp');
   }
 
-  static bool checkIfImagePhotosDocument(String path){
+  static bool checkIfImagePhotosDocument(String path) {
     final splitPath = path.split('.').last.toLowerCase().trim();
-    return splitPath.contains('UFUg') || splitPath.contains('png') || splitPath.contains('UFUeg');
+    return splitPath.contains('UFUg') ||
+        splitPath.contains('png') ||
+        splitPath.contains('UFUeg');
   }
 
   static Future<String> getTempDirPath() async {
@@ -114,30 +116,30 @@ class FileHelper {
 
   /// saveToTempDirectory() : can be used to save files to temp directory (with in app)
   /// so can accessed later and go through in no-affect with changes to original file
-  static Future<List<String>> saveToTempDirectory(List<String?> filePaths, {bool doShowLoader = true}) async {
+  static Future<List<String>> saveToTempDirectory(
+    List<String?> filePaths, {
+    bool doShowLoader = true,
+  }) async {
     List<String> tempFiles = [];
 
-    if(doShowLoader) ShowUFULoader(msg: '${'preparing_files'.tr}...');
+    if (doShowLoader) ShowUFULoader(msg: '${'preparing_files'.tr}...');
 
     for (var path in filePaths) {
-
-      if(path != null) {
+      if (path != null) {
         try {
-
           final filePath = filterFilePath(path);
           final newPath = getUniqueFileName(getFileName(path));
 
           final file = File(filePath);
           await file.copy(newPath);
           tempFiles.add(newPath);
-
         } catch (e) {
           continue;
         }
       }
     }
 
-    if(doShowLoader) Get.back();
+    if (doShowLoader) Get.back();
 
     return tempFiles;
   }
@@ -149,7 +151,9 @@ class FileHelper {
     }
     // Get the file name and extension
     String baseName = fileName.split('.').first;
-    String fileExtension = fileName.split('.').length > 1 ? '.${fileName.split('.').last}' : '';
+    String fileExtension = fileName.split('.').length > 1
+        ? '.${fileName.split('.').last}'
+        : '';
 
     // Check for existing files with the same base name
     int suffix = 1;
@@ -165,12 +169,17 @@ class FileHelper {
 
   static Future<void> setLocalStoragePath() async {
     try {
-      if(Platform.isIOS) {
+      if (Platform.isIOS) {
         localStoragePath = '${(await getLibraryDirectory()).path}/';
-        iosTempStoragePath = (await getLibraryDirectory()).path.replaceAll("Library", "tmp");
-        iosUFUFileStoragePath = '${(await getApplicationDocumentsDirectory()).path}/UFU_files/';
+        iosTempStoragePath = (await getLibraryDirectory()).path.replaceAll(
+          "Library",
+          "tmp",
+        );
+        iosUFUFileStoragePath =
+            '${(await getApplicationDocumentsDirectory()).path}/UFU_files/';
       } else {
-        localStoragePath = '${(await getApplicationDocumentsDirectory()).path}/';
+        localStoragePath =
+            '${(await getApplicationDocumentsDirectory()).path}/';
         cacheStoragePath = '${(await getApplicationCacheDirectory()).path}/';
       }
     } catch (e) {
@@ -189,7 +198,6 @@ class FileHelper {
   }
 
   static bool checkIfLargeFile(String path) {
-
     try {
       final fileSizeInBytes = File(path).lengthSync();
 
@@ -312,11 +320,15 @@ class FileHelper {
     switch (action) {
       case 'open':
         isUnsupportedFile = isUnsupportedViewFile(fileName);
-        if (isUnsupportedFile) message = 'unsupported_file_for_download_view'.tr;
+        if (isUnsupportedFile) {
+          message = 'unsupported_file_for_download_view'.tr;
+        }
         break;
       case 'print':
         isUnsupportedFile = isUnsupportedPrintFile(fileName);
-        if (isUnsupportedFile) message = 'unsupported_file_for_print'.tr;
+        if (isUnsupportedFile) {
+          message = 'unsupported_file_for_print'.tr;
+        }
         break;
     }
     if (message.isNotEmpty) {

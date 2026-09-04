@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import file_picker
+import file_picker_darwin
 import file_selector_macos
 import firebase_auth
 import firebase_core
@@ -30,7 +30,7 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))
   FLTFirebaseAuthPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseAuthPlugin"))
   FLTFirebaseCorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseCorePlugin"))
-  FLTFirebaseCrashlyticsPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseCrashlyticsPlugin"))
+  FirebaseCrashlyticsPlugin.register(with: registry.registrar(forPlugin: "FirebaseCrashlyticsPlugin"))
   FLTFirebaseMessagingPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseMessagingPlugin"))
   FlutterLocalNotificationsPlugin.register(with: registry.registrar(forPlugin: "FlutterLocalNotificationsPlugin"))
   GeolocatorPlugin.register(with: registry.registrar(forPlugin: "GeolocatorPlugin"))

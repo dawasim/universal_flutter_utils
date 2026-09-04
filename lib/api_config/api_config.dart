@@ -246,8 +246,12 @@ class UFApiConfig {
   }
 
   // Upload file method
-  Future<Map<String, dynamic>?> uploadFile({required String path, required File file,
-    required String fileParam, Map<String, dynamic>? data,}) async {
+  Future<Map<String, dynamic>?> uploadFile({
+    required String path,
+    required File file,
+    required String fileParam,
+    Map<String, dynamic>? data,
+  }) async {
     try {
       String fileName = file.path.split('/').last;
 
@@ -279,9 +283,12 @@ class UFApiConfig {
   }
 
   // Upload multiple file method
-  Future<Map<String, dynamic>?> uploadMultiFile({required String path,
-    required List<File> files, required String fileParam,
-    Map<String, dynamic>? data,}) async {
+  Future<Map<String, dynamic>?> uploadMultiFile({
+    required String path,
+    required List<File> files,
+    required String fileParam,
+    Map<String, dynamic>? data,
+  }) async {
     try {
       // Build multipart files list
       final multipartFiles = await Future.wait(
@@ -319,7 +326,10 @@ class UFApiConfig {
     }
   }
 
-  Future<dynamic> downloadFile({required String url, Function(double progress)? onProgress}) async {
+  Future<dynamic> downloadFile({
+    required String url,
+    Function(double progress)? onProgress,
+  }) async {
     try {
       // Determine the download directory based on the platform
       final Directory? downloadsDir;
@@ -340,11 +350,10 @@ class UFApiConfig {
       final String filePath = "${appDir.path}/$fileName";
 
       // Download file using Dio
-      await _dio.download(url, filePath, options: Options(headers: {
-            "Content-Type": "*/*",
-            "Accept": "*/*",
-          },
-        ),
+      await _dio.download(
+        url,
+        filePath,
+        options: Options(headers: {"Content-Type": "*/*", "Accept": "*/*"}),
         onReceiveProgress: (received, total) {
           if (total != -1 && onProgress != null) {
             // Calculate and pass progress percentage
