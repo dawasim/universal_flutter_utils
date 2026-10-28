@@ -270,7 +270,7 @@ class UFApiConfig {
           headers: {
             'authorization': 'bearer $token',
             "Content-Type": "multipart/form-data",
-            "x-portal": "user",
+            "x-portal": UFUtils.xPortal,
           },
           extra: {"skipInterceptor": true},
         ),
