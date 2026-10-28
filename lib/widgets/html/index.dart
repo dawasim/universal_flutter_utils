@@ -6,21 +6,25 @@ class UFUHtmlViewer extends StatelessWidget {
   const UFUHtmlViewer({
     super.key,
     this.data,
+    this.hColor,
     this.ulColor,
     this.liColor,
     this.strongColor,
     this.emColor,
     this.insColor,
+    this.insTextDecoration,
     this.pColor,
     this.spanColor,
   });
 
   final String? data;
+  final Color? hColor;
   final Color? ulColor;
   final Color? liColor;
   final Color? strongColor;
   final Color? emColor;
   final Color? insColor;
+  final TextDecoration? insTextDecoration;
   final Color? pColor;
   final Color? spanColor;
 
@@ -29,10 +33,13 @@ class UFUHtmlViewer extends StatelessWidget {
     return Html(
       data: data ?? "",
       style: {
+        "h": Style(
+          padding: HtmlPaddings.all(0),
+          color: hColor ?? AppTheme.themeColors.text,
+        ),
         "ul": Style(
           padding: HtmlPaddings.all(0),
           color: ulColor ?? AppTheme.themeColors.text,
-          textDecoration: TextDecoration.underline,
         ),
         "li": Style(
           fontSize: FontSize.medium,
@@ -48,7 +55,7 @@ class UFUHtmlViewer extends StatelessWidget {
           color: emColor ?? AppTheme.themeColors.text,
         ),
         "ins": Style(
-          textDecoration: TextDecoration.underline,
+          textDecoration: insTextDecoration,
           color: insColor ?? AppTheme.themeColors.text,
         ),
         "p": Style(

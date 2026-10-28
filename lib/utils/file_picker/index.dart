@@ -111,6 +111,11 @@ class UFFilePickerUtil {
     DateTime? initialDate,
     DateTime? startDate,
     DateTime? endDate,
+    Color? headerBackgroundColor,
+    Color? headerTextColor,
+    Color? bodyTextColor,
+    Color? foregroundColor,
+    Color? dialogThemeBackgroundColor,
   }) async {
     return await showDatePicker(
       context: Get.context!,
@@ -123,17 +128,16 @@ class UFFilePickerUtil {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: AppTheme.themeColors.primary, // Header background color
-              onPrimary: AppTheme.themeColors.themeBlue, // Header text color
-              onSurface: AppTheme.themeColors.themeBlue, // Body text color
+              primary: headerBackgroundColor ?? AppTheme.themeColors.primary, // Header background color
+              onPrimary: headerTextColor ?? AppTheme.themeColors.themeBlue, // Header text color
+              onSurface: bodyTextColor ?? AppTheme.themeColors.themeBlue, // Body text color
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor:
-                    AppTheme.themeColors.primary, // Button text color
+                foregroundColor: foregroundColor ?? AppTheme.themeColors.primary, // Button text color
               ),
             ),
-            dialogTheme: const DialogThemeData(backgroundColor: Colors.grey),
+            dialogTheme: DialogThemeData(backgroundColor: dialogThemeBackgroundColor ?? Colors.grey),
           ),
           child: child!,
         );

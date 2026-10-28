@@ -314,7 +314,7 @@ class UFApiConfig {
           headers: {
             'Authorization': 'Bearer $token',
             "Content-Type": "multipart/form-data",
-            "x-portal": "user",
+            "x-portal": UFUtils.xPortal,
           },
           extra: {"skipInterceptor": true},
         ),
