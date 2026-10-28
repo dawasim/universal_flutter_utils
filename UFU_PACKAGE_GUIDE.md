@@ -1,6 +1,6 @@
 # universal_flutter_utils — Complete Implementation Guide (for developers and AI agents)
 
-> Version documented: **0.0.12** (source-verified against `lib/`).
+> Version documented: **0.0.13** (source-verified against `lib/`).
 > Purpose: a single reference so that a project (or an AI module) can build **all UI and app plumbing through this package only**.
 > Naming: public classes are prefixed `UFU` (widgets/models), `UF` (services/utilities). Static hub = `UFUtils`.
 
@@ -25,7 +25,7 @@
 
 ```yaml
 dependencies:
-  universal_flutter_utils: ^0.0.12
+  universal_flutter_utils: ^0.0.13
   get: ^4.7.3          # app must use GetMaterialApp
 ```
 Requires Dart `^3.12.0`, Flutter `>=3.44.0`. Platforms: Android, iOS, Web, macOS, Windows, Linux.

@@ -570,10 +570,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_native_contact_picker
-      sha256: ce2339cbaf22324541d818b5818d45ad1629ae2146f6e09a29fe78411d43d825
+      sha256: d50fac91dfc45fc6bedeead035353dcb5a060d9c4daad0ae7b0d9b2876df038b
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.12"
+    version: "0.0.13"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1723,7 +1723,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.12"
+    version: "0.0.13"
   url_launcher:
     dependency: transitive
     description:
