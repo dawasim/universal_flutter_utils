@@ -573,7 +573,7 @@ packages:
       sha256: d50fac91dfc45fc6bedeead035353dcb5a060d9c4daad0ae7b0d9b2876df038b
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.13"
+    version: "0.0.14"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1723,7 +1723,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.13"
+    version: "0.0.14"
   url_launcher:
     dependency: transitive
     description:
