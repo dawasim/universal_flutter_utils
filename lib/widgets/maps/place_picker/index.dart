@@ -8,12 +8,20 @@ import '../../../models/address.dart';
 import 'controller.dart';
 
 class UFULocationPicker extends StatelessWidget {
-  UFULocationPicker({
+  const UFULocationPicker({
     super.key,
     this.backButton,
     required this.apiKey,
     this.placesAPIHeader,
     this.address,
+    this.searchFieldFillColor,
+    this.searchFieldBorderColor,
+    this.searchFieldBorderRadius = 12,
+    this.searchFieldTextColor,
+    this.searchFieldHintFontColor,
+    this.markerInfoTitleColor,
+    this.markerInfoDescriptionColor,
+
   });
 
   /// Back button replacement when [hideBackButton] is false and [backButton] is not null
@@ -21,9 +29,13 @@ class UFULocationPicker extends StatelessWidget {
   final String? apiKey;
   final Map<String, String>? placesAPIHeader;
   final UFUAddressModel? address;
-
-  final coordinateX = Get.size.height ~/ 2;
-  final coordinateY = Get.size.width ~/ 2;
+  final Color? searchFieldFillColor;
+  final Color? searchFieldBorderColor;
+  final double searchFieldBorderRadius;
+  final Color? searchFieldTextColor;
+  final Color? searchFieldHintFontColor;
+  final Color? markerInfoTitleColor;
+  final Color? markerInfoDescriptionColor;
 
   @override
   Widget build(BuildContext context) {
@@ -54,36 +66,55 @@ class UFULocationPicker extends StatelessWidget {
               hideBackButton: true,
               zoomGesturesEnabled: true,
               minMaxZoomPreference: const MinMaxZoomPreference(0, 25),
-              topCardColor: Colors.white,
+              topCardColor: AppTheme.themeColors.base,
               backButton: backButton,
               searchHintText: "search_here".tr,
+              searchTextStyle: TextStyle(
+                color: searchFieldTextColor ?? AppTheme.themeColors.text,
+                fontSize: TextHelper.getTextSize(UFUTextSize.heading4),
+              ),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                fillColor: searchFieldFillColor ?? AppTheme.themeColors.secondary,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                hintText: "search_here".tr,
+                hintStyle: TextStyle(
+                  color: searchFieldHintFontColor ?? AppTheme.themeColors.hintText,
+                  fontSize: TextHelper.getTextSize(UFUTextSize.heading4),
+                ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: AppTheme.themeColors.primary,
+                  color: searchFieldTextColor ?? AppTheme.themeColors.text,
                 ),
-                border: InputBorder.none,
+                enabledBorder: OutlineInputBorder(
+                  gapPadding: 0,
+                  borderRadius: BorderRadius.circular(searchFieldBorderRadius),
+                  borderSide: BorderSide(
+                    width: 0.8,
+                    color: searchFieldBorderColor ?? AppTheme.themeColors.dimGray,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  gapPadding: 0,
+                  borderRadius: BorderRadius.circular(searchFieldBorderRadius),
+                  borderSide: BorderSide(
+                    width: 0.8,
+                    color: searchFieldBorderColor ?? AppTheme.themeColors.dimGray,
+                  ),
+                ),
               ),
-              bottomCardBuilder:
-                  (
-                    BuildContext context,
-                    GeocodingResult? result,
-                    String address,
-                  ) {
-                    return SafeArea(
-                      top: false,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 15),
-                        child: UFUButton(
-                          text: "confirm_location".tr,
-                          onPressed: () => controller.saveCurrentLocation(),
-                        ),
-                      ),
-                    );
-                  },
+              bottomCardBuilder: (BuildContext context, GeocodingResult? result, String address) {
+                return SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 15),
+                    child: UFUButton(
+                      text: "confirm_location".tr,
+                      onPressed: () => controller.saveCurrentLocation(),
+                    ),
+                  ),
+                );
+              },
               onDecodeAddress: controller.setSelectedAddress,
               onNext: controller.setSelectedAddress,
               onSuggestionSelected: controller.setSearchedAddress,
@@ -142,31 +173,18 @@ class UFULocationPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (controller
-                      .selectedAddress
-                      .value
-                      ?.addressComponents
-                      ?.firstOrNull
-                      ?.longName
-                      ?.isNotEmpty ??
-                  false) ...[
+              if (controller.selectedAddress.value?.addressComponents?.firstOrNull?.longName?.isNotEmpty ?? false) ...[
                 UFUText(
-                  text:
-                      controller
-                          .selectedAddress
-                          .value
-                          ?.addressComponents
-                          ?.firstOrNull
-                          ?.longName ??
-                      "",
+                  text: controller.selectedAddress.value?.addressComponents?.firstOrNull?.longName ?? "",
                   textAlign: TextAlign.start,
+                  textColor: markerInfoTitleColor,
                 ),
                 const SizedBox(height: 4),
               ],
 
               UFUText(
                 text: controller.selectedAddress.value?.formattedAddress ?? "",
-                textColor: AppTheme.themeColors.secondaryText,
+                textColor: markerInfoDescriptionColor ?? AppTheme.themeColors.secondaryText,
                 maxLine: 4,
                 textAlign: TextAlign.start,
               ),
@@ -175,33 +193,5 @@ class UFULocationPicker extends StatelessWidget {
         ),
       ],
     ),
-  );
-
-  Column temp() => Column(
-    children: [
-      Positioned(
-        left: coordinateY.toDouble() - 28, // Adjust for widget width/height
-        top: coordinateX.toDouble() - 20, // Adjust for widget width/height
-        child: Image.asset(
-          "assets/images/ic_location_marker.png",
-          height: 60,
-          width: 60,
-        ),
-      ),
-
-      // Positioned.fill(
-      //   child: Container(
-      //       alignment: Alignment.center,
-      //       margin: const EdgeInsets.only(bottom: 60),
-      //       child: Obx(() => controller.selectedAddress.value != null
-      //           ? markerInfo(controller)
-      //           : const LoaderWidget())),
-      // ),
-      Positioned(
-        left: coordinateY.toDouble(), // Adjust for widget width/height
-        top: coordinateX.toDouble(), // Adjust for widget width/height
-        child: const UFUText(text: "."),
-      ),
-    ],
   );
 }

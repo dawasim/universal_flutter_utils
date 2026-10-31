@@ -9,10 +9,7 @@ import '../encryption_util.dart';
 
 class RequestInterceptor extends Interceptor {
   @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // Check internet connection
     bool isConnected = await _checkInternetConnection();
     if (!isConnected) {
@@ -22,6 +19,7 @@ class RequestInterceptor extends Interceptor {
           error: 'No Internet connection',
           type: DioExceptionType.connectionError,
         ),
+        true,
       );
     }
 
@@ -60,9 +58,9 @@ class RequestInterceptor extends Interceptor {
   Future<bool> _checkInternetConnection() async {
     try {
       if (kIsWeb) return true;
-      final result = await InternetAddress.lookup('google.com');
+      final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 10));
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
+    } catch (_) {
       return false;
     }
   }

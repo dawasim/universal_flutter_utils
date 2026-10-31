@@ -23,7 +23,7 @@ class SearchedResultTile extends StatelessWidget {
             children: [
               Image.asset(
                 "assets/images/ic_location_pin.png",
-                color: Colors.black,
+                color: AppTheme.themeColors.text,
                 height: 18,
                 width: 18,
               ),

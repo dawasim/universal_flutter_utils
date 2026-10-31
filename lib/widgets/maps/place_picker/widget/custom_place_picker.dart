@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart' as loc;
 import 'package:map_location_picker/map_location_picker.dart';
@@ -295,6 +294,8 @@ class UFUPlacePicker extends StatefulWidget {
 
   final InputDecoration? decoration;
 
+  final TextStyle? searchTextStyle;
+
   final Widget? Function(
     BuildContext context,
     GeocodingResult? result,
@@ -337,7 +338,7 @@ class UFUPlacePicker extends StatefulWidget {
     this.getLocation,
     this.onSuggestionSelected,
     this.onNext,
-    this.currentLatLng = const LatLng(40.741895, -73.989308),
+    this.currentLatLng,
     this.hideBackButton = false,
     this.popOnNextButtonTaped = false,
     this.backButton,
@@ -398,6 +399,7 @@ class UFUPlacePicker extends StatefulWidget {
     this.webGestureHandling,
     this.zoomGesturesEnabled = true,
     this.decoration,
+    this.searchTextStyle,
     this.bottomCardBuilder,
     this.debounceDuration = const Duration(milliseconds: 500),
   });
@@ -435,6 +437,15 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
   bool isFromSearch = false;
 
+  /// true once a real position (address, GPS, tap or fallback) is known
+  bool _hasInitialPosition = false;
+
+  /// false when location permission is permanently/currently denied
+  bool _hasLocationPermission = true;
+
+  /// true when [_searchController] was created here (not passed by parent)
+  bool _ownsSearchController = true;
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -455,6 +466,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
               ),
               onTap: (LatLng position) async {
                 _initialPosition = position;
+                _hasInitialPosition = true;
                 final controller = await _controller.future;
                 controller.animateCamera(
                   CameraUpdate.newCameraPosition(cameraPosition()),
@@ -481,14 +493,13 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
               buildingsEnabled: widget.buildingsEnabled,
               cameraTargetBounds: widget.cameraTargetBounds,
               circles: widget.circles,
-              fortyFiveDegreeImageryEnabled:
-                  widget.fortyFiveDegreeImageryEnabled,
+              fortyFiveDegreeImageryEnabled: widget.fortyFiveDegreeImageryEnabled,
               gestureRecognizers: widget.gestureRecognizers,
               indoorViewEnabled: widget.indoorViewEnabled,
               layoutDirection: widget.layoutDirection,
               mapToolbarEnabled: widget.mapToolbarEnabled,
               onCameraIdle: () async {
-                widget.onCameraIdle;
+                widget.onCameraIdle?.call();
                 final controller = await _controller.future;
 
                 // Get visible region bounds
@@ -502,7 +513,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                     2;
                 final position = LatLng(centerLat, centerLng);
 
-                if (_initialPosition != const LatLng(40.741895, -73.989308)) {
+                if (_hasInitialPosition) {
                   if (isFromSearch) {
                     setState(() => isFromSearch = false);
                   } else {
@@ -544,7 +555,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                             padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                             child: CustomPlaceAutoComplete(
                               topCardMargin: EdgeInsets.zero,
-                              topCardColor: Colors.white,
+                              topCardColor: widget.decoration?.fillColor ?? AppTheme.themeColors.base,
                               apiKey: widget.apiKey,
                               searchHintText: widget.searchHintText,
                               placesApiHeaders: widget.placesApiHeaders,
@@ -556,10 +567,9 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                               showClearButton: true,
                               left: true,
                               decoration: widget.decoration,
-                              suffixIcon: Icon(
-                                Icons.search,
-                                size: 18,
-                                color: AppTheme.themeColors.secondaryText,
+                              customTextField: TextField(
+                                style: widget.searchTextStyle,
+                                decoration: widget.decoration,
                               ),
                               onGetDetailsByPlaceId:
                                   (p0, {Prediction? searchedPlace}) =>
@@ -622,7 +632,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
                         ),
                       ),
                     ),
-                  if (!widget.hideLocationButton)
+                  if (!widget.hideLocationButton && _hasLocationPermission)
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -728,8 +738,10 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
   @override
   void initState() {
+    _hasInitialPosition = widget.currentLatLng != null;
     _initialPosition = widget.currentLatLng ?? _initialPosition;
     _mapType = widget.mapType;
+    _ownsSearchController = widget.searchController == null;
     _searchController = widget.searchController ?? _searchController;
     // if (widget.currentLatLng != null) {
     //   _decodeAddress(
@@ -832,7 +844,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     if (searchedItem != null) {
       Map<String, dynamic> addressComponent = {"address_components": []};
       if (searchedItem.terms?.isNotEmpty ?? false) {
-        for (var element in selectedPlace!.addressComponents ?? []) {
+        for (var element in selectedPlace?.addressComponents ?? []) {
           addressComponent["address_components"].add(element.toJson());
         }
       }
@@ -908,7 +920,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
     ),
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Expanded(child: UFUText(text: "No Address Found!"))],
+      children: [UFUText(text: "No Address Found!")],
     ),
   );
 
@@ -920,10 +932,14 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
 
     /// get current location
     if (widget.hasLocationPermission) {
-      if (!(await UFUtils.permissionUtils.getLocationPermission())) {
-        debugPrint("------> Permission denied ");
-        bool? isLocationEnabled =
-            await Permission.locationWhenInUse.serviceStatus.isEnabled;
+      try {
+        if (!(await UFUtils.permissionUtils.getLocationPermission())) {
+          debugPrint("------> Permission denied ");
+          await _useFallbackLocation(hideLocationButton: true);
+          return;
+        }
+
+        bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
         if (!isLocationEnabled) {
           debugPrint("------> Location service denied ");
           bool locationEnabled = await loc.Location().requestService();
@@ -931,68 +947,57 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
             bool? locEnabled =
                 await Permission.locationWhenInUse.serviceStatus.isEnabled;
             if (!locEnabled) {
-              Get.back();
-              return;
-            }
-          }
-        } else {}
-        Get.back();
-        return;
-      } else {
-        bool? isLocationEnabled =
-            await Permission.locationWhenInUse.serviceStatus.isEnabled;
-        if (!isLocationEnabled) {
-          debugPrint("------> Location service denied ");
-          bool locationEnabled = await loc.Location().requestService();
-          if (!locationEnabled) {
-            bool? locEnabled =
-                await Permission.locationWhenInUse.serviceStatus.isEnabled;
-            if (!locEnabled) {
-              Get.back();
+              await _useFallbackLocation();
               return;
             }
           }
         }
-      }
 
-      // Position position = await Geolocator.getCurrentPosition(
-      //   desiredAccuracy: widget.desiredAccuracy,
-      // );
+        if (!_hasInitialPosition) {
+          Position position = await Geolocator.getCurrentPosition(
+            locationSettings: const LocationSettings(
+              accuracy: LocationAccuracy.best, // Choose appropriate accuracy
+            ),
+          );
+          _initialPosition = LatLng(position.latitude, position.longitude);
+          _hasInitialPosition = true;
+        }
 
-      if (_initialPosition == const LatLng(40.741895, -73.989308)) {
-        Position position = await Geolocator.getCurrentPosition(
-          locationSettings: const LocationSettings(
-            accuracy: LocationAccuracy.best, // Choose appropriate accuracy
-          ),
+        // Get the controller instance
+        final controller = await _controller.future;
+
+        // Animate camera to the updated/current location
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(cameraPosition()),
         );
-        _initialPosition = LatLng(position.latitude, position.longitude);
+
+        if (mounted) setState(() {});
+      } catch (e) {
+        debugPrint(e.toString());
+        await _useFallbackLocation();
       }
-
-      // Get the controller instance
-      final controller = await _controller.future;
-
-      // Animate camera to the updated/current location
-      controller.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition()),
-      );
-
-      // Decode address from latitude & longitude
-      // _decodeAddress(
-      //   Location(
-      //     lat: _initialPosition.latitude,
-      //     lng: _initialPosition.longitude,
-      //   ),
-      // );
-
-      setState(() {});
     }
+  }
+
+  /// Used when the current location is not available: keeps the lat/lng of the
+  /// given address, otherwise falls back to Location(lat: 0, lng: 0).
+  Future<void> _useFallbackLocation({bool hideLocationButton = false}) async {
+    if (!_hasInitialPosition) {
+      _initialPosition = const LatLng(40.71278, -74.00594);
+      _hasInitialPosition = true;
+    }
+    if (hideLocationButton && mounted) {
+      setState(() => _hasLocationPermission = false);
+    }
+
+    final controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition()));
   }
 
   Future<void> fetchAndNavigateToCurrentLocation() async {
     try {
       ShowUFULoader(msg: "Fetching Location...");
-      _initialPosition =
-          (await UFUtils.fetchCurrentLocation()) ?? _initialPosition;
+      _initialPosition = (await UFUtils.fetchCurrentLocation(showPermissionDeniedDialogue: false)) ?? _initialPosition;
 
       Position position = await Geolocator.getCurrentPosition(
         locationSettings: const LocationSettings(
@@ -1000,6 +1005,7 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
         ),
       );
       _initialPosition = LatLng(position.latitude, position.longitude);
+      _hasInitialPosition = true;
 
       // Get the controller instance
       final controller = await _controller.future;
@@ -1012,13 +1018,13 @@ class _UFUPlacePickerState extends State<UFUPlacePicker> {
       UFUtils.handleError(e);
     } finally {
       UFUtils.hideLoaderDialog();
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    if (_ownsSearchController) _searchController.dispose();
     super.dispose();
   }
 }

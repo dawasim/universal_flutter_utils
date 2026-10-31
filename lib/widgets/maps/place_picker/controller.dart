@@ -37,17 +37,27 @@ class UFULocationPickerController extends GetxController {
   void loadFormData() {
     if (address?.latitude != null && address?.longitude != null) {
       currentLocation = LatLng(address!.latitude!, address!.longitude!);
-      selectedAddress.value = GeocodingResult.fromJson({
-        "geometry": {
-          "location": {
-            "lat": address?.latitude ?? "",
-            "lng": address?.longitude ?? "",
+      final text = [
+        address?.getFormatedAddress(),
+        address?.completeAddress,
+        address?.address,
+      ].firstWhere((e) => e?.trim().isNotEmpty ?? false, orElse: () => null);
+
+      // Only lat/lng available: leave selectedAddress empty so the address is
+      // loaded (reverse geocoded) by the map on first camera idle.
+      if (text != null) {
+        selectedAddress.value = GeocodingResult.fromJson({
+          "geometry": {
+            "location": {
+              "lat": address?.latitude ?? "",
+              "lng": address?.longitude ?? "",
+            },
           },
-        },
-        "place_id": address?.placeId ?? "",
-        'formatted_address': address?.getFormatedAddress() ?? "",
-      });
-      isEdit = true;
+          "place_id": address?.placeId ?? "",
+          'formatted_address': text,
+        });
+        isEdit = true;
+      }
     }
     update();
   }

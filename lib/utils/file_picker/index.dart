@@ -266,15 +266,15 @@ class UFFilePickerUtil {
     await ShowUFUBottomSheet(
       child: (UFUBottomSheetController controller) => UFUConfirmationDialog(
         title: "Permission Denied",
-        subTitle:
-            "This action requires additional permissions. Please enable the necessary permissions in your device settings",
+        subTitle: "This action requires additional permissions. Please enable the necessary permissions in your device settings",
         subTitleColor: AppTheme.themeColors.text,
         type: UFUConfirmationDialogType.message,
         suffixBtnText: "Go to Settings",
         onTapSuffix: () async {
-          Get.back();
-          await openAppSettings();
+          Get.back(result: false);
+          await UFUtils.openAppSetting();
         },
+        onTapPrefix: () => Get.back(result: false),
       ),
     );
   }

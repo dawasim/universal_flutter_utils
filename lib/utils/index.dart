@@ -528,16 +528,15 @@ class UFUtils {
     return buffer.toString();
   }
 
-  static Future<LatLng?> fetchCurrentLocation() async {
+  static Future<LatLng?> fetchCurrentLocation({bool showPermissionDeniedDialogue = true}) async {
     /// get current location
     if (!(await permissionUtils.getLocationPermission())) {
       debugPrint("------> Permission denied ");
       bool isPermanentlyDenied = await Permission.location.isPermanentlyDenied;
-      bool? isLocationEnabled =
-          await Permission.locationWhenInUse.serviceStatus.isEnabled;
+      bool? isLocationEnabled = await Permission.locationWhenInUse.serviceStatus.isEnabled;
 
       if (isPermanentlyDenied) {
-        await picker.permissionDeniedDialogue();
+        if(showPermissionDeniedDialogue) await picker.permissionDeniedDialogue();
         return null;
       } else if (!isLocationEnabled) {
         debugPrint("------> Location service denied ");
